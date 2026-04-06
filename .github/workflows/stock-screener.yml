@@ -1,0 +1,18 @@
+name: 国内株スクリーナー
+
+on:
+  schedule:
+    # JST 23:00（毎営業日）= UTC 14:00
+    - cron: '0 14 * * 1-5'
+  workflow_dispatch:  # 手動実行も可能
+
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 銘柄スクリーニング・LINE通知
+        env:
+          LINE_NOTIFY_TOKEN: ${{ secrets.LINE_NOTIFY_TOKEN }}
+        run: python3 scripts/stock-screener.py
