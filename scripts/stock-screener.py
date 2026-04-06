@@ -3,7 +3,7 @@
 データソース: stooq.com（無料・APIキー不要）
 環境変数: LINE_NOTIFY_TOKEN
 """
-import urllib.request, csv, io, urllib.parse, os
+import urllib.request, csv, io, urllib.parse, json, os
 from datetime import datetime, timedelta
 
 DISCORD_URL = os.environ["DISCORD_WEBHOOK_URL"]
@@ -85,7 +85,11 @@ for i, s in enumerate(top, 1):
 msg = "\n".join(lines)
 print("\n" + msg)
 
-data = json.dumps({"content": msg}).encode()
-req = urllib.request.Request(DISCORD_URL, data=data, headers={"Content-Type": "application/json"})
-urllib.request.urlopen(req)
-print("Discord送信完了")
+# 全スコア0＝データなし（休場日）はスキップ
+if all(s["score"] == 0 for s in top):
+    print("市場データなし（休場日の可能性）- Discord送信スキップ")
+else:
+    data = json.dumps({"content": msg}).encode()
+    req = urllib.request.Request(DISCORD_URL, data=data, headers={"Content-Type": "application/json"})
+    urllib.request.urlopen(req)
+    print("Discord送信完了")
