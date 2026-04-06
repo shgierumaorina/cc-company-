@@ -16,7 +16,7 @@ jobs:
 
       - name: MXNJPYレート取得・アラート判定
         env:
-          LINE_NOTIFY_TOKEN: ${{ secrets.LINE_NOTIFY_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: python3 scripts/fx-monitor.py
 
       - name: 前回価格を保存（コミット）

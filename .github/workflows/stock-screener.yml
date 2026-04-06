@@ -14,5 +14,5 @@ jobs:
 
       - name: 銘柄スクリーニング・LINE通知
         env:
-          LINE_NOTIFY_TOKEN: ${{ secrets.LINE_NOTIFY_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: python3 scripts/stock-screener.py

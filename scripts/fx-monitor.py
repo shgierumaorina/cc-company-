@@ -1,12 +1,12 @@
 """
 MXNJPY監視 - GitHub Actions用（AI不使用）
-環境変数: LINE_NOTIFY_TOKEN
+環境変数: DISCORD_WEBHOOK_URL
 状態ファイル: state/fx-prev.txt（リポジトリに保存）
 """
-import urllib.request, json, urllib.parse, os
+import urllib.request, json, os
 from datetime import datetime
 
-LINE_TOKEN = os.environ["LINE_NOTIFY_TOKEN"]
+DISCORD_URL = os.environ["DISCORD_WEBHOOK_URL"]
 STATE_FILE = os.path.join(os.path.dirname(__file__), "../state/fx-prev.txt")
 
 # レート取得
@@ -20,7 +20,6 @@ except:
     prev = None
 
 # 状態保存
-os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
 open(STATE_FILE, "w").write(str(rate))
 
 diff = rate - prev if prev else 0
@@ -37,12 +36,10 @@ elif rate <= 8.65:
     alert = f"🟡BUY候補 {rate:.4f}円 (サポートライン以下)"
 
 if alert:
-    data = urllib.parse.urlencode({"message": f"🔔MXNJPY {alert} {jst}"}).encode()
-    req = urllib.request.Request(
-        "https://notify-api.line.me/api/notify", data=data,
-        headers={"Authorization": f"Bearer {LINE_TOKEN}"}
-    )
+    msg = f"🔔MXNJPY {alert} {jst}"
+    data = json.dumps({"content": msg}).encode()
+    req = urllib.request.Request(DISCORD_URL, data=data, headers={"Content-Type": "application/json"})
     urllib.request.urlopen(req)
-    print(f"LINE送信: {alert}")
+    print(f"Discord送信: {alert}")
 else:
     print("アラートなし")

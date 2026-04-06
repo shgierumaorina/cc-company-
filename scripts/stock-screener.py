@@ -6,7 +6,7 @@
 import urllib.request, csv, io, urllib.parse, os
 from datetime import datetime, timedelta
 
-LINE_TOKEN = os.environ["LINE_NOTIFY_TOKEN"]
+DISCORD_URL = os.environ["DISCORD_WEBHOOK_URL"]
 
 WATCHLIST = [
     {"code": "7011.jp", "name": "三菱重工", "theme": "防衛"},
@@ -85,10 +85,7 @@ for i, s in enumerate(top, 1):
 msg = "\n".join(lines)
 print("\n" + msg)
 
-data = urllib.parse.urlencode({"message": msg}).encode()
-req = urllib.request.Request(
-    "https://notify-api.line.me/api/notify", data=data,
-    headers={"Authorization": f"Bearer {LINE_TOKEN}"}
-)
+data = json.dumps({"content": msg}).encode()
+req = urllib.request.Request(DISCORD_URL, data=data, headers={"Content-Type": "application/json"})
 urllib.request.urlopen(req)
-print("LINE送信完了")
+print("Discord送信完了")
