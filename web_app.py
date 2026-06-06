@@ -22,7 +22,7 @@ app = Flask(__name__)
 
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "")
 TICKER = "MXNJPY=X"
-HOLD_LOSS_THRESHOLD = -3000   # 放置ポジション 含み損アラート（円）
+HOLD_PRICE_DROP = 0.01        # 放置ポジション エントリーから0.01下落でアラート
 INCOME_STOP_LOSS = -500       # 利益取りポジション 損切りアラート（円）
 
 ACTIVE_HOUR_START = 8   # 通知開始時刻（JST）
@@ -40,11 +40,10 @@ def is_market_open() -> bool:
 # --- スレッドセーフな状態管理 ---
 state_lock = threading.Lock()
 state = {
-    "hold_positions": [],      # [{id, entry_price, units, created_at}]
+    "hold_positions": [],      # [{id, entry_price, units, alerted, created_at}]
     "income_positions": [],    # [{id, entry_price, units, alerted, created_at}]
     "current_price": None,
     "last_checked": None,
-    "hold_loss_alerted": False,
 }
 
 
@@ -105,22 +104,23 @@ def monitor_loop():
                 continue
 
             with state_lock:
-                # 放置ポジション 含み損チェック
-                hold = state["hold_positions"]
-                if hold:
-                    pnl = calc_pnl(hold, price)
-                    if pnl <= HOLD_LOSS_THRESHOLD and not state["hold_loss_alerted"]:
+                # 放置ポジション エントリーから0.01下落チェック
+                for pos in state["hold_positions"]:
+                    drop = pos["entry_price"] - price
+                    if drop >= HOLD_PRICE_DROP and not pos.get("alerted", False):
+                        pnl = (price - pos["entry_price"]) * pos["units"]
                         msg = (
-                            f"⚠️ MXNJPY 放置ポジション 含み損アラート\n"
-                            f"含み損: {pnl:+.0f}円\n"
+                            f"⚠️ MXNJPY 放置ポジション アラート\n"
+                            f"エントリー: {pos['entry_price']:.4f}円\n"
                             f"現在価格: {price:.4f}円\n"
-                            f"ポジション数: {len(hold)}\n"
+                            f"下落幅: -{drop:.4f}円\n"
+                            f"含み損益: {pnl:+.0f}円\n"
                             f"時刻: {now_str}"
                         )
                         send_discord(msg)
-                        state["hold_loss_alerted"] = True
-                    elif pnl > HOLD_LOSS_THRESHOLD * 0.5:
-                        state["hold_loss_alerted"] = False
+                        pos["alerted"] = True
+                    elif drop < HOLD_PRICE_DROP * 0.5:
+                        pos["alerted"] = False
 
                 # 利益取りポジション 損切りチェック
                 for pos in state["income_positions"]:
@@ -184,6 +184,7 @@ def add_hold():
             "id": str(uuid.uuid4())[:8],
             "entry_price": entry_price,
             "units": units,
+            "alerted": False,
             "created_at": datetime.now().strftime("%m/%d %H:%M"),
         })
     return redirect(url_for("index"))
