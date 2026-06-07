@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MXNJPY ポジション管理</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, sans-serif; background: #0f172a; color: #e2e8f0; padding: 16px; }
+    h1 { font-size: 18px; margin-bottom: 4px; }
+    .price-bar { background: #1e293b; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+    .price-bar .price { font-size: 32px; font-weight: bold; color: #38bdf8; }
+    .price-bar .meta { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+    .section { background: #1e293b; border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
+    .section h2 { font-size: 14px; color: #94a3b8; margin-bottom: 10px; letter-spacing: 0.05em; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { text-align: left; color: #64748b; font-weight: normal; font-size: 12px; padding-bottom: 6px; }
+    td { padding: 6px 0; border-top: 1px solid #0f172a; }
+    .pnl-pos { color: #4ade80; }
+    .pnl-neg { color: #f87171; }
+    .pnl-zero { color: #94a3b8; }
+    .close-btn { background: #334155; border: none; color: #94a3b8; padding: 3px 10px; border-radius: 5px; font-size: 12px; cursor: pointer; }
+    .close-btn:hover { background: #475569; color: #e2e8f0; }
+    .total-row td { font-weight: bold; color: #e2e8f0; padding-top: 10px; border-top: 1px solid #334155; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: end; margin-top: 10px; }
+    .form-group label { font-size: 11px; color: #64748b; display: block; margin-bottom: 4px; }
+    input[type="number"] { width: 100%; background: #0f172a; border: 1px solid #334155; color: #e2e8f0; padding: 8px 10px; border-radius: 7px; font-size: 14px; }
+    input[type="number"]:focus { outline: none; border-color: #38bdf8; }
+    .add-btn { background: #0ea5e9; border: none; color: white; padding: 8px 16px; border-radius: 7px; font-size: 14px; cursor: pointer; white-space: nowrap; height: 36px; }
+    .add-btn:hover { background: #0284c7; }
+    .add-btn.income { background: #10b981; }
+    .add-btn.income:hover { background: #059669; }
+    .empty { color: #475569; font-size: 13px; padding: 8px 0; }
+    .badge { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 20px; margin-left: 6px; }
+    .badge-hold { background: #1e3a5f; color: #38bdf8; }
+    .badge-income { background: #064e3b; color: #34d399; }
+  </style>
+</head>
+<body>
+
+  <div class="price-bar">
+    <h1>MXNJPY ポジション管理</h1>
+    <div class="price">
+      {% if price %}{{ "%.4f"|format(price) }}円{% else %}取得中...{% endif %}
+    </div>
+    <div class="meta">最終更新: {{ last_checked or "---" }}</div>
+  </div>
+
+  <!-- 放置ポジション -->
+  <div class="section">
+    <h2>放置ポジション <span class="badge badge-hold">損切りなし</span></h2>
+    {% if hold_positions %}
+    <table>
+      <tr>
+        <th>エントリー</th>
+        <th>lot</th>
+        <th>含み損益</th>
+        <th></th>
+      </tr>
+      {% for p in hold_positions %}
+      <tr>
+        <td>{{ "%.4f"|format(p.entry_price) }}円</td>
+        <td>{{ p.lots if p.lots is defined else "%.1f"|format(p.units / 10000) }}</td>
+        <td class="{% if p.pnl is not none %}{% if p.pnl > 0 %}pnl-pos{% elif p.pnl < 0 %}pnl-neg{% else %}pnl-zero{% endif %}{% endif %}">
+          {% if p.pnl is not none %}{{ "%+d"|format(p.pnl) }}円{% else %}---{% endif %}
+        </td>
+        <td>
+          <form method="post" action="/close/hold/{{ p.id }}" style="display:inline">
+            <button class="close-btn" onclick="return confirm('削除しますか？')">削除</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+      {% if hold_total_pnl is not none %}
+      <tr class="total-row">
+        <td colspan="2">合計</td>
+        <td class="{% if hold_total_pnl > 0 %}pnl-pos{% elif hold_total_pnl < 0 %}pnl-neg{% else %}pnl-zero{% endif %}">
+          {{ "%+d"|format(hold_total_pnl) }}円
+        </td>
+        <td></td>
+      </tr>
+      {% endif %}
+    </table>
+    {% else %}
+    <div class="empty">ポジションなし</div>
+    {% endif %}
+    <form method="post" action="/add-hold">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>エントリー価格</label>
+          <input type="number" name="entry_price" step="0.0001" placeholder="9.1776" required>
+        </div>
+        <div class="form-group">
+          <label>lot数</label>
+          <input type="number" name="units" step="0.1" min="0.1" placeholder="1.0" required>
+        </div>
+        <button type="submit" class="add-btn">追加</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- 利益取りポジション -->
+  <div class="section">
+    <h2>利益取りポジション <span class="badge badge-income">-500円で損切りアラート</span></h2>
+    {% if income_positions %}
+    <table>
+      <tr>
+        <th>エントリー</th>
+        <th>lot</th>
+        <th>含み損益</th>
+        <th></th>
+      </tr>
+      {% for p in income_positions %}
+      <tr>
+        <td>{{ "%.4f"|format(p.entry_price) }}円</td>
+        <td>{{ p.lots if p.lots is defined else "%.1f"|format(p.units / 10000) }}</td>
+        <td class="{% if p.pnl is not none %}{% if p.pnl > 0 %}pnl-pos{% elif p.pnl < 0 %}pnl-neg{% else %}pnl-zero{% endif %}{% endif %}">
+          {% if p.pnl is not none %}{{ "%+d"|format(p.pnl) }}円{% else %}---{% endif %}
+        </td>
+        <td>
+          <form method="post" action="/close/income/{{ p.id }}" style="display:inline">
+            <button class="close-btn" onclick="return confirm('決済済みとして削除しますか？')">削除</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+      {% if income_total_pnl is not none %}
+      <tr class="total-row">
+        <td colspan="2">合計</td>
+        <td class="{% if income_total_pnl > 0 %}pnl-pos{% elif income_total_pnl < 0 %}pnl-neg{% else %}pnl-zero{% endif %}">
+          {{ "%+d"|format(income_total_pnl) }}円
+        </td>
+        <td></td>
+      </tr>
+      {% endif %}
+    </table>
+    {% else %}
+    <div class="empty">ポジションなし</div>
+    {% endif %}
+    <form method="post" action="/add-income">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>エントリー価格</label>
+          <input type="number" name="entry_price" step="0.0001" placeholder="9.1480" required>
+        </div>
+        <div class="form-group">
+          <label>lot数</label>
+          <input type="number" name="units" step="0.1" min="0.1" placeholder="1.0" required>
+        </div>
+        <button type="submit" class="add-btn income">追加</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- 自動更新 -->
+  <script>
+    setTimeout(() => location.reload(), 60000);
+  </script>
+
+</body>
+</html>

@@ -178,12 +178,13 @@ def index():
 @app.route("/add-hold", methods=["POST"])
 def add_hold():
     entry_price = float(request.form["entry_price"])
-    units = int(request.form["units"])
+    lots = float(request.form["units"])
     with state_lock:
         state["hold_positions"].append({
             "id": str(uuid.uuid4())[:8],
             "entry_price": entry_price,
-            "units": units,
+            "units": int(lots * 10000),
+            "lots": lots,
             "alerted": False,
             "created_at": datetime.now().strftime("%m/%d %H:%M"),
         })
@@ -193,12 +194,13 @@ def add_hold():
 @app.route("/add-income", methods=["POST"])
 def add_income():
     entry_price = float(request.form["entry_price"])
-    units = int(request.form["units"])
+    lots = float(request.form["units"])
     with state_lock:
         state["income_positions"].append({
             "id": str(uuid.uuid4())[:8],
             "entry_price": entry_price,
-            "units": units,
+            "units": int(lots * 10000),
+            "lots": lots,
             "alerted": False,
             "created_at": datetime.now().strftime("%m/%d %H:%M"),
         })
