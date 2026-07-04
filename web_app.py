@@ -7,6 +7,7 @@ MXNJPY ポジション管理 Webアプリ
 """
 
 import os
+import sys
 import threading
 import time
 import uuid
@@ -17,6 +18,9 @@ from dotenv import load_dotenv
 from flask import Flask, jsonify, redirect, render_template, request, url_for
 
 load_dotenv()
+
+sys.stdout.reconfigure(line_buffering=True)
+sys.stderr.reconfigure(line_buffering=True)
 
 app = Flask(__name__)
 
@@ -524,6 +528,22 @@ def api_status():
 @app.route("/health")
 def health():
     return "OK", 200
+
+
+@app.route("/debug/fetch")
+def debug_fetch():
+    result = {}
+    try:
+        p = get_price()
+        result["get_price"] = {"ok": True, "value": p}
+    except Exception as e:
+        result["get_price"] = {"ok": False, "error": f"{type(e).__name__}: {e}"}
+    try:
+        c = get_candles("MXNJPY=X")
+        result["get_candles"] = {"ok": True, "current": c["current"], "n_closes": len(c["closes"])}
+    except Exception as e:
+        result["get_candles"] = {"ok": False, "error": f"{type(e).__name__}: {e}"}
+    return jsonify(result)
 
 
 # --- 起動 ---
