@@ -451,6 +451,18 @@ def index():
     with state_lock:
         price = state["current_price"]
         last_checked = state["last_checked"]
+
+    if price is None:
+        try:
+            price = get_price()
+            last_checked = datetime.now().strftime("%Y-%m-%d %H:%M")
+            with state_lock:
+                state["current_price"] = price
+                state["last_checked"] = last_checked
+        except Exception as e:
+            print(f"[Index] 価格取得失敗: {e}")
+
+    with state_lock:
         hold = [
             {**p, "pnl": round((price - p["entry_price"]) * p["units"]) if price else None}
             for p in state["hold_positions"]
