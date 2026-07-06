@@ -55,6 +55,7 @@ state = {
     "income_positions": [],    # [{id, entry_price, units, alerted, created_at}]
     "current_price": None,
     "last_checked": None,
+    "last_checked_ts": None,
 }
 
 
@@ -103,6 +104,7 @@ def monitor_loop():
             with state_lock:
                 state["current_price"] = price
                 state["last_checked"] = now_str
+                state["last_checked_ts"] = time.time()
 
             if not is_market_open():
                 print(f"[Monitor] 市場時間外のため通知スキップ ({now_str})")
@@ -458,14 +460,17 @@ def index():
     with state_lock:
         price = state["current_price"]
         last_checked = state["last_checked"]
+        last_checked_ts = state["last_checked_ts"]
 
-    if price is None:
+    stale = last_checked_ts is None or (time.time() - last_checked_ts > 60)
+    if price is None or stale:
         try:
             price = get_price()
             last_checked = now_jst().strftime("%Y-%m-%d %H:%M")
             with state_lock:
                 state["current_price"] = price
                 state["last_checked"] = last_checked
+                state["last_checked_ts"] = time.time()
         except Exception as e:
             print(f"[Index] 価格取得失敗: {e}")
 
