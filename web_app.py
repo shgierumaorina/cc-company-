@@ -11,7 +11,7 @@ import sys
 import threading
 import time
 import uuid
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 import requests
 from dotenv import load_dotenv
@@ -24,6 +24,13 @@ sys.stderr.reconfigure(line_buffering=True)
 
 app = Flask(__name__)
 
+JST_OFFSET = timedelta(hours=9)
+
+
+def now_jst() -> datetime:
+    """Renderのコンテナ時計はUTCのため、JSTの壁時計時刻を返す（tzinfoなし）"""
+    return datetime.utcnow() + JST_OFFSET
+
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "")
 TICKER = "MXNJPY=X"
 HOLD_PRICE_DROP = 0.01        # 放置ポジション エントリーから0.01下落でアラート
@@ -35,7 +42,7 @@ ACTIVE_HOUR_END   = 24  # 通知終了時刻（JST）
 
 def is_market_open() -> bool:
     """FX市場が開いているか（平日8:00〜24:00 JSTのみ通知）"""
-    now = datetime.now()
+    now = now_jst()
     if now.weekday() >= 5:  # 土日はスキップ
         return False
     end_hour = 23 if ACTIVE_HOUR_END >= 24 else ACTIVE_HOUR_END
@@ -91,7 +98,7 @@ def monitor_loop():
     while True:
         try:
             price = get_price()
-            now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+            now_str = now_jst().strftime("%Y-%m-%d %H:%M")
 
             with state_lock:
                 state["current_price"] = price
@@ -193,7 +200,7 @@ signal_state = {
 
 
 def is_boj_blackout() -> bool:
-    today = date.today()
+    today = now_jst().date()
     return any(s <= today <= e for s, e in BOJ_BLACKOUT_PERIODS)
 
 
@@ -298,7 +305,7 @@ def get_indicators(config: dict) -> dict:
 
 
 def check_signal(pair_name: str, config: dict):
-    now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+    now_str = now_jst().strftime("%Y-%m-%d %H:%M")
 
     ind = get_indicators(config)
     if ind.get("error"):
@@ -337,7 +344,7 @@ def check_signal(pair_name: str, config: dict):
         in_cooldown = False
         if last_alerted:
             try:
-                mins_since = (datetime.now() - datetime.strptime(last_alerted, "%Y-%m-%d %H:%M")).total_seconds() / 60
+                mins_since = (now_jst() - datetime.strptime(last_alerted, "%Y-%m-%d %H:%M")).total_seconds() / 60
                 in_cooldown = mins_since < ALERT_COOLDOWN_MIN
             except ValueError:
                 pass
@@ -407,7 +414,7 @@ def check_signal(pair_name: str, config: dict):
         else:
             last_ts = state.get("last_alerted") or state.get("last_checked") or now_str
             try:
-                hours_since = (datetime.now() - datetime.strptime(last_ts, "%Y-%m-%d %H:%M")).total_seconds() / 3600
+                hours_since = (now_jst() - datetime.strptime(last_ts, "%Y-%m-%d %H:%M")).total_seconds() / 3600
                 if hours_since >= BASELINE_RESET_HOURS:
                     state["baseline"] = current
                     state["last_alerted"] = now_str
@@ -416,7 +423,7 @@ def check_signal(pair_name: str, config: dict):
 
         # 定期レポート（1時間ごと）
         if HOURLY_REPORT:
-            current_hour = datetime.now().strftime("%Y-%m-%d %H")
+            current_hour = now_jst().strftime("%Y-%m-%d %H")
             if state.get("last_hourly") != current_hour:
                 report = (
                     f"🕐 {pair_name} 定期レポート {now_str}\n\n"
@@ -455,7 +462,7 @@ def index():
     if price is None:
         try:
             price = get_price()
-            last_checked = datetime.now().strftime("%Y-%m-%d %H:%M")
+            last_checked = now_jst().strftime("%Y-%m-%d %H:%M")
             with state_lock:
                 state["current_price"] = price
                 state["last_checked"] = last_checked
@@ -496,7 +503,7 @@ def add_hold():
             "units": int(lots * 10000),
             "lots": lots,
             "alerted": False,
-            "created_at": datetime.now().strftime("%m/%d %H:%M"),
+            "created_at": now_jst().strftime("%m/%d %H:%M"),
         })
     return redirect(url_for("index"))
 
@@ -512,7 +519,7 @@ def add_income():
             "units": int(lots * 10000),
             "lots": lots,
             "alerted": False,
-            "created_at": datetime.now().strftime("%m/%d %H:%M"),
+            "created_at": now_jst().strftime("%m/%d %H:%M"),
         })
     return redirect(url_for("index"))
 
