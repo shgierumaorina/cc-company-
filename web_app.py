@@ -164,6 +164,16 @@ ALERT_COOLDOWN_MIN = 5
 BASELINE_RESET_HOURS = 1
 HOURLY_REPORT = True
 
+# ローカルのfx_alert.py（Windowsタスクスケジューラ、1分間隔）が同じ急落・急騰・
+# サポートライン検知を担当しているため、Render側からのDiscord通知は重複防止で無効化
+SIGNAL_DISCORD_ENABLED = False
+
+
+def send_signal_discord(message: str) -> bool:
+    if not SIGNAL_DISCORD_ENABLED:
+        return True
+    return send_discord(message)
+
 BOJ_BLACKOUT_PERIODS = [
     (date(2026, 6, 12), date(2026, 6, 19)),
     (date(2026, 7, 27), date(2026, 8, 3)),
@@ -371,7 +381,7 @@ def check_signal(pair_name: str, config: dict):
                     f"📌 急落検出 → 買い増し検討\n"
                     f"時刻: {now_str}"
                 )
-                send_discord(message)
+                send_signal_discord(message)
                 alerted = True
 
         # ルール2: 急騰チェック
@@ -384,7 +394,7 @@ def check_signal(pair_name: str, config: dict):
                 f"📌 利確を検討してください\n"
                 f"時刻: {now_str}"
             )
-            send_discord(message)
+            send_signal_discord(message)
             alerted = True
 
         # ルール3: サポートラインアラート
@@ -403,7 +413,7 @@ def check_signal(pair_name: str, config: dict):
                     f"📌 段階的買い増し候補\n"
                     f"時刻: {now_str}"
                 )
-                send_discord(message)
+                send_signal_discord(message)
                 state["low_alerted"] = True
         elif current > level_low and low_alerted:
             state["low_alerted"] = False
@@ -434,7 +444,7 @@ def check_signal(pair_name: str, config: dict):
                     f"基準価格: {state['baseline']:.4f}円\n"
                     f"変動: {change:+.4f}円"
                 )
-                if send_discord(report):
+                if send_signal_discord(report):
                     state["last_hourly"] = current_hour
 
         state["last_checked"] = now_str
