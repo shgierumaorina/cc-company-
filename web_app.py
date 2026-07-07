@@ -564,6 +564,12 @@ def debug_fetch():
     return jsonify(result)
 
 
+@app.route("/debug/discord")
+def debug_discord():
+    ok = send_discord(f"🔔 テスト通知（{now_jst().strftime('%Y-%m-%d %H:%M')}）")
+    return jsonify({"sent": ok, "webhook_configured": bool(DISCORD_WEBHOOK_URL)})
+
+
 # --- 起動 ---
 
 monitor_thread = threading.Thread(target=monitor_loop, daemon=True)
