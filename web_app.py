@@ -566,8 +566,28 @@ def debug_fetch():
 
 @app.route("/debug/discord")
 def debug_discord():
-    ok = send_discord(f"🔔 テスト通知（{now_jst().strftime('%Y-%m-%d %H:%M')}）")
-    return jsonify({"sent": ok, "webhook_configured": bool(DISCORD_WEBHOOK_URL)})
+    url = DISCORD_WEBHOOK_URL
+    info = {
+        "webhook_configured": bool(url),
+        "url_length": len(url),
+        "has_whitespace_or_newline": any(c.isspace() for c in url),
+        "url_preview": f"{url[:40]}...{url[-10:]}" if len(url) > 50 else url,
+    }
+    if not url:
+        return jsonify(info)
+    try:
+        res = requests.post(
+            url.strip(),
+            json={"content": f"🔔 テスト通知（{now_jst().strftime('%Y-%m-%d %H:%M')}）"},
+            timeout=10,
+        )
+        info["status_code"] = res.status_code
+        info["response_text"] = res.text[:300]
+        info["sent"] = res.status_code in (200, 204)
+    except Exception as e:
+        info["sent"] = False
+        info["error"] = f"{type(e).__name__}: {e}"
+    return jsonify(info)
 
 
 # --- 起動 ---
