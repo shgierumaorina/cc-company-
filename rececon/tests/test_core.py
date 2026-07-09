@@ -181,3 +181,80 @@ class BillingTest(unittest.TestCase):
             billing.run_calculation(self.conn, ACTOR, enc2)
 
 
+class ReceiptTest(unittest.TestCase):
+    def setUp(self):
+        self.conn = db.connect(":memory:")
+        self.patient_id = setup_patient(self.conn)
+        self.enc_id = encounter.create_encounter(
+            self.conn, ACTOR, self.patient_id, "2026-06-15", "01")
+        encounter.add_act(self.conn, ACTOR, self.enc_id, "11", "111000110",
+                          "初診料", 291)
+        encounter.close_encounter(self.conn, ACTOR, self.enc_id)
+
+    def test_generate_happy_path(self):
+        billing.run_calculation(self.conn, ACTOR, self.enc_id)
+        results = receipt.generate_monthly_receipts(self.conn, ACTOR, "202606")
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]["status"], "generated")
+        self.assertEqual(results[0]["total_points"], 291)
+        enc = encounter.get_encounter(self.conn, self.enc_id)
+        self.assertEqual(enc["status"], "billed")
+        uke = receipt.export_uke(self.conn, "202606")
+        self.assertIn("IR,202606,1", uke)
+        self.assertIn("RE,1,0000001", uke)
+        self.assertIn("GO,291", uke)
+
+    def test_generate_error_without_calculation(self):
+        results = receipt.generate_monthly_receipts(self.conn, ACTOR, "202606")
+        self.assertEqual(results[0]["status"], "error")
+        self.assertTrue(
+            any("算定結果" in e for e in results[0]["errors"]))
+        enc = encounter.get_encounter(self.conn, self.enc_id)
+        self.assertEqual(enc["status"], "closed")  # billed にしない
+
+    def test_generate_skips_other_month(self):
+        billing.run_calculation(self.conn, ACTOR, self.enc_id)
+        results = receipt.generate_monthly_receipts(self.conn, ACTOR, "202607")
+        self.assertEqual(results, [])
+
+    def test_duplicate_generation_rejected(self):
+        billing.run_calculation(self.conn, ACTOR, self.enc_id)
+        receipt.generate_monthly_receipts(self.conn, ACTOR, "202606")
+        # 同月に追加の未請求診療イベントを作って再実行
+        enc2 = encounter.create_encounter(
+            self.conn, ACTOR, self.patient_id, "2026-06-20", "01")
+        encounter.add_act(self.conn, ACTOR, enc2, "12", "112007410",
+                          "再診料", 75)
+        encounter.close_encounter(self.conn, ACTOR, enc2)
+        billing.run_calculation(self.conn, ACTOR, enc2)
+        results = receipt.generate_monthly_receipts(self.conn, ACTOR, "202606")
+        self.assertEqual(results[0]["status"], "error")
+        self.assertTrue(
+            any("既に存在" in e for e in results[0]["errors"]))
+
+    def test_invalid_month_format(self):
+        with self.assertRaises(ValidationError):
+            receipt.generate_monthly_receipts(self.conn, ACTOR, "2026-06")
+
+
+class AuditTest(unittest.TestCase):
+    def test_operations_are_logged(self):
+        conn = db.connect(":memory:")
+        patient_id = setup_patient(conn)
+        enc_id = encounter.create_encounter(
+            conn, ACTOR, patient_id, "2026-06-15", "01")
+        encounter.add_act(conn, ACTOR, enc_id, "11", "111000110",
+                          "初診料", 291)
+        encounter.close_encounter(conn, ACTOR, enc_id)
+        billing.run_calculation(conn, ACTOR, enc_id)
+        logs = audit.search(conn, patient_id=patient_id)
+        actions = [(log["action"], log["resource_type"]) for log in logs]
+        for expected in [("create", "patient"), ("create", "insurance"),
+                         ("create", "encounter"), ("create", "medical_act"),
+                         ("close", "encounter"),
+                         ("calculate", "calculation")]:
+            self.assertIn(expected, actions)
+
+
+if __name__ == "__main__":
+    unittest.main()
