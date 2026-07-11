@@ -453,6 +453,9 @@ def check_signal(pair_name: str, config: dict):
 def signal_monitor_loop():
     print("[Signal] シグナル監視スレッド開始")
     while True:
+        if not is_market_open():
+            time.sleep(SIGNAL_CHECK_INTERVAL)
+            continue
         for pair_name, config in SIGNAL_PAIR_CONFIGS.items():
             try:
                 check_signal(pair_name, config)

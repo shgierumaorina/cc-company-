@@ -105,6 +105,11 @@ def is_active_hours() -> bool:
     return ACTIVE_HOUR_START <= now.hour <= end
 
 
+def is_market_open() -> bool:
+    """FX市場が開いているか（土日は休場）"""
+    return datetime.now().weekday() < 5
+
+
 DEFAULT_STATE = {"baseline": None, "last_checked": None, "low_alerted": False, "last_hourly": None, "last_alerted": None}
 
 
@@ -425,6 +430,10 @@ def main():
     if loop:
         log(f"ループ監視開始（{CHECK_INTERVAL}秒間隔）対象: {', '.join(target_pairs)}")
         while True:
+            if not is_market_open():
+                log("🔕 FX休場（土日）→ チェックスキップ")
+                time.sleep(CHECK_INTERVAL)
+                continue
             for pair_name in target_pairs:
                 try:
                     check(pair_name, PAIR_CONFIGS[pair_name])
@@ -432,6 +441,9 @@ def main():
                     log(f"[{pair_name}] エラー: {e}")
             time.sleep(CHECK_INTERVAL)
     else:
+        if not is_market_open():
+            log("🔕 FX休場（土日）→ チェックスキップ")
+            return
         for pair_name in target_pairs:
             try:
                 check(pair_name, PAIR_CONFIGS[pair_name])
