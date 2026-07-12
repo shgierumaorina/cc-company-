@@ -23,6 +23,8 @@ from pathlib import Path
 
 import requests
 
+from envutil import get_secret
+
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
@@ -43,7 +45,7 @@ def log(msg: str):
 
 
 # --- グローバル設定 ---
-DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1497245362077962321/0H1d263LLZafG3kLA9tNhY0RtNGOYePVzNDrUS608eriwVncezH_1WhlHh7veMZsMa6b"
+DISCORD_WEBHOOK_URL = get_secret("DISCORD_WEBHOOK_URL")
 
 RSI_PERIOD = 14
 MACD_FAST = 12
