@@ -2,6 +2,7 @@
 FXアラート（MXNJPY / USDJPY 対応）
 
 通知トリガー:
+- 急落速報: ATR×倍率以上の下落を検出した時点で即時通知（RSI・クールダウン・BoJ退避を問わない。買い判断とは別の速報）
 - 急落: ATR×倍率以上の下落 かつ RSI<閾値 → Discord通知（買い増し検討）
 - 急騰: 基準価格からrise_threshold以上上昇 → Discord通知（利確検討）
 - 絶対値: level_low以下 → Discord通知（サポートライン）
@@ -112,7 +113,7 @@ def is_market_open() -> bool:
     return datetime.now().weekday() < 5
 
 
-DEFAULT_STATE = {"baseline": None, "last_checked": None, "low_alerted": False, "last_hourly": None, "last_alerted": None}
+DEFAULT_STATE = {"baseline": None, "last_checked": None, "low_alerted": False, "last_hourly": None, "last_alerted": None, "crash_alerted": False}
 
 
 def load_state(state_file: Path) -> dict:
@@ -282,6 +283,7 @@ def check(pair_name: str, config: dict):
         state["baseline"] = current
         state["last_checked"] = now_str
         state.setdefault("low_alerted", False)
+        state.setdefault("crash_alerted", False)
         save_state(state_file, state)
         log(f"[{pair_name}] 基準価格を設定しました: {current:.4f}円")
         return
@@ -311,6 +313,25 @@ def check(pair_name: str, config: dict):
     # ルール1: 急落チェック
     drop_triggered = change <= -dynamic_drop
     rsi_ok = rsi < rsi_buy_th
+
+    # ルール0: 急落速報（RSI条件・クールダウンを問わず、閾値超え検出時に即時通知。買い判断とは別扱い）
+    crash_alerted = state.get("crash_alerted", False)
+    if drop_triggered and not crash_alerted:
+        crash_message = (
+            f"🚨 {pair_name} 価格急落検出（速報）\n\n"
+            f"現在価格: {current:.4f}円\n"
+            f"変動: {change:+.4f}円（閾値: -{dynamic_drop:.3f}円）\n"
+            f"RSI: {rsi:.1f}\n\n"
+            f"※これは速報です。買いシグナルはRSI条件を満たした場合に別途通知されます。\n"
+            f"時刻: {now_str}"
+        )
+        if send_discord(crash_message):
+            log(f"[{pair_name}] 🚨 急落速報をDiscordに送信しました")
+            state["crash_alerted"] = True
+        else:
+            log(f"[{pair_name}] ❌ 急落速報のDiscord送信失敗")
+    elif not drop_triggered and crash_alerted:
+        state["crash_alerted"] = False
 
     if drop_triggered and not in_cooldown:
         if blackout:
