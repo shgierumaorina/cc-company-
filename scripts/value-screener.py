@@ -221,3 +221,106 @@ def compute_trend(entries: list[dict]) -> str:
     if slope < -0.05:
         return "悪化傾向"
     return "横ばい"
+
+
+def process_code(code: str, history_limit: int, lookback_days: int) -> dict | None:
+    """1銘柄分の取得→抽出→蓄積→スコアリング→トレンド判定を実行する。履歴が1件も無ければNone。"""
+    found = find_latest_tanshin(code, lookback_days=lookback_days)
+    history = load_history(code)
+
+    if found is None:
+        print(f"[{code}] 直近{lookback_days}日以内に決算短信が見つかりませんでした")
+    elif any(e["date"] == found["date"] for e in history):
+        print(f"[{code}] {found['date']}分は取得済みです")
+    else:
+        print(f"[{code}] {found['date']} {found['title']} を取得します")
+        pdf_bytes = _fetch_bytes(found["pdf_url"])
+        found["extracted_text"] = extract_sections(pdf_bytes)
+        history = upsert_entry(history, found, history_limit)
+
+    if not history:
+        return None
+
+    scored_map = score_with_claude(history)
+    for e in history:
+        if e["date"] in scored_map:
+            e.update({k: v for k, v in scored_map[e["date"]].items() if k != "date"})
+    save_history(code, history)
+
+    latest = history[-1]
+    return {
+        "code": code,
+        "name": latest.get("name", ""),
+        "latest_date": latest["date"],
+        "latest_sentiment": latest.get("sentiment", "不明"),
+        "latest_score": latest.get("score"),
+        "trend": compute_trend(history),
+        "history_count": len(history),
+    }
+
+
+def fetch_value_metrics(code: str) -> dict:
+    """PER/PBR/株価をyfinanceから取得する。取得できない項目はNoneのまま返す(捏造しない)。"""
+    try:
+        info = yf.Ticker(f"{code}.T").info
+    except Exception as e:
+        print(f"[警告] {code}のyfinance取得に失敗: {e}")
+        return {"per": None, "pbr": None, "price": None}
+    return {
+        "per": info.get("trailingPE"),
+        "pbr": info.get("priceToBook"),
+        "price": info.get("currentPrice"),
+    }
+
+
+def export_excel(results: list[dict], out_path: str, per_max: float, pbr_max: float) -> None:
+    rows = []
+    for r in results:
+        m = fetch_value_metrics(r["code"])
+        is_value = m["per"] is not None and m["per"] < per_max and m["pbr"] is not None and m["pbr"] < pbr_max
+        is_improving = r["trend"] == "改善傾向"
+        rows.append({
+            "コード": r["code"],
+            "会社名": r["name"],
+            "PER": m["per"],
+            "PBR": m["pbr"],
+            "株価": m["price"],
+            "バリュー型": is_value,
+            "直近開示日": r["latest_date"],
+            "直近センチメント": r["latest_sentiment"],
+            "直近スコア": r["latest_score"],
+            "センチメント推移件数": r["history_count"],
+            "トレンド判定": r["trend"],
+            "バリュー×改善": is_value and is_improving,
+        })
+    pd.DataFrame(rows).to_excel(out_path, index=False, engine="openpyxl")
+    print(f"Excel出力: {out_path} ({len(rows)}銘柄)")
+
+
+def main():
+    parser = argparse.ArgumentParser(description="TDnet決算短信センチメント×バリュースクリーナー(手動実行)")
+    parser.add_argument("--codes", required=True, help="銘柄コードをカンマ区切りで指定 例: 7203,6758")
+    parser.add_argument("--history-limit", type=int, default=4, help="蓄積する履歴の最大件数(デフォルト4)")
+    parser.add_argument("--lookback-days", type=int, default=45, help="TDnetを遡る日数(デフォルト45)")
+    parser.add_argument("--export-excel", help="出力するExcelファイルパス(指定時のみExcel出力)")
+    parser.add_argument("--per-max", type=float, default=15.0, help="バリュー型判定のPER上限(デフォルト15)")
+    parser.add_argument("--pbr-max", type=float, default=1.0, help="バリュー型判定のPBR上限(デフォルト1.0)")
+    args = parser.parse_args()
+
+    codes = [c.strip() for c in args.codes.split(",") if c.strip()]
+    results = [r for c in codes if (r := process_code(c, args.history_limit, args.lookback_days))]
+
+    print("\n=== 結果サマリ ===")
+    for r in results:
+        print(
+            f"[{r['code']}] {r['name']} | 直近{r['latest_date']} "
+            f"{r['latest_sentiment']}(score={r['latest_score']}) | "
+            f"トレンド={r['trend']}(履歴{r['history_count']}件)"
+        )
+
+    if args.export_excel:
+        export_excel(results, args.export_excel, args.per_max, args.pbr_max)
+
+
+if __name__ == "__main__":
+    main()
