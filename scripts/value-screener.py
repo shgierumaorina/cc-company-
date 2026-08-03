@@ -22,7 +22,11 @@ import urllib.request
 from datetime import datetime, timedelta
 from pathlib import Path
 
+import subprocess
+import argparse
 import pdfplumber
+import yfinance as yf
+import pandas as pd
 
 TDNET_BASE = "https://www.release.tdnet.info/inbs/"
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
@@ -141,3 +145,79 @@ def upsert_entry(entries: list[dict], new_entry: dict, history_limit: int) -> li
     entries.append(new_entry)
     entries.sort(key=lambda e: e["date"])
     return entries[-history_limit:]
+
+
+CLAUDE_PROMPT_TEMPLATE = """あなたは日本株の決算短信を読むアナリストです。
+以下は同一企業の決算短信から抽出した複数期分の「経営成績の概況」「今後の見通し」です。
+各期について、sentiment(positive/neutral/negative)・score(0.0〜1.0、1.0が最も強気)・
+reason(前期との比較を含む日本語1〜2文。表現が強気になったか弱気になったかに言及)を判定してください。
+出力は次のJSON配列のみとし、説明文やコードブロック記号は付けないこと。
+
+[{{"date": "YYYY-MM-DD", "sentiment": "positive", "score": 0.0, "reason": "..."}}]
+
+--- 対象期間データ ---
+{periods_text}
+"""
+
+
+def score_with_claude(entries: list[dict], timeout: int = 180) -> dict[str, dict]:
+    """entries(抽出テキスト付き、日付昇順)をまとめてclaude -pに渡し、
+    日付をキーにした{sentiment, score, reason}辞書を返す。
+    claude CLI(Pro/Maxプランの認証セッション、API課金なし)を使う。
+    失敗時は空辞書を返し、生の標準エラー/出力をそのまま表示する(スコアの捏造をしない)。
+    """
+    periods_text = "\n\n".join(f"[{e['date']}]\n{e['extracted_text']}" for e in entries)
+    prompt = CLAUDE_PROMPT_TEMPLATE.format(periods_text=periods_text)
+
+    try:
+        result = subprocess.run(
+            ["claude", "-p", prompt],
+            capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=timeout,
+        )
+    except FileNotFoundError:
+        print("[エラー] claude CLIが見つかりません。Claude CodeがインストールされPATHが通っているか確認してください")
+        return {}
+    except subprocess.TimeoutExpired:
+        print(f"[エラー] claude -p がタイムアウトしました({timeout}秒)")
+        return {}
+
+    if result.returncode != 0:
+        print(f"[エラー] claude -p が失敗しました(exit={result.returncode})")
+        print(result.stderr)
+        return {}
+
+    raw = re.sub(r"^```(json)?|```$", "", result.stdout.strip(), flags=re.MULTILINE).strip()
+    try:
+        scored = json.loads(raw)
+    except json.JSONDecodeError:
+        print("[エラー] claudeの出力をJSONとして解釈できませんでした:")
+        print(raw)
+        return {}
+
+    return {item["date"]: item for item in scored if "date" in item}
+
+
+def compute_trend(entries: list[dict]) -> str:
+    """スコア推移から「改善傾向/悪化傾向/横ばい」を判定する。
+    3期以上あれば線形回帰の傾き、2期のみなら単純差分を使う。2期未満は「データ不足」。
+    """
+    scored = sorted((e for e in entries if "score" in e), key=lambda e: e["date"])
+    if len(scored) < 2:
+        return "データ不足"
+
+    if len(scored) >= 3:
+        n = len(scored)
+        xs = list(range(n))
+        ys = [e["score"] for e in scored]
+        mean_x, mean_y = sum(xs) / n, sum(ys) / n
+        num = sum((x - mean_x) * (y - mean_y) for x, y in zip(xs, ys))
+        den = sum((x - mean_x) ** 2 for x in xs)
+        slope = num / den if den else 0.0
+    else:
+        slope = scored[-1]["score"] - scored[-2]["score"]
+
+    if slope > 0.05:
+        return "改善傾向"
+    if slope < -0.05:
+        return "悪化傾向"
+    return "横ばい"
