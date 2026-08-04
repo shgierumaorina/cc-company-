@@ -187,6 +187,11 @@ def score_with_claude(entries: list[dict], timeout: int = 180) -> dict[str, dict
         return {}
 
     raw = re.sub(r"^```(json)?|```$", "", result.stdout.strip(), flags=re.MULTILINE).strip()
+    # 指示してもclaudeがJSON配列の前後に補足説明文を付け足すことがあるため、
+    # 配列部分(最初の[から最後の]まで)だけを抜き出してから解析する
+    array_match = re.search(r"\[.*\]", raw, re.DOTALL)
+    if array_match:
+        raw = array_match.group(0)
     try:
         scored = json.loads(raw)
     except json.JSONDecodeError:
