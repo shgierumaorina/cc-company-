@@ -1,6 +1,6 @@
 ---
 name: value-screener
-description: TDnetの決算短信を取得しclaude -pでセンチメントをスコアリング、バリュー指標(PER/PBR)と組み合わせてExcel出力する。出来高急増銘柄と連携して「今日の急増銘柄の決算センチメント」も確認できる。手動実行専用（stock-screener.pyの無人デイトレフローとは独立）
+description: TDnetの決算短信を取得しclaude -pでセンチメントをスコアリング、バリュー指標(PER/PBR)と組み合わせてExcel出力する。出来高急増銘柄・Discord通知済み底値圏/急騰銘柄と連携して「今日の候補銘柄の決算センチメント」も確認できる。手動実行専用（stock-screener.pyの無人デイトレフローとは独立）
 ---
 
 # バリュー株センチメントスクリーナー
@@ -37,6 +37,36 @@ cd "C:/Users/shige/Desktop/ClaudeCode/cc-company" && python scripts/value-screen
    cd "C:/Users/shige/Desktop/ClaudeCode/cc-company" && python scripts/value-screener.py --codes <抽出したコード一覧> --export-excel volsurge_value_screen_$(date +%Y%m%d).xlsx
    ```
 
+### 「底値圏」「急騰」「notified」「discord通知」等の指定があった場合
+
+`daily-picks.py` が実際にDiscordへ通知した銘柄（底値圏=bottom/higherlowモード、急騰=gap/closestrongモード）を
+再スコア評価してから、value-screenerで決算センチメントも確認する（3ステップ）。
+
+1. 通知済み銘柄の技術・バリュエーション再スコア評価を取得:
+   ```bash
+   cd "C:/Users/shige/Desktop/ClaudeCode/cc-company" && python scripts/notified-stock-score.py --days 5 --top-n 5 --min-occur 2
+   ```
+   - `.company/japan-stock/picks-log.tsv` に該当データが無い場合はそのまま「対象銘柄が見つかりません」と報告する
+   - ユーザーが期間・件数を指定した場合は `--days`（遡る営業日数）・`--top-n`（各モード上位何位まで対象か）・`--min-occur`（最低出現回数）を調整する
+   - 出力の「底値圏候補」「急騰候補」それぞれのブロックからコードを抽出する（`[コード] 銘柄名 score=X ...` の行）。この時点でRSI・BB・25日線乖離・出来高倍率による技術スコアと根拠（反発初動/過熱警戒など）がすでに得られている
+2. 抽出したコードをまとめて `--codes` に渡して実行:
+   ```bash
+   cd "C:/Users/shige/Desktop/ClaudeCode/cc-company" && python scripts/value-screener.py --codes <抽出したコード一覧> --export-excel notified_value_screen_$(date +%Y%m%d).xlsx
+   ```
+3. Excelのセンチメント・バリュー判定と、手順1で得た技術スコア・根拠（特に「⚠️過熱警戒」「⚠️既に底値圏を脱している」等のリスクフラグ）を突き合わせて総合評価する。結果をObsidian（`wiki/japan-stock.md`。無ければ新規作成し `wiki/index.md` の Domains にリンク追記）にまとめたいとユーザーが望む場合は `mcp__obsidian-vault__write_note` で追記する
+
+## Excel出力後のおすすめ表示
+
+`--export-excel` を伴う実行が完了したら、出力先Excelを読み込み、結果報告の最後に「おすすめ」を提示する。
+
+1. Excelを読み込む（例: `python -c "import openpyxl; ..."`）。列は
+   `コード, 会社名, PER, PBR, 株価, バリュー型, 決算開示日, 直近センチメント, 直近スコア, センチメント件数, トレンド判定, ...` の順。
+2. 「バリュー型」列が `True`（PER/PBRが `--per-max`/`--pbr-max` 以下）かつ「直近センチメント」が `positive` の銘柄を最優先候補として提示する。
+3. 該当が無い場合は、直近センチメントが `positive` な銘柄の中からPER/PBRが相対的に低いものを参考情報として提示し、「バリュー基準は満たしていない（割安ではない）」旨を明記する。
+4. 「トレンド判定」が「データ不足」の銘柄は、初回実行による参考値であることを必ず注記する。
+5. センチメントが `negative` の銘柄は見送り候補として触れてよいが、推奨はしない。
+6. 末尾に「これはPER/PBRと決算短信の文言トーンを組み合わせた機械的スコアリングであり、投資判断はご自身の判断で行ってください」旨を一言添える。
+
 ## 主なオプション（value-screener.py）
 
 | オプション | デフォルト | 説明 |
@@ -59,6 +89,7 @@ cd "C:/Users/shige/Desktop/ClaudeCode/cc-company" && python scripts/value-screen
 ## 動作確認済みの検証コマンド
 
 ```bash
-python -m py_compile scripts/value-screener.py
+python -m py_compile scripts/value-screener.py scripts/notified-stock-score.py
 ```
-exit 0 であること。実データでの動作確認は2026-08-04に実施済み（TDnet日別一覧・PDF抽出・claude -pスコアリング・Excel出力すべて実機テスト済み）。
+exit 0 であること。実データでの動作確認は2026-08-04（TDnet日別一覧・PDF抽出・claude -pスコアリング・Excel出力）、
+2026-08-09（notified-stock-score.pyによるpicks-log.tsv抽出・yfinance再スコア評価）にそれぞれ実施済み。
