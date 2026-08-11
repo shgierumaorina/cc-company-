@@ -1,0 +1,427 @@
+:root {
+  --color-bg: #132b27;
+  --color-panel: #1d3b35;
+  --color-panel-soft: #24463f;
+  --color-panel-border: #2c5148;
+
+  --color-accent: #2fb6c2;
+  --color-accent-dark: #24939d;
+  --color-flame: #e8552e;
+  --color-flame-dark: #c2431f;
+
+  --color-text: #eaf3f0;
+  --color-text-muted: #8fa9a2;
+
+  --font-display: var(--font-poppins), "Poppins", sans-serif;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+}
+
+button {
+  font-family: inherit;
+}
+
+.app-shell {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 40px 24px 64px;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.app-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.9rem;
+  letter-spacing: 0.02em;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.app-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 760px) {
+  .app-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Streak badge ---------- */
+
+.streak-badge {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  background: var(--color-panel-soft);
+  border: 1px solid var(--color-panel-border);
+  border-radius: 999px;
+  padding: 8px 18px;
+}
+
+.streak-flame {
+  font-size: 1.1rem;
+}
+
+.streak-count {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--color-flame);
+}
+
+.streak-label {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* ---------- Shared panel look ---------- */
+
+.calendar-panel,
+.diary-panel {
+  background: var(--color-panel);
+  color: var(--color-text);
+  border-radius: 18px;
+  border: 1px solid var(--color-panel-border);
+  padding: 22px;
+}
+
+.calendar-panel-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.calendar-panel-caption {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  color: var(--color-text-muted);
+}
+
+.view-toggle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--color-panel-border);
+  background: var(--color-panel-soft);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.view-toggle:hover {
+  background: var(--color-accent);
+}
+
+.view-toggle:active {
+  transform: scale(0.95);
+}
+
+/* ---------- Week strip ---------- */
+
+.week-strip {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.week-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 4px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: var(--color-panel-soft);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.week-day:hover {
+  border-color: var(--color-accent);
+}
+
+.week-day--selected {
+  background: var(--color-accent);
+  color: #08201d;
+}
+
+.week-day--today:not(.week-day--selected) {
+  border-color: var(--color-flame);
+}
+
+.week-day-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+}
+
+.week-day-num {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.week-day-flame {
+  font-size: 0.85rem;
+  min-height: 1.1em;
+}
+
+/* ---------- Month grid ---------- */
+
+.month-grid-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.month-grid-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.month-nav {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--color-panel-border);
+  background: var(--color-panel-soft);
+  color: var(--color-text);
+  font-size: 1.05rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.month-nav:hover {
+  background: var(--color-accent);
+  color: #08201d;
+}
+
+.month-grid-cells {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.month-grid-weekdays {
+  margin-bottom: 6px;
+}
+
+.month-weekday {
+  text-align: center;
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.06em;
+  padding-bottom: 4px;
+}
+
+.month-cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: var(--color-panel-soft);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.month-cell--empty {
+  background: transparent;
+  cursor: default;
+}
+
+.month-cell:not(.month-cell--empty):hover {
+  border-color: var(--color-accent);
+}
+
+.month-cell--selected {
+  background: var(--color-accent);
+  color: #08201d;
+}
+
+.month-cell--today:not(.month-cell--selected) {
+  border-color: var(--color-flame);
+}
+
+.month-daynum {
+  font-size: 0.85rem;
+}
+
+.month-flame {
+  font-size: 0.72rem;
+}
+
+/* ---------- Diary panel ---------- */
+
+.diary-heading {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  margin: 0 0 14px;
+}
+
+.diary-textarea,
+.diary-translation-textarea {
+  width: 100%;
+  resize: vertical;
+  border: 1px solid var(--color-panel-border);
+  border-radius: 12px;
+  background: var(--color-panel-soft);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  padding: 14px;
+}
+
+.diary-textarea {
+  min-height: 200px;
+}
+
+.diary-textarea:focus,
+.diary-translation-textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.diary-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.btn {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: opacity 0.15s ease, transform 0.1s ease, background 0.15s ease;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn:not(:disabled):active {
+  transform: translateY(1px);
+}
+
+.btn--pill {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 16px 24px;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: #08201d;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.02rem;
+}
+
+.btn--pill:not(:disabled):hover {
+  background: var(--color-accent-dark);
+}
+
+.btn--outline {
+  background: transparent;
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.btn--outline:not(:disabled):hover {
+  background: var(--color-accent);
+  color: #08201d;
+}
+
+.btn--flame {
+  background: transparent;
+  color: var(--color-flame);
+  border-color: var(--color-flame);
+}
+
+.btn--flame:not(:disabled):hover {
+  background: var(--color-flame);
+  color: #08201d;
+}
+
+.btn--small {
+  padding: 7px 14px;
+  font-size: 0.8rem;
+}
+
+.diary-error {
+  margin-top: 12px;
+  color: var(--color-flame);
+  font-size: 0.85rem;
+}
+
+.diary-translation {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--color-panel-border);
+}
+
+.diary-translation-label {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0 0 8px;
+}
+
+.diary-translation-textarea {
+  min-height: 130px;
+}
+
+.diary-translation-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
