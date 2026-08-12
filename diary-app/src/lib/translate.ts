@@ -33,6 +33,9 @@ async function translateChunk(chunk: string): Promise<string> {
   const url = new URL(MYMEMORY_ENDPOINT);
   url.searchParams.set("q", chunk);
   url.searchParams.set("langpair", "ja|en");
+  if (process.env.MYMEMORY_EMAIL) {
+    url.searchParams.set("de", process.env.MYMEMORY_EMAIL);
+  }
 
   const res = await fetch(url.toString());
   if (!res.ok) {
