@@ -1,13 +1,5 @@
-const MYMEMORY_ENDPOINT = "https://api.mymemory.translated.net/get";
-const MAX_CHUNK_BYTES = 480;
-
-interface MyMemoryResponse {
-  responseStatus: number | string;
-  responseDetails?: string;
-  responseData: {
-    translatedText: string;
-  };
-}
+const GOOGLE_TRANSLATE_ENDPOINT = "https://translate.googleapis.com/translate_a/single";
+const MAX_CHUNK_BYTES = 4000;
 
 function utf8ByteLength(str: string): number {
   return new TextEncoder().encode(str).length;
@@ -30,24 +22,27 @@ function splitIntoChunks(text: string): string[] {
 }
 
 async function translateChunk(chunk: string): Promise<string> {
-  const url = new URL(MYMEMORY_ENDPOINT);
+  const url = new URL(GOOGLE_TRANSLATE_ENDPOINT);
+  url.searchParams.set("client", "gtx");
+  url.searchParams.set("sl", "ja");
+  url.searchParams.set("tl", "en");
+  url.searchParams.set("dt", "t");
   url.searchParams.set("q", chunk);
-  url.searchParams.set("langpair", "ja|en");
-  if (process.env.MYMEMORY_EMAIL) {
-    url.searchParams.set("de", process.env.MYMEMORY_EMAIL);
-  }
 
   const res = await fetch(url.toString());
   if (!res.ok) {
-    throw new Error(`MyMemory API request failed with status ${res.status}`);
+    throw new Error(`Google Translate request failed with status ${res.status}`);
   }
 
-  const data = (await res.json()) as MyMemoryResponse;
-  if (Number(data.responseStatus) !== 200) {
-    throw new Error(data.responseDetails ?? "MyMemory translation failed");
+  const data = (await res.json()) as unknown;
+  const segments = Array.isArray(data) ? (data[0] as unknown) : undefined;
+  if (!Array.isArray(segments)) {
+    throw new Error("Unexpected Google Translate response shape");
   }
 
-  return data.responseData.translatedText;
+  return segments
+    .map((segment) => (Array.isArray(segment) ? String(segment[0] ?? "") : ""))
+    .join("");
 }
 
 export async function translateToEnglish(contentJa: string): Promise<string> {
