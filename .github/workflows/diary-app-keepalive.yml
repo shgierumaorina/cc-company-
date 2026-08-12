@@ -11,4 +11,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: diary-appにpingを送る
-        run: curl -fsS https://diary-app-aolf.onrender.com/ -o /dev/null
+        run: curl -fsS https://diary-app-aolf.onrender.com/api/health -o /dev/null
