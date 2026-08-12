@@ -1,14 +1,5 @@
 services:
   - type: web
-    name: mxnjpy-monitor
-    runtime: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn web_app:app --workers 1 --threads 2 --bind 0.0.0.0:$PORT
-    envVars:
-      - key: DISCORD_WEBHOOK_URL
-        sync: false
-
-  - type: web
     name: diary-app
     runtime: node
     plan: free
