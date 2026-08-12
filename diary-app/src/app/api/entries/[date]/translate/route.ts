@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getEntry, saveTranslation } from "@/lib/db";
-import { translateToEnglish } from "@/lib/anthropic";
+import { translateToEnglish } from "@/lib/translate";
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
