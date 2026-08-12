@@ -12,6 +12,6 @@ export async function GET(request: NextRequest) {
       { status: 400 }
     );
   }
-  const dates = listEntryDatesInRange(from, to);
+  const dates = await listEntryDatesInRange(from, to);
   return NextResponse.json({ dates });
 }

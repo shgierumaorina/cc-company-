@@ -11,7 +11,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
     return NextResponse.json({ error: "invalid date" }, { status: 400 });
   }
 
-  const entry = getEntry(date);
+  const entry = await getEntry(date);
   if (!entry) {
     return NextResponse.json({ error: "not found" }, { status: 404 });
   }
@@ -34,6 +34,6 @@ export async function PUT(request: NextRequest, { params }: Params) {
     );
   }
 
-  const updated = saveTranslation(date, contentEn);
+  const updated = await saveTranslation(date, contentEn);
   return NextResponse.json(updated);
 }

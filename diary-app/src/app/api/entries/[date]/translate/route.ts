@@ -12,14 +12,14 @@ export async function POST(_request: NextRequest, { params }: Params) {
     return NextResponse.json({ error: "invalid date" }, { status: 400 });
   }
 
-  const entry = getEntry(date);
+  const entry = await getEntry(date);
   if (!entry) {
     return NextResponse.json({ error: "not found" }, { status: 404 });
   }
 
   try {
     const contentEn = await translateToEnglish(entry.content_ja);
-    const updated = saveTranslation(date, contentEn);
+    const updated = await saveTranslation(date, contentEn);
     return NextResponse.json(updated);
   } catch (err) {
     const message = err instanceof Error ? err.message : "translation failed";

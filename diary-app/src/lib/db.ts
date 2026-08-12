@@ -1,24 +1,35 @@
-import Database from "better-sqlite3";
+import { createClient, type Client } from "@libsql/client";
 import fs from "fs";
 import path from "path";
 
 declare global {
-  var __diaryDb: Database.Database | undefined;
+  var __diaryDb: Client | undefined;
+  var __diaryDbReady: Promise<void> | undefined;
 }
 
-function getDb(): Database.Database {
+async function getDb(): Promise<Client> {
   if (globalThis.__diaryDb) {
+    await globalThis.__diaryDbReady;
     return globalThis.__diaryDb;
   }
 
-  const dataDir = process.env.DIARY_DB_DIR ?? path.join(process.cwd(), "data");
-  if (!fs.existsSync(/* turbopackIgnore: true */ dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
+  let url = process.env.TURSO_DATABASE_URL;
+  const authToken = process.env.TURSO_AUTH_TOKEN;
+
+  if (!url) {
+    const dataDir = path.join(process.cwd(), "data");
+    if (!fs.existsSync(/* turbopackIgnore: true */ dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+    url = `file:${path.join(dataDir, "diary.db")}`;
   }
 
-  const instance = new Database(path.join(dataDir, "diary.db"));
-  instance.pragma("journal_mode = WAL");
-  instance.exec(`
+  const client = createClient(
+    authToken ? { url, authToken } : { url }
+  );
+
+  globalThis.__diaryDb = client;
+  globalThis.__diaryDbReady = client.execute(`
     CREATE TABLE IF NOT EXISTS diary_entries (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       date TEXT NOT NULL UNIQUE,
@@ -26,10 +37,10 @@ function getDb(): Database.Database {
       content_en TEXT,
       updated_at TEXT NOT NULL
     );
-  `);
+  `).then(() => undefined);
 
-  globalThis.__diaryDb = instance;
-  return instance;
+  await globalThis.__diaryDbReady;
+  return client;
 }
 
 export interface DiaryEntry {
@@ -40,44 +51,64 @@ export interface DiaryEntry {
   updated_at: string;
 }
 
-export function getEntry(date: string): DiaryEntry | undefined {
-  return getDb()
-    .prepare("SELECT * FROM diary_entries WHERE date = ?")
-    .get(date) as DiaryEntry | undefined;
+function toEntry(row: Record<string, unknown>): DiaryEntry {
+  return {
+    id: Number(row.id),
+    date: String(row.date),
+    content_ja: String(row.content_ja),
+    content_en: row.content_en === null ? null : String(row.content_en),
+    updated_at: String(row.updated_at),
+  };
 }
 
-export function upsertEntry(date: string, contentJa: string): DiaryEntry {
+export async function getEntry(date: string): Promise<DiaryEntry | undefined> {
+  const db = await getDb();
+  const result = await db.execute({
+    sql: "SELECT * FROM diary_entries WHERE date = ?",
+    args: [date],
+  });
+  const row = result.rows[0];
+  return row ? toEntry(row as unknown as Record<string, unknown>) : undefined;
+}
+
+export async function upsertEntry(
+  date: string,
+  contentJa: string
+): Promise<DiaryEntry> {
+  const db = await getDb();
   const now = new Date().toISOString();
-  getDb()
-    .prepare(
-      `INSERT INTO diary_entries (date, content_ja, updated_at)
-       VALUES (@date, @content_ja, @updated_at)
-       ON CONFLICT(date) DO UPDATE SET content_ja = @content_ja, updated_at = @updated_at`
-    )
-    .run({ date, content_ja: contentJa, updated_at: now });
-  return getEntry(date)!;
+  await db.execute({
+    sql: `INSERT INTO diary_entries (date, content_ja, updated_at)
+          VALUES (?, ?, ?)
+          ON CONFLICT(date) DO UPDATE SET content_ja = excluded.content_ja, updated_at = excluded.updated_at`,
+    args: [date, contentJa, now],
+  });
+  return (await getEntry(date))!;
 }
 
-export function saveTranslation(
+export async function saveTranslation(
   date: string,
   contentEn: string
-): DiaryEntry | undefined {
+): Promise<DiaryEntry | undefined> {
+  const db = await getDb();
   const now = new Date().toISOString();
-  getDb()
-    .prepare(
-      "UPDATE diary_entries SET content_en = ?, updated_at = ? WHERE date = ?"
-    )
-    .run(contentEn, now, date);
+  await db.execute({
+    sql: "UPDATE diary_entries SET content_en = ?, updated_at = ? WHERE date = ?",
+    args: [contentEn, now, date],
+  });
   return getEntry(date);
 }
 
-export function listEntryDatesInRange(from: string, to: string): string[] {
-  const rows = getDb()
-    .prepare(
-      "SELECT date FROM diary_entries WHERE date BETWEEN ? AND ? ORDER BY date"
-    )
-    .all(from, to) as { date: string }[];
-  return rows.map((r) => r.date);
+export async function listEntryDatesInRange(
+  from: string,
+  to: string
+): Promise<string[]> {
+  const db = await getDb();
+  const result = await db.execute({
+    sql: "SELECT date FROM diary_entries WHERE date BETWEEN ? AND ? ORDER BY date",
+    args: [from, to],
+  });
+  return result.rows.map((r) => String(r.date));
 }
 
 function shiftDateKey(dateKey: string, deltaDays: number): string {
@@ -90,11 +121,10 @@ function shiftDateKey(dateKey: string, deltaDays: number): string {
   return `${yyyy}-${mm}-${dd}`;
 }
 
-export function computeStreak(todayKey: string): number {
-  const rows = getDb()
-    .prepare("SELECT date FROM diary_entries")
-    .all() as { date: string }[];
-  const dateSet = new Set(rows.map((r) => r.date));
+export async function computeStreak(todayKey: string): Promise<number> {
+  const db = await getDb();
+  const result = await db.execute("SELECT date FROM diary_entries");
+  const dateSet = new Set(result.rows.map((r) => String(r.date)));
   if (dateSet.size === 0) return 0;
 
   let cursor = dateSet.has(todayKey) ? todayKey : shiftDateKey(todayKey, -1);

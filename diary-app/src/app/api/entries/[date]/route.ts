@@ -10,7 +10,7 @@ export async function GET(_request: NextRequest, { params }: Params) {
   if (!DATE_RE.test(date)) {
     return NextResponse.json({ error: "invalid date" }, { status: 400 });
   }
-  const entry = getEntry(date);
+  const entry = await getEntry(date);
   if (!entry) {
     return NextResponse.json({ error: "not found" }, { status: 404 });
   }
@@ -41,6 +41,6 @@ export async function PUT(request: NextRequest, { params }: Params) {
     );
   }
 
-  const entry = upsertEntry(date, contentJa);
+  const entry = await upsertEntry(date, contentJa);
   return NextResponse.json(entry);
 }

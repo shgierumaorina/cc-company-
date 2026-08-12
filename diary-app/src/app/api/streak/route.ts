@@ -15,6 +15,6 @@ export async function GET(request: NextRequest) {
   const todayParam = request.nextUrl.searchParams.get("today");
   const today =
     todayParam && DATE_RE.test(todayParam) ? todayParam : serverTodayKey();
-  const streak = computeStreak(today);
+  const streak = await computeStreak(today);
   return NextResponse.json({ streak });
 }
