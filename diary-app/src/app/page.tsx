@@ -37,6 +37,7 @@ export default function Home() {
   const [saving, setSaving] = useState(false);
   const [translating, setTranslating] = useState(false);
   const [savingTranslation, setSavingTranslation] = useState(false);
+  const [savingMemo, setSavingMemo] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const fetchStreak = useCallback(() => {
@@ -192,6 +193,28 @@ export default function Home() {
     [selectedDate]
   );
 
+  const handleSaveMemo = useCallback(
+    async (category: Category, memo: string) => {
+      setSavingMemo(true);
+      setError(null);
+      try {
+        const res = await fetch(`/api/entries/${selectedDate}/memo`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ category, memo }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.error ?? "メモの保存に失敗しました");
+        setEntries((prev) => ({ ...prev, [category]: data as DiaryEntry }));
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "メモの保存に失敗しました");
+      } finally {
+        setSavingMemo(false);
+      }
+    },
+    [selectedDate]
+  );
+
   return (
     <main className="app-shell">
       <header className="app-header">
@@ -243,10 +266,12 @@ export default function Home() {
           saving={saving}
           translating={translating}
           savingTranslation={savingTranslation}
+          savingMemo={savingMemo}
           error={error}
           onSave={handleSave}
           onTranslate={handleTranslate}
           onSaveTranslation={handleSaveTranslation}
+          onSaveMemo={handleSaveMemo}
         />
       </div>
     </main>

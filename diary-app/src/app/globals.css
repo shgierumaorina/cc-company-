@@ -439,6 +439,17 @@ button {
   margin: 0 0 8px;
 }
 
+.diary-translation-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.diary-translation-header .diary-translation-label {
+  margin: 0;
+}
+
 .diary-translation-textarea {
   min-height: 130px;
 }
@@ -447,4 +458,11 @@ button {
   display: flex;
   gap: 8px;
   margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.diary-memo {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--color-panel-border);
 }

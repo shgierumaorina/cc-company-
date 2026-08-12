@@ -8,6 +8,13 @@ declare global {
   var __diaryDbReady: Promise<void> | undefined;
 }
 
+async function ensureMemoColumn(client: Client): Promise<void> {
+  const info = await client.execute(`PRAGMA table_info(diary_entries)`);
+  const hasMemo = info.rows.some((r) => String(r.name) === "memo");
+  if (hasMemo) return;
+  await client.execute(`ALTER TABLE diary_entries ADD COLUMN memo TEXT`);
+}
+
 async function migrateLegacyTable(client: Client): Promise<void> {
   const info = await client.execute(`PRAGMA table_info(diary_entries)`);
   if (info.rows.length === 0) return; // table doesn't exist yet
@@ -63,11 +70,13 @@ async function getDb(): Promise<Client> {
         category TEXT NOT NULL,
         content_ja TEXT NOT NULL,
         content_en TEXT,
+        memo TEXT,
         updated_at TEXT NOT NULL,
         UNIQUE(date, category)
       );
     `);
     await migrateLegacyTable(client);
+    await ensureMemoColumn(client);
   })();
 
   await globalThis.__diaryDbReady;
@@ -80,6 +89,7 @@ export interface DiaryEntry {
   category: Category;
   content_ja: string;
   content_en: string | null;
+  memo: string | null;
   updated_at: string;
 }
 
@@ -90,6 +100,7 @@ function toEntry(row: Record<string, unknown>): DiaryEntry {
     category: String(row.category) as Category,
     content_ja: String(row.content_ja),
     content_en: row.content_en === null ? null : String(row.content_en),
+    memo: row.memo === null || row.memo === undefined ? null : String(row.memo),
     updated_at: String(row.updated_at),
   };
 }
@@ -142,6 +153,20 @@ export async function saveTranslation(
   await db.execute({
     sql: "UPDATE diary_entries SET content_en = ?, updated_at = ? WHERE date = ? AND category = ?",
     args: [contentEn, now, date, category],
+  });
+  return getEntry(date, category);
+}
+
+export async function saveMemo(
+  date: string,
+  category: Category,
+  memo: string
+): Promise<DiaryEntry | undefined> {
+  const db = await getDb();
+  const now = new Date().toISOString();
+  await db.execute({
+    sql: "UPDATE diary_entries SET memo = ?, updated_at = ? WHERE date = ? AND category = ?",
+    args: [memo, now, date, category],
   });
   return getEntry(date, category);
 }

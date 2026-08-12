@@ -11,11 +11,15 @@ interface DiaryPanelProps {
   saving: boolean;
   translating: boolean;
   savingTranslation: boolean;
+  savingMemo: boolean;
   error: string | null;
   onSave: (category: Category, contentJa: string) => void;
   onTranslate: (category: Category) => void;
   onSaveTranslation: (category: Category, contentEn: string) => void;
+  onSaveMemo: (category: Category, memo: string) => void;
 }
+
+const GEMINI_URL = "https://gemini.google.com/app";
 
 function formatDateHeading(dateKey: string): string {
   const [y, m, d] = dateKey.split("-").map(Number);
@@ -42,6 +46,14 @@ function translationDraftsFrom(
   };
 }
 
+function memoDraftsFrom(entries: Record<Category, DiaryEntry | null>): Record<Category, string> {
+  return {
+    free: entries.free?.memo ?? "",
+    work: entries.work?.memo ?? "",
+    study: entries.study?.memo ?? "",
+  };
+}
+
 export default function DiaryPanel({
   selectedDate,
   entries,
@@ -49,10 +61,12 @@ export default function DiaryPanel({
   saving,
   translating,
   savingTranslation,
+  savingMemo,
   error,
   onSave,
   onTranslate,
   onSaveTranslation,
+  onSaveMemo,
 }: DiaryPanelProps) {
   const [activeTab, setActiveTab] = useState<Category>("free");
 
@@ -62,12 +76,17 @@ export default function DiaryPanel({
   const [translationDrafts, setTranslationDrafts] = useState<Record<Category, string>>(
     () => translationDraftsFrom(entries)
   );
+  const [memoDrafts, setMemoDrafts] = useState<Record<Category, string>>(
+    () => memoDraftsFrom(entries)
+  );
   const [speaking, setSpeaking] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   if (syncKey !== lastSyncKey) {
     setLastSyncKey(syncKey);
     setDrafts(draftsFrom(entries));
     setTranslationDrafts(translationDraftsFrom(entries));
+    setMemoDrafts(memoDraftsFrom(entries));
   }
 
   useEffect(() => {
@@ -81,9 +100,26 @@ export default function DiaryPanel({
   const entry = entries[activeTab];
   const draft = drafts[activeTab];
   const translationDraft = translationDrafts[activeTab];
+  const memoDraft = memoDrafts[activeTab];
   const isDirty = draft !== (entry?.content_ja ?? "");
   const translationIsDirty = translationDraft !== (entry?.content_en ?? "");
+  const memoIsDirty = memoDraft !== (entry?.memo ?? "");
   const hasTranslation = Boolean(entry?.content_en) || translationDraft.trim().length > 0;
+
+  const handleCopyTranslation = () => {
+    if (typeof window === "undefined" || !navigator.clipboard) return;
+    navigator.clipboard
+      .writeText(translationDraft)
+      .then(() => {
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 1500);
+      })
+      .catch(() => {});
+  };
+
+  const handleOpenGemini = () => {
+    window.open(GEMINI_URL, "_blank", "noopener,noreferrer");
+  };
 
   const handleToggleSpeak = () => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) {
@@ -109,6 +145,7 @@ export default function DiaryPanel({
       window.speechSynthesis.cancel();
       setSpeaking(false);
     }
+    setCopied(false);
     setActiveTab(category);
   };
 
@@ -165,7 +202,16 @@ export default function DiaryPanel({
 
       {hasTranslation && (
         <div className="diary-translation">
-          <h3 className="diary-translation-label">English</h3>
+          <div className="diary-translation-header">
+            <h3 className="diary-translation-label">English</h3>
+            <button
+              type="button"
+              className="btn btn--outline btn--small"
+              onClick={handleOpenGemini}
+            >
+              Gemini起動
+            </button>
+          </div>
           <textarea
             className="diary-translation-textarea"
             value={translationDraft}
@@ -195,6 +241,37 @@ export default function DiaryPanel({
             >
               {speaking ? "⏹ 停止" : "🔊 音読"}
             </button>
+            <button
+              type="button"
+              className="btn btn--outline btn--small"
+              disabled={!translationDraft.trim()}
+              onClick={handleCopyTranslation}
+            >
+              {copied ? "コピーしました" : "コピー"}
+            </button>
+          </div>
+
+          <div className="diary-memo">
+            <h3 className="diary-translation-label">メモ</h3>
+            <textarea
+              className="diary-translation-textarea"
+              value={memoDraft}
+              placeholder="メモを書く……"
+              onChange={(e) =>
+                setMemoDrafts((prev) => ({ ...prev, [activeTab]: e.target.value }))
+              }
+              rows={5}
+            />
+            <div className="diary-translation-actions">
+              <button
+                type="button"
+                className="btn btn--outline btn--small"
+                disabled={savingMemo || !memoIsDirty}
+                onClick={() => onSaveMemo(activeTab, memoDraft)}
+              >
+                {savingMemo ? "登録中…" : "登録"}
+              </button>
+            </div>
           </div>
         </div>
       )}
