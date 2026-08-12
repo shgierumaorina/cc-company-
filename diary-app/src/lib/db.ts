@@ -11,8 +11,8 @@ function getDb(): Database.Database {
     return globalThis.__diaryDb;
   }
 
-  const dataDir = path.join(process.cwd(), "data");
-  if (!fs.existsSync(dataDir)) {
+  const dataDir = process.env.DIARY_DB_DIR ?? path.join(process.cwd(), "data");
+  if (!fs.existsSync(/* turbopackIgnore: true */ dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
   }
 
