@@ -11,3 +11,5 @@ services:
         sync: false
       - key: TURSO_AUTH_TOKEN
         sync: false
+      - key: DEEPL_API_KEY
+        sync: false
