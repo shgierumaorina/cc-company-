@@ -7,3 +7,18 @@ services:
     envVars:
       - key: DISCORD_WEBHOOK_URL
         sync: false
+
+  - type: web
+    name: diary-app
+    runtime: node
+    plan: free
+    rootDir: diary-app
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: DIARY_DB_DIR
+        value: /var/data
+    disk:
+      name: diary-data
+      mountPath: /var/data
+      sizeGB: 1
