@@ -6,9 +6,16 @@ import MonthGrid from "@/components/MonthGrid";
 import StreakBadge from "@/components/StreakBadge";
 import DiaryPanel from "@/components/DiaryPanel";
 import type { DiaryEntry } from "@/lib/db";
+import type { Category } from "@/lib/categories";
 import { daysInMonth, getWeekDates, monthKey, pad2, toDateKey } from "@/lib/date";
 
 type ViewMode = "week" | "month";
+
+const EMPTY_ENTRIES: Record<Category, DiaryEntry | null> = {
+  free: null,
+  work: null,
+  study: null,
+};
 
 export default function Home() {
   const todayKey = useMemo(() => {
@@ -23,7 +30,7 @@ export default function Home() {
   const [selectedDate, setSelectedDate] = useState(todayKey);
 
   const [markedDates, setMarkedDates] = useState<Set<string>>(new Set());
-  const [entry, setEntry] = useState<DiaryEntry | null>(null);
+  const [entries, setEntries] = useState<Record<Category, DiaryEntry | null>>(EMPTY_ENTRIES);
   const [streak, setStreak] = useState(0);
 
   const [loadingEntry, setLoadingEntry] = useState(true);
@@ -69,12 +76,16 @@ export default function Home() {
     let cancelled = false;
     fetch(`/api/entries/${selectedDate}`)
       .then(async (res) => {
-        if (res.status === 404) return null;
         if (!res.ok) throw new Error("読み込みに失敗しました");
-        return (await res.json()) as DiaryEntry;
+        return (await res.json()) as { entries: DiaryEntry[] };
       })
       .then((data) => {
-        if (!cancelled) setEntry(data);
+        if (cancelled) return;
+        const byCategory: Record<Category, DiaryEntry | null> = { ...EMPTY_ENTRIES };
+        for (const item of data.entries) {
+          byCategory[item.category] = item;
+        }
+        setEntries(byCategory);
       })
       .catch(() => {
         if (!cancelled) setError("日記の読み込みに失敗しました");
@@ -114,18 +125,18 @@ export default function Home() {
   };
 
   const handleSave = useCallback(
-    async (contentJa: string) => {
+    async (category: Category, contentJa: string) => {
       setSaving(true);
       setError(null);
       try {
         const res = await fetch(`/api/entries/${selectedDate}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ content_ja: contentJa }),
+          body: JSON.stringify({ category, content_ja: contentJa }),
         });
         if (!res.ok) throw new Error("保存に失敗しました");
         const data = (await res.json()) as DiaryEntry;
-        setEntry(data);
+        setEntries((prev) => ({ ...prev, [category]: data }));
         setMarkedDates((prev) => new Set(prev).add(selectedDate));
         fetchStreak();
       } catch {
@@ -137,36 +148,41 @@ export default function Home() {
     [selectedDate, fetchStreak]
   );
 
-  const handleTranslate = useCallback(async () => {
-    setTranslating(true);
-    setError(null);
-    try {
-      const res = await fetch(`/api/entries/${selectedDate}/translate`, {
-        method: "POST",
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error ?? "翻訳に失敗しました");
-      setEntry(data as DiaryEntry);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "翻訳に失敗しました");
-    } finally {
-      setTranslating(false);
-    }
-  }, [selectedDate]);
+  const handleTranslate = useCallback(
+    async (category: Category) => {
+      setTranslating(true);
+      setError(null);
+      try {
+        const res = await fetch(`/api/entries/${selectedDate}/translate`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ category }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.error ?? "翻訳に失敗しました");
+        setEntries((prev) => ({ ...prev, [category]: data as DiaryEntry }));
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "翻訳に失敗しました");
+      } finally {
+        setTranslating(false);
+      }
+    },
+    [selectedDate]
+  );
 
   const handleSaveTranslation = useCallback(
-    async (contentEn: string) => {
+    async (category: Category, contentEn: string) => {
       setSavingTranslation(true);
       setError(null);
       try {
         const res = await fetch(`/api/entries/${selectedDate}/translation`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ content_en: contentEn }),
+          body: JSON.stringify({ category, content_en: contentEn }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data?.error ?? "翻訳の保存に失敗しました");
-        setEntry(data as DiaryEntry);
+        setEntries((prev) => ({ ...prev, [category]: data as DiaryEntry }));
       } catch (err) {
         setError(err instanceof Error ? err.message : "翻訳の保存に失敗しました");
       } finally {
@@ -222,7 +238,7 @@ export default function Home() {
         </div>
         <DiaryPanel
           selectedDate={selectedDate}
-          entry={entry}
+          entries={entries}
           loading={loadingEntry}
           saving={saving}
           translating={translating}

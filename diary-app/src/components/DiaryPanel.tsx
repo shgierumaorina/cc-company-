@@ -2,18 +2,19 @@
 
 import { useEffect, useState } from "react";
 import type { DiaryEntry } from "@/lib/db";
+import { CATEGORIES, CATEGORY_LABELS, type Category } from "@/lib/categories";
 
 interface DiaryPanelProps {
   selectedDate: string;
-  entry: DiaryEntry | null;
+  entries: Record<Category, DiaryEntry | null>;
   loading: boolean;
   saving: boolean;
   translating: boolean;
   savingTranslation: boolean;
   error: string | null;
-  onSave: (contentJa: string) => void;
-  onTranslate: () => void;
-  onSaveTranslation: (contentEn: string) => void;
+  onSave: (category: Category, contentJa: string) => void;
+  onTranslate: (category: Category) => void;
+  onSaveTranslation: (category: Category, contentEn: string) => void;
 }
 
 function formatDateHeading(dateKey: string): string {
@@ -23,9 +24,27 @@ function formatDateHeading(dateKey: string): string {
   return `${y}年${m}月${d}日（${weekday}）`;
 }
 
+function draftsFrom(entries: Record<Category, DiaryEntry | null>): Record<Category, string> {
+  return {
+    free: entries.free?.content_ja ?? "",
+    work: entries.work?.content_ja ?? "",
+    study: entries.study?.content_ja ?? "",
+  };
+}
+
+function translationDraftsFrom(
+  entries: Record<Category, DiaryEntry | null>
+): Record<Category, string> {
+  return {
+    free: entries.free?.content_en ?? "",
+    work: entries.work?.content_en ?? "",
+    study: entries.study?.content_en ?? "",
+  };
+}
+
 export default function DiaryPanel({
   selectedDate,
-  entry,
+  entries,
   loading,
   saving,
   translating,
@@ -35,18 +54,20 @@ export default function DiaryPanel({
   onTranslate,
   onSaveTranslation,
 }: DiaryPanelProps) {
-  const syncKey = `${selectedDate}:${entry?.updated_at ?? ""}`;
+  const [activeTab, setActiveTab] = useState<Category>("free");
+
+  const syncKey = `${selectedDate}:${CATEGORIES.map((c) => entries[c]?.updated_at ?? "").join(",")}`;
   const [lastSyncKey, setLastSyncKey] = useState(syncKey);
-  const [draft, setDraft] = useState(entry?.content_ja ?? "");
-  const [translationDraft, setTranslationDraft] = useState(
-    entry?.content_en ?? ""
+  const [drafts, setDrafts] = useState<Record<Category, string>>(() => draftsFrom(entries));
+  const [translationDrafts, setTranslationDrafts] = useState<Record<Category, string>>(
+    () => translationDraftsFrom(entries)
   );
   const [speaking, setSpeaking] = useState(false);
 
   if (syncKey !== lastSyncKey) {
     setLastSyncKey(syncKey);
-    setDraft(entry?.content_ja ?? "");
-    setTranslationDraft(entry?.content_en ?? "");
+    setDrafts(draftsFrom(entries));
+    setTranslationDrafts(translationDraftsFrom(entries));
   }
 
   useEffect(() => {
@@ -55,8 +76,11 @@ export default function DiaryPanel({
         window.speechSynthesis.cancel();
       }
     };
-  }, [syncKey]);
+  }, [syncKey, activeTab]);
 
+  const entry = entries[activeTab];
+  const draft = drafts[activeTab];
+  const translationDraft = translationDrafts[activeTab];
   const isDirty = draft !== (entry?.content_ja ?? "");
   const translationIsDirty = translationDraft !== (entry?.content_en ?? "");
   const hasTranslation = Boolean(entry?.content_en) || translationDraft.trim().length > 0;
@@ -79,15 +103,39 @@ export default function DiaryPanel({
     setSpeaking(true);
   };
 
+  const handleSelectTab = (category: Category) => {
+    if (category === activeTab) return;
+    if (speaking) {
+      window.speechSynthesis.cancel();
+      setSpeaking(false);
+    }
+    setActiveTab(category);
+  };
+
   return (
     <div className="diary-panel">
       <h2 className="diary-heading">{formatDateHeading(selectedDate)}</h2>
+
+      <div className="diary-tabs" role="tablist">
+        {CATEGORIES.map((category) => (
+          <button
+            key={category}
+            type="button"
+            role="tab"
+            aria-selected={activeTab === category}
+            className={`diary-tab${activeTab === category ? " diary-tab--active" : ""}`}
+            onClick={() => handleSelectTab(category)}
+          >
+            {CATEGORY_LABELS[category]}
+          </button>
+        ))}
+      </div>
 
       <textarea
         className="diary-textarea"
         value={draft}
         placeholder="今日のことを書く……"
-        onChange={(e) => setDraft(e.target.value)}
+        onChange={(e) => setDrafts((prev) => ({ ...prev, [activeTab]: e.target.value }))}
         disabled={loading}
         rows={9}
       />
@@ -96,9 +144,9 @@ export default function DiaryPanel({
         type="button"
         className="btn btn--pill"
         disabled={saving || !draft.trim() || !isDirty}
-        onClick={() => onSave(draft)}
+        onClick={() => onSave(activeTab, draft)}
       >
-        {saving ? "保存中…" : "自由に日記を書く"}
+        {saving ? "保存中…" : `${CATEGORY_LABELS[activeTab]}の日記を書く`}
       </button>
 
       <div className="diary-actions">
@@ -106,7 +154,7 @@ export default function DiaryPanel({
           type="button"
           className="btn btn--outline"
           disabled={!entry || translating || isDirty}
-          onClick={onTranslate}
+          onClick={() => onTranslate(activeTab)}
           title={isDirty ? "先に保存してください" : undefined}
         >
           {translating ? "翻訳中…" : "英語に変換"}
@@ -121,7 +169,9 @@ export default function DiaryPanel({
           <textarea
             className="diary-translation-textarea"
             value={translationDraft}
-            onChange={(e) => setTranslationDraft(e.target.value)}
+            onChange={(e) =>
+              setTranslationDrafts((prev) => ({ ...prev, [activeTab]: e.target.value }))
+            }
             rows={6}
           />
           <div className="diary-translation-actions">
@@ -133,7 +183,7 @@ export default function DiaryPanel({
                 !translationDraft.trim() ||
                 !translationIsDirty
               }
-              onClick={() => onSaveTranslation(translationDraft)}
+              onClick={() => onSaveTranslation(activeTab, translationDraft)}
             >
               {savingTranslation ? "保存中…" : "保存"}
             </button>

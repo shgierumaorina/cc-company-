@@ -294,6 +294,36 @@ button {
   margin: 0 0 14px;
 }
 
+.diary-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.diary-tab {
+  flex: 1;
+  padding: 9px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--color-panel-border);
+  background: var(--color-panel-soft);
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.diary-tab:hover {
+  border-color: var(--color-accent);
+}
+
+.diary-tab--active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #08201d;
+  font-weight: 700;
+}
+
 .diary-textarea,
 .diary-translation-textarea {
   width: 100%;
