@@ -60,16 +60,9 @@ button {
 }
 
 .app-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  display: flex;
+  flex-direction: column;
   gap: 24px;
-  align-items: start;
-}
-
-@media (max-width: 760px) {
-  .app-layout {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* ---------- Streak badge ---------- */
