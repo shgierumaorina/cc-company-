@@ -1,0 +1,49 @@
+# 優良銘柄・安値圏×出来高急増 通知ツール 設定ファイル
+# すべての閾値はここで調整する（コード側にマジックナンバーを埋め込まない）
+
+universe:
+  # 優良銘柄マスタ入りに必要な最低スコア（100点満点）
+  score_pass_threshold: 90
+  min_market_cap_oku_yen: 300      # 時価総額 300億円以上（流動性フィルタ）
+  min_roe: 8.0                     # ROE 8%以上で加点、10%以上で満点
+  roe_full_score: 10.0
+  min_equity_ratio: 40.0           # 自己資本比率 40%以上で満点、30%以上で部分点
+  equity_ratio_partial: 30.0
+  max_payout_ratio: 50.0           # 配当性向 50%以下で満点、70%以下で部分点
+  payout_ratio_partial: 70.0
+  # irbank.netへのアクセス間隔・キャッシュ
+  request_interval_sec: 2.0
+  cache_ttl_hours: 24
+
+signal:
+  low_price:
+    # 有効化するチェック（複数指定可）: ma_deviation / week52_low / drawdown
+    checks: ["ma_deviation", "week52_low"]
+    require: "any"                 # any=いずれか一つでも該当 / all=すべて該当(AND)
+    ma_deviation_pct: -5.0         # 25日/75日線からの下方乖離率がこれ以下
+    week52_low_upper_pct: 10.0     # 52週安値からの上昇率がこれ以内
+    drawdown_lookback_days: 60
+    drawdown_pct: -15.0            # 直近lookback_days日の高値からの下落率がこれ以下
+  volume_surge:
+    avg_period_days: 20            # 平均出来高の算出期間（当日を除く直近営業日数）
+    multiplier: 2.5                # 平均出来高の何倍で急増と判定するか
+    intraday_prorate: true         # ザラ場中は経過時間で按分補正する
+    min_elapsed_minutes: 30        # 寄り付き直後は誤検知しやすいため按分判定自体をスキップする下限
+
+market_hours:
+  sessions:
+    - ["09:00", "11:30"]
+    - ["12:30", "15:00"]
+
+notify:
+  cooldown_hours: 24                # 同一銘柄・同日内の重複通知を防止
+
+watch:
+  poll_interval_minutes: 15         # watch.py（常駐ループ）のチェック間隔
+
+obsidian:
+  enabled: true
+  vault_path: "C:/Users/shige/Documents/ObsidianVault"
+  # 通知1件ごとに wiki/log.md へ追記（新しいエントリを先頭に、vaultのCLAUDE.md規約通り）
+  # 優良銘柄マスタは rescreen.py 実行のたびに wiki/japan-stock.md へ日付セクションを追記（既存セクションは上書きしない）
+
