@@ -1,1 +1,5 @@
 .env
+.claude/settings.local.json
+jp_stock_alert/.cache/
+jp_stock_alert/notified_state.json
+jp_stock_alert/logs/
