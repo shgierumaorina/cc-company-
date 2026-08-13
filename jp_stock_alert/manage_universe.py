@@ -12,6 +12,8 @@ from pathlib import Path
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import universe_manager as um
+import config_loader
+import obsidian_writer
 
 
 def cmd_add(code: str) -> None:
@@ -30,16 +32,20 @@ def cmd_add(code: str) -> None:
         return
     um.save_watchlist(watchlist)
     print(f"[OK] {code} {name} を監視リストに追加しました")
+    obsidian_writer.record_watchlist_change(config_loader.load_config(), "add", code, name)
 
 
 def cmd_remove(code: str) -> None:
     watchlist = um.load_watchlist()
+    removed_entry = next((w for w in watchlist if w["code"] == code), None)
     watchlist, removed = um.remove_from_watchlist(watchlist, code)
     if not removed:
         print(f"[SKIP] {code} は監視リストにありません")
         return
     um.save_watchlist(watchlist)
     print(f"[OK] {code} を監視リストから削除しました")
+    name = removed_entry.get("name", "") if removed_entry else ""
+    obsidian_writer.record_watchlist_change(config_loader.load_config(), "remove", code, name)
 
 
 def cmd_list() -> None:

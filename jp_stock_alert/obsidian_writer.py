@@ -41,6 +41,35 @@ def _join_frontmatter(fm: dict, body: str) -> str:
     return f"---\n{yaml_text}\n---\n{body}"
 
 
+def _append_log_line(vault: Path, line: str) -> None:
+    """wiki/log.mdの「## ログ」見出し直下（先頭）に1行追記する共通処理。
+    呼び出し元(record_notification/record_watchlist_change)でtry/exceptするため、ここでは伝播させてよい。
+    """
+    now = datetime.now()
+    note_path = vault / LOG_NOTE
+    if note_path.exists():
+        fm, body = _split_frontmatter(note_path.read_text(encoding="utf-8"))
+    else:
+        fm, body = {}, "\n# Log\n\n## ログ\n"
+    if not fm:
+        # フロントマターが無い(新規ファイル、または既存ファイルが規約に反して欠落)場合は
+        # vaultのCLAUDE.md規約(type/status/created/tags必須)通りに補う
+        fm = {"type": "log", "status": "active", "created": now.strftime("%Y-%m-%d"), "tags": ["log"]}
+
+    fm["updated"] = now.strftime("%Y-%m-%d")
+
+    heading_marker = "## ログ\n"
+    idx = body.find(heading_marker)
+    if idx == -1:
+        body = body.rstrip() + "\n\n## ログ\n" + line + "\n"
+    else:
+        insert_at = idx + len(heading_marker)
+        body = body[:insert_at] + line + "\n" + body[insert_at:]
+
+    note_path.parent.mkdir(parents=True, exist_ok=True)
+    note_path.write_text(_join_frontmatter(fm, body), encoding="utf-8")
+
+
 def record_notification(cfg: dict, code: str, name: str, result: dict) -> None:
     """Discord通知1件をwiki/log.mdの先頭に追記する。
     vault未設定・書き込み失敗はもちろん、result/cfgの形が想定と違う場合の例外も含めて
@@ -68,31 +97,31 @@ def record_notification(cfg: dict, code: str, name: str, result: dict) -> None:
                 f"価格{result['price']:,.0f}円、出来高比{vs['ratio']}倍、{detail_str}）"
                 f" #jp_stock_alert")
 
-        note_path = vault / LOG_NOTE
-        if note_path.exists():
-            fm, body = _split_frontmatter(note_path.read_text(encoding="utf-8"))
-        else:
-            fm, body = {}, "\n# Log\n\n## ログ\n"
-        if not fm:
-            # フロントマターが無い(新規ファイル、または既存ファイルが規約に反して欠落)場合は
-            # vaultのCLAUDE.md規約(type/status/created/tags必須)通りに補う
-            fm = {"type": "log", "status": "active", "created": now.strftime("%Y-%m-%d"), "tags": ["log"]}
-
-        fm["updated"] = now.strftime("%Y-%m-%d")
-
-        heading_marker = "## ログ\n"
-        idx = body.find(heading_marker)
-        if idx == -1:
-            body = body.rstrip() + "\n\n## ログ\n" + line + "\n"
-        else:
-            insert_at = idx + len(heading_marker)
-            body = body[:insert_at] + line + "\n" + body[insert_at:]
-
-        note_path.parent.mkdir(parents=True, exist_ok=True)
-        note_path.write_text(_join_frontmatter(fm, body), encoding="utf-8")
+        _append_log_line(vault, line)
         print(f"[OK] ObsidianVault {LOG_NOTE} に通知記録を追記しました")
     except Exception as e:
         print(f"[警告] ObsidianVaultへの通知記録に失敗しました: {e}")
+
+
+def record_watchlist_change(cfg: dict, action: str, code: str, name: str) -> None:
+    """監視リスト(watchlist.json)への追加・削除1件をwiki/log.mdの先頭に追記する。
+    record_notificationと同じ形式・同じ失敗時の扱い（例外を伝播させずログのみ）。
+    """
+    try:
+        vault = _vault_path(cfg)
+        if vault is None:
+            return
+
+        now = datetime.now()
+        verb = "追加" if action == "add" else "削除"
+        name_part = f"{name}({code})" if name else code
+        line = (f"- {now.strftime('%Y-%m-%d %H:%M')}: [[japan-stock]] {name_part} を"
+                f"jp_stock_alert監視リストに{verb} #jp_stock_alert")
+
+        _append_log_line(vault, line)
+        print(f"[OK] ObsidianVault {LOG_NOTE} に監視リスト変更を追記しました")
+    except Exception as e:
+        print(f"[警告] ObsidianVaultへの監視リスト変更記録に失敗しました: {e}")
 
 
 def record_quality_stocks(cfg: dict, passed_entries: list[dict]) -> None:
