@@ -1,0 +1,5877 @@
+[
+  {
+    "code": "1332",
+    "name": "NISSUI CORPORATION",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "1332",
+      "roe_pct": 11.66,
+      "equity_ratio_pct": 39.05,
+      "market_cap_oku_yen": 3840.0,
+      "per": 13.16,
+      "dividend_yield_pct": 2.54,
+      "eps": 90.17,
+      "payout_ratio_pct": 33.4
+    },
+    "trend": {
+      "code": "1332",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:35"
+  },
+  {
+    "code": "1333",
+    "name": "UMIOS CORP",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "1333",
+      "roe_pct": 10.9,
+      "equity_ratio_pct": 31.71,
+      "market_cap_oku_yen": 1939.0,
+      "per": 12.77,
+      "dividend_yield_pct": 3.52,
+      "eps": 146.74,
+      "payout_ratio_pct": 45.0
+    },
+    "trend": {
+      "code": "1333",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:36"
+  },
+  {
+    "code": "1605",
+    "name": "INPEX CORPORATION",
+    "score": 65,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "1605",
+      "roe_pct": 8.3,
+      "equity_ratio_pct": 60.84,
+      "market_cap_oku_yen": 46802.0,
+      "per": 8.47,
+      "dividend_yield_pct": 3.01,
+      "eps": 330.82,
+      "payout_ratio_pct": 25.5
+    },
+    "trend": {
+      "code": "1605",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 10,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:37"
+  },
+  {
+    "code": "1721",
+    "name": "COMSYS HOLDINGS CORP",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "1721",
+      "roe_pct": 9.55,
+      "equity_ratio_pct": 71.77,
+      "market_cap_oku_yen": 6261.0,
+      "per": 16.14,
+      "dividend_yield_pct": 2.54,
+      "eps": 311.59,
+      "payout_ratio_pct": 41.0
+    },
+    "trend": {
+      "code": "1721",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:37"
+  },
+  {
+    "code": "1801",
+    "name": "TAISEI CORP",
+    "score": 77,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "1801",
+      "roe_pct": 21.86,
+      "equity_ratio_pct": 36.78,
+      "market_cap_oku_yen": 20944.0,
+      "per": 13.86,
+      "dividend_yield_pct": 2.96,
+      "eps": 1025.53,
+      "payout_ratio_pct": 41.0
+    },
+    "trend": {
+      "code": "1801",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:38"
+  },
+  {
+    "code": "1802",
+    "name": "OBAYASHI CORP",
+    "score": 87,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "1802",
+      "roe_pct": 17.46,
+      "equity_ratio_pct": 40.63,
+      "market_cap_oku_yen": 20941.0,
+      "per": 13.25,
+      "dividend_yield_pct": 3.11,
+      "eps": 249.42,
+      "payout_ratio_pct": 41.2
+    },
+    "trend": {
+      "code": "1802",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:39"
+  },
+  {
+    "code": "1803",
+    "name": "SHIMIZU CORP",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "1803",
+      "roe_pct": 16.16,
+      "equity_ratio_pct": 38.21,
+      "market_cap_oku_yen": 17071.0,
+      "per": 9.77,
+      "dividend_yield_pct": 3.23,
+      "eps": 186.68,
+      "payout_ratio_pct": 31.6
+    },
+    "trend": {
+      "code": "1803",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:40"
+  },
+  {
+    "code": "1808",
+    "name": "HASEKO CORPORATION",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "1808",
+      "roe_pct": 10.74,
+      "equity_ratio_pct": 42.12,
+      "market_cap_oku_yen": 8098.0,
+      "per": 11.11,
+      "dividend_yield_pct": 3.61,
+      "eps": 204.55,
+      "payout_ratio_pct": 40.1
+    },
+    "trend": {
+      "code": "1808",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:40"
+  },
+  {
+    "code": "1812",
+    "name": "KAJIMA CORP",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "1812",
+      "roe_pct": 16.06,
+      "equity_ratio_pct": 40.4,
+      "market_cap_oku_yen": 25734.0,
+      "per": 13.19,
+      "dividend_yield_pct": 3.0,
+      "eps": 379.81,
+      "payout_ratio_pct": 39.6
+    },
+    "trend": {
+      "code": "1812",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:41"
+  },
+  {
+    "code": "1925",
+    "name": "DAIWA HOUSE INDUSTRY CO",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "1925",
+      "roe_pct": 13.19,
+      "equity_ratio_pct": 33.77,
+      "market_cap_oku_yen": 30409.0,
+      "per": 10.73,
+      "dividend_yield_pct": 3.86,
+      "eps": 566.47,
+      "payout_ratio_pct": 41.4
+    },
+    "trend": {
+      "code": "1925",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:42"
+  },
+  {
+    "code": "1928",
+    "name": "SEKISUI HOUSE",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "1928",
+      "roe_pct": 12.69,
+      "equity_ratio_pct": 43.56,
+      "market_cap_oku_yen": 22291.0,
+      "per": 10.18,
+      "dividend_yield_pct": 4.24,
+      "eps": 358.07,
+      "payout_ratio_pct": 43.2
+    },
+    "trend": {
+      "code": "1928",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:43"
+  },
+  {
+    "code": "1963",
+    "name": "JGC HOLDINGS CORPORATION",
+    "score": 87,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "1963",
+      "roe_pct": 10.55,
+      "equity_ratio_pct": 50.03,
+      "market_cap_oku_yen": 5567.0,
+      "per": 11.98,
+      "dividend_yield_pct": 2.28,
+      "eps": 173.06,
+      "payout_ratio_pct": 27.3
+    },
+    "trend": {
+      "code": "1963",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:44"
+  },
+  {
+    "code": "2002",
+    "name": "NISSHIN SEIFUN GROUP INC",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "2002",
+      "roe_pct": 8.88,
+      "equity_ratio_pct": 61.41,
+      "market_cap_oku_yen": 5676.0,
+      "per": 13.72,
+      "dividend_yield_pct": 3.23,
+      "eps": 113.33,
+      "payout_ratio_pct": 44.3
+    },
+    "trend": {
+      "code": "2002",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:45"
+  },
+  {
+    "code": "2269",
+    "name": "MEIJI HOLDINGS CO LTD",
+    "score": 75,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "2269",
+      "roe_pct": 5.09,
+      "equity_ratio_pct": 60.07,
+      "market_cap_oku_yen": 11815.0,
+      "per": 18.16,
+      "dividend_yield_pct": 2.63,
+      "eps": 129.42,
+      "payout_ratio_pct": 47.8
+    },
+    "trend": {
+      "code": "2269",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:45"
+  },
+  {
+    "code": "2282",
+    "name": "NH FOODS LTD",
+    "score": 60,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "2282",
+      "roe_pct": 6.53,
+      "equity_ratio_pct": 52.36,
+      "market_cap_oku_yen": 5829.0,
+      "per": 15.29,
+      "dividend_yield_pct": 8.73,
+      "eps": 361.13,
+      "payout_ratio_pct": 133.5
+    },
+    "trend": {
+      "code": "2282",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:46"
+  },
+  {
+    "code": "2413",
+    "name": "M3 INC",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "2413",
+      "roe_pct": 12.03,
+      "equity_ratio_pct": 63.98,
+      "market_cap_oku_yen": 11083.0,
+      "per": 20.55,
+      "dividend_yield_pct": 1.35,
+      "eps": 72.53,
+      "payout_ratio_pct": 27.7
+    },
+    "trend": {
+      "code": "2413",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:47"
+  },
+  {
+    "code": "2432",
+    "name": "DENA CO LTD",
+    "score": 65,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "2432",
+      "roe_pct": 8.19,
+      "equity_ratio_pct": 71.59,
+      "market_cap_oku_yen": 3068.0,
+      "per": 12.35,
+      "dividend_yield_pct": 2.63,
+      "eps": 171.36,
+      "payout_ratio_pct": 32.5
+    },
+    "trend": {
+      "code": "2432",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:47"
+  },
+  {
+    "code": "2501",
+    "name": "SAPPORO BREWERIES LTD",
+    "score": 77,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "2501",
+      "roe_pct": 8.91,
+      "equity_ratio_pct": 58.92,
+      "market_cap_oku_yen": 8013.0,
+      "per": 2.68,
+      "dividend_yield_pct": 1.97,
+      "eps": 50.02,
+      "payout_ratio_pct": 5.3
+    },
+    "trend": {
+      "code": "2501",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:49"
+  },
+  {
+    "code": "2502",
+    "name": "ASAHI GROUP HLDGS",
+    "score": 50,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "2502",
+      "roe_pct": 4.05,
+      "equity_ratio_pct": 49.81,
+      "market_cap_oku_yen": 25537.0,
+      "per": 12.66,
+      "dividend_yield_pct": 3.39,
+      "eps": 81.29,
+      "payout_ratio_pct": 42.9
+    },
+    "trend": {
+      "code": "2502",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 10,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:49"
+  },
+  {
+    "code": "2503",
+    "name": "KIRIN HOLDINGS COMPANY LIMITED",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "2503",
+      "roe_pct": 11.46,
+      "equity_ratio_pct": 40.04,
+      "market_cap_oku_yen": 25034.0,
+      "per": 15.28,
+      "dividend_yield_pct": 2.48,
+      "eps": 182.13,
+      "payout_ratio_pct": 37.9
+    },
+    "trend": {
+      "code": "2503",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:50"
+  },
+  {
+    "code": "2531",
+    "name": "TAKARA HOLDINGS INC",
+    "score": 54,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "2531",
+      "roe_pct": 5.94,
+      "equity_ratio_pct": 50.47,
+      "market_cap_oku_yen": 4000.0,
+      "per": 32.87,
+      "dividend_yield_pct": 1.53,
+      "eps": 60.51,
+      "payout_ratio_pct": 50.3
+    },
+    "trend": {
+      "code": "2531",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 10,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:51"
+  },
+  {
+    "code": "2579",
+    "name": "COCA-COLA BOTTLERS JAPAN HLDGS ",
+    "score": 54,
+    "passed": false,
+    "data_incomplete": true,
+    "metrics": {
+      "code": "2579",
+      "roe_pct": null,
+      "equity_ratio_pct": 50.59,
+      "market_cap_oku_yen": 6739.0,
+      "per": 28.41,
+      "dividend_yield_pct": 1.83,
+      "eps": null,
+      "payout_ratio_pct": 52.0
+    },
+    "trend": {
+      "code": "2579",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:51"
+  },
+  {
+    "code": "2593",
+    "name": "ITO EN LTD",
+    "score": 62,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "2593",
+      "roe_pct": 2.04,
+      "equity_ratio_pct": 51.41,
+      "market_cap_oku_yen": 2542.0,
+      "per": 22.01,
+      "dividend_yield_pct": 1.74,
+      "eps": 41.11,
+      "payout_ratio_pct": 38.3
+    },
+    "trend": {
+      "code": "2593",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 10,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:52"
+  },
+  {
+    "code": "2602",
+    "name": "NISSHIN OILLIO GROUP LTD",
+    "score": 87,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "2602",
+      "roe_pct": 13.5,
+      "equity_ratio_pct": 46.92,
+      "market_cap_oku_yen": 1867.0,
+      "per": 14.95,
+      "dividend_yield_pct": 3.06,
+      "eps": 254.41,
+      "payout_ratio_pct": 45.7
+    },
+    "trend": {
+      "code": "2602",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:53"
+  },
+  {
+    "code": "2768",
+    "name": "SOJITZ CORPORATION",
+    "score": 80,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "2768",
+      "roe_pct": 9.5,
+      "equity_ratio_pct": 30.69,
+      "market_cap_oku_yen": 11747.0,
+      "per": 8.95,
+      "dividend_yield_pct": 3.22,
+      "eps": 494.95,
+      "payout_ratio_pct": 28.8
+    },
+    "trend": {
+      "code": "2768",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:54"
+  },
+  {
+    "code": "2801",
+    "name": "KIKKOMAN CORP",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "2801",
+      "roe_pct": 10.98,
+      "equity_ratio_pct": 75.91,
+      "market_cap_oku_yen": 17148.0,
+      "per": 26.74,
+      "dividend_yield_pct": 1.41,
+      "eps": 65.99,
+      "payout_ratio_pct": 37.7
+    },
+    "trend": {
+      "code": "2801",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:54"
+  },
+  {
+    "code": "2802",
+    "name": "AJINOMOTO CO INC",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "2802",
+      "roe_pct": 17.47,
+      "equity_ratio_pct": 39.92,
+      "market_cap_oku_yen": 53345.0,
+      "per": 42.17,
+      "dividend_yield_pct": 0.92,
+      "eps": 138.36,
+      "payout_ratio_pct": 38.8
+    },
+    "trend": {
+      "code": "2802",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 8,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:55"
+  },
+  {
+    "code": "2871",
+    "name": "NICHIREI CORP",
+    "score": 92,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "2871",
+      "roe_pct": 11.24,
+      "equity_ratio_pct": 49.06,
+      "market_cap_oku_yen": 5581.0,
+      "per": 26.68,
+      "dividend_yield_pct": 2.3,
+      "eps": 109.07,
+      "payout_ratio_pct": 61.4
+    },
+    "trend": {
+      "code": "2871",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 10,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:56"
+  },
+  {
+    "code": "2914",
+    "name": "JAPAN TOBACCO INC",
+    "score": 85,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "2914",
+      "roe_pct": 12.48,
+      "equity_ratio_pct": 50.68,
+      "market_cap_oku_yen": 140520.0,
+      "per": 19.37,
+      "dividend_yield_pct": 3.87,
+      "eps": 287.36,
+      "payout_ratio_pct": 75.0
+    },
+    "trend": {
+      "code": "2914",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:57"
+  },
+  {
+    "code": "3086",
+    "name": "J FRONT RETAILING CO LTD",
+    "score": 52,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "3086",
+      "roe_pct": 6.81,
+      "equity_ratio_pct": 35.71,
+      "market_cap_oku_yen": 8054.0,
+      "per": 25.16,
+      "dividend_yield_pct": 1.88,
+      "eps": 112.92,
+      "payout_ratio_pct": 47.3
+    },
+    "trend": {
+      "code": "3086",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:57"
+  },
+  {
+    "code": "3092",
+    "name": "ZOZO INC",
+    "score": 85,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "3092",
+      "roe_pct": 46.51,
+      "equity_ratio_pct": 55.13,
+      "market_cap_oku_yen": 10311.0,
+      "per": 20.51,
+      "dividend_yield_pct": 3.46,
+      "eps": 54.11,
+      "payout_ratio_pct": 71.0
+    },
+    "trend": {
+      "code": "3092",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:58"
+  },
+  {
+    "code": "3099",
+    "name": "ISETAN MITSUKOSHI HOLDINGS LTD",
+    "score": 87,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "3099",
+      "roe_pct": 13.28,
+      "equity_ratio_pct": 50.82,
+      "market_cap_oku_yen": 13510.0,
+      "per": 20.97,
+      "dividend_yield_pct": 2.18,
+      "eps": 213.96,
+      "payout_ratio_pct": 45.7
+    },
+    "trend": {
+      "code": "3099",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 10,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:06:59"
+  },
+  {
+    "code": "3289",
+    "name": "TOKYU FUDOSAN HOLDINGS CORPORAT",
+    "score": 80,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "3289",
+      "roe_pct": 12.26,
+      "equity_ratio_pct": 26.2,
+      "market_cap_oku_yen": 9436.0,
+      "per": 9.35,
+      "dividend_yield_pct": 3.81,
+      "eps": 135.45,
+      "payout_ratio_pct": 35.6
+    },
+    "trend": {
+      "code": "3289",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:00"
+  },
+  {
+    "code": "3382",
+    "name": "SEVEN & I HOLDINGS CO LTD",
+    "score": 77,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "3382",
+      "roe_pct": 11.11,
+      "equity_ratio_pct": 38.56,
+      "market_cap_oku_yen": 53679.0,
+      "per": 17.14,
+      "dividend_yield_pct": 2.91,
+      "eps": 118.81,
+      "payout_ratio_pct": 49.9
+    },
+    "trend": {
+      "code": "3382",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:01"
+  },
+  {
+    "code": "3401",
+    "name": "TEIJIN LTD",
+    "score": 62,
+    "passed": false,
+    "data_incomplete": true,
+    "metrics": {
+      "code": "3401",
+      "roe_pct": null,
+      "equity_ratio_pct": 43.69,
+      "market_cap_oku_yen": 3523.0,
+      "per": 7.63,
+      "dividend_yield_pct": 2.81,
+      "eps": null,
+      "payout_ratio_pct": 21.4
+    },
+    "trend": {
+      "code": "3401",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:02"
+  },
+  {
+    "code": "3402",
+    "name": "TORAY INDUSTRIES INC",
+    "score": 62,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "3402",
+      "roe_pct": 4.42,
+      "equity_ratio_pct": 52.04,
+      "market_cap_oku_yen": 20460.0,
+      "per": 22.01,
+      "dividend_yield_pct": 1.91,
+      "eps": 52.96,
+      "payout_ratio_pct": 42.0
+    },
+    "trend": {
+      "code": "3402",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:03"
+  },
+  {
+    "code": "3405",
+    "name": "KURARAY CO",
+    "score": 50,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "3405",
+      "roe_pct": 1.41,
+      "equity_ratio_pct": 55.93,
+      "market_cap_oku_yen": 5752.0,
+      "per": 14.34,
+      "dividend_yield_pct": 3.36,
+      "eps": 23.61,
+      "payout_ratio_pct": 48.2
+    },
+    "trend": {
+      "code": "3405",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:03"
+  },
+  {
+    "code": "3407",
+    "name": "ASAHI KASEI CORP",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "3407",
+      "roe_pct": 10.81,
+      "equity_ratio_pct": 47.5,
+      "market_cap_oku_yen": 23682.0,
+      "per": 14.59,
+      "dividend_yield_pct": 2.54,
+      "eps": 116.97,
+      "payout_ratio_pct": 37.1
+    },
+    "trend": {
+      "code": "3407",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:04"
+  },
+  {
+    "code": "3436",
+    "name": "SUMCO CORPORATION",
+    "score": 47,
+    "passed": false,
+    "data_incomplete": true,
+    "metrics": {
+      "code": "3436",
+      "roe_pct": null,
+      "equity_ratio_pct": 49.98,
+      "market_cap_oku_yen": 12770.0,
+      "per": null,
+      "dividend_yield_pct": 0.55,
+      "eps": null,
+      "payout_ratio_pct": null
+    },
+    "trend": {
+      "code": "3436",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 10,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:05"
+  },
+  {
+    "code": "3659",
+    "name": "NEXON CO LTD",
+    "score": 69,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "3659",
+      "roe_pct": 8.7,
+      "equity_ratio_pct": 76.62,
+      "market_cap_oku_yen": 20029.0,
+      "per": 21.72,
+      "dividend_yield_pct": 2.37,
+      "eps": 114.48,
+      "payout_ratio_pct": 51.5
+    },
+    "trend": {
+      "code": "3659",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 10,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:06"
+  },
+  {
+    "code": "3861",
+    "name": "OJI HOLDINGS CORP",
+    "score": 37,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "3861",
+      "roe_pct": 6.97,
+      "equity_ratio_pct": 39.76,
+      "market_cap_oku_yen": 7991.0,
+      "per": 21.21,
+      "dividend_yield_pct": 4.12,
+      "eps": 61.1,
+      "payout_ratio_pct": 87.4
+    },
+    "trend": {
+      "code": "3861",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:06"
+  },
+  {
+    "code": "3863",
+    "name": "NIPPON PAPER INDUSTRIES CO LTD",
+    "score": 55,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "3863",
+      "roe_pct": 3.45,
+      "equity_ratio_pct": 29.29,
+      "market_cap_oku_yen": 1614.0,
+      "per": 16.02,
+      "dividend_yield_pct": 1.08,
+      "eps": 101.69,
+      "payout_ratio_pct": 17.3
+    },
+    "trend": {
+      "code": "3863",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 10,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:07"
+  },
+  {
+    "code": "4004",
+    "name": "RESONAC HOLDINGS CORPORATION",
+    "score": 40,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4004",
+      "roe_pct": 4.15,
+      "equity_ratio_pct": 35.56,
+      "market_cap_oku_yen": 33256.0,
+      "per": 29.34,
+      "dividend_yield_pct": 0.37,
+      "eps": 160.49,
+      "payout_ratio_pct": 10.9
+    },
+    "trend": {
+      "code": "4004",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:08"
+  },
+  {
+    "code": "4005",
+    "name": "SUMITOMO CHEMICAL COMPANY",
+    "score": 40,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4005",
+      "roe_pct": 6.04,
+      "equity_ratio_pct": 30.52,
+      "market_cap_oku_yen": 8720.0,
+      "per": 12.41,
+      "dividend_yield_pct": 3.04,
+      "eps": 37.16,
+      "payout_ratio_pct": 37.7
+    },
+    "trend": {
+      "code": "4005",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:09"
+  },
+  {
+    "code": "4021",
+    "name": "NISSAN CHEMICAL CORPORATION",
+    "score": 92,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4021",
+      "roe_pct": 20.82,
+      "equity_ratio_pct": 69.79,
+      "market_cap_oku_yen": 10680.0,
+      "per": 20.54,
+      "dividend_yield_pct": 2.68,
+      "eps": 368.26,
+      "payout_ratio_pct": 55.0
+    },
+    "trend": {
+      "code": "4021",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:09"
+  },
+  {
+    "code": "4042",
+    "name": "TOSOH CORP",
+    "score": 42,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4042",
+      "roe_pct": 5.49,
+      "equity_ratio_pct": 57.26,
+      "market_cap_oku_yen": 8897.0,
+      "per": 14.28,
+      "dividend_yield_pct": 3.65,
+      "eps": 132.4,
+      "payout_ratio_pct": 52.1
+    },
+    "trend": {
+      "code": "4042",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:10"
+  },
+  {
+    "code": "4043",
+    "name": "TOKUYAMA CORP",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4043",
+      "roe_pct": 8.52,
+      "equity_ratio_pct": 49.66,
+      "market_cap_oku_yen": 2912.0,
+      "per": 11.18,
+      "dividend_yield_pct": 3.27,
+      "eps": 308.64,
+      "payout_ratio_pct": 36.6
+    },
+    "trend": {
+      "code": "4043",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:11"
+  },
+  {
+    "code": "4061",
+    "name": "DENKA COMPANY LIMITED",
+    "score": 54,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4061",
+      "roe_pct": 6.21,
+      "equity_ratio_pct": 44.33,
+      "market_cap_oku_yen": 3184.0,
+      "per": 19.37,
+      "dividend_yield_pct": 2.78,
+      "eps": 182.09,
+      "payout_ratio_pct": 53.8
+    },
+    "trend": {
+      "code": "4061",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:12"
+  },
+  {
+    "code": "4063",
+    "name": "SHIN-ETSU CHEMICAL CO",
+    "score": 87,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4063",
+      "roe_pct": 12.98,
+      "equity_ratio_pct": 78.98,
+      "market_cap_oku_yen": 127238.0,
+      "per": 22.71,
+      "dividend_yield_pct": 1.81,
+      "eps": 252.68,
+      "payout_ratio_pct": 41.1
+    },
+    "trend": {
+      "code": "4063",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:13"
+  },
+  {
+    "code": "4151",
+    "name": "KYOWA KIRIN CO LTD",
+    "score": 75,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4151",
+      "roe_pct": 7.5,
+      "equity_ratio_pct": 81.01,
+      "market_cap_oku_yen": 13624.0,
+      "per": 18.1,
+      "dividend_yield_pct": 2.7,
+      "eps": 128.07,
+      "payout_ratio_pct": 48.9
+    },
+    "trend": {
+      "code": "4151",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 7,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:14"
+  },
+  {
+    "code": "4183",
+    "name": "MITSUI CHEMICALS INC",
+    "score": 32,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4183",
+      "roe_pct": 3.98,
+      "equity_ratio_pct": 38.6,
+      "market_cap_oku_yen": 8957.0,
+      "per": 17.91,
+      "dividend_yield_pct": 3.36,
+      "eps": 91.62,
+      "payout_ratio_pct": 60.2
+    },
+    "trend": {
+      "code": "4183",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:15"
+  },
+  {
+    "code": "4188",
+    "name": "MITSUBISHI CHEMICAL GROUP CORP",
+    "score": 40,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4188",
+      "roe_pct": 0.67,
+      "equity_ratio_pct": 30.97,
+      "market_cap_oku_yen": 17975.0,
+      "per": 13.34,
+      "dividend_yield_pct": 2.57,
+      "eps": 8.63,
+      "payout_ratio_pct": 34.3
+    },
+    "trend": {
+      "code": "4188",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:15"
+  },
+  {
+    "code": "4208",
+    "name": "UBE CORPORATION",
+    "score": 54,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4208",
+      "roe_pct": 6.79,
+      "equity_ratio_pct": 46.72,
+      "market_cap_oku_yen": 3876.0,
+      "per": 14.47,
+      "dividend_yield_pct": 4.38,
+      "eps": 245.76,
+      "payout_ratio_pct": 63.4
+    },
+    "trend": {
+      "code": "4208",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:16"
+  },
+  {
+    "code": "4324",
+    "name": "DENTSU GROUP INC",
+    "score": 42,
+    "passed": false,
+    "data_incomplete": true,
+    "metrics": {
+      "code": "4324",
+      "roe_pct": null,
+      "equity_ratio_pct": 13.7,
+      "market_cap_oku_yen": 10100.0,
+      "per": 14.15,
+      "dividend_yield_pct": 0.0,
+      "eps": null,
+      "payout_ratio_pct": 0.0
+    },
+    "trend": {
+      "code": "4324",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:17"
+  },
+  {
+    "code": "4452",
+    "name": "KAO CORP",
+    "score": 92,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4452",
+      "roe_pct": 11.28,
+      "equity_ratio_pct": 58.97,
+      "market_cap_oku_yen": 33466.0,
+      "per": 24.72,
+      "dividend_yield_pct": 2.11,
+      "eps": 130.15,
+      "payout_ratio_pct": 52.2
+    },
+    "trend": {
+      "code": "4452",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:18"
+  },
+  {
+    "code": "4502",
+    "name": "TAKEDA PHARMACEUTICAL CO LTD",
+    "score": 47,
+    "passed": false,
+    "data_incomplete": true,
+    "metrics": {
+      "code": "4502",
+      "roe_pct": null,
+      "equity_ratio_pct": 48.25,
+      "market_cap_oku_yen": 88506.0,
+      "per": 52.95,
+      "dividend_yield_pct": 3.67,
+      "eps": null,
+      "payout_ratio_pct": 194.3
+    },
+    "trend": {
+      "code": "4502",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:19"
+  },
+  {
+    "code": "4503",
+    "name": "ASTELLAS PHARMA",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4503",
+      "roe_pct": 15.94,
+      "equity_ratio_pct": 52.61,
+      "market_cap_oku_yen": 42635.0,
+      "per": 14.08,
+      "dividend_yield_pct": 3.4,
+      "eps": 162.77,
+      "payout_ratio_pct": 47.9
+    },
+    "trend": {
+      "code": "4503",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:20"
+  },
+  {
+    "code": "4507",
+    "name": "SHIONOGI & CO",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4507",
+      "roe_pct": 12.14,
+      "equity_ratio_pct": 66.75,
+      "market_cap_oku_yen": 25096.0,
+      "per": 11.43,
+      "dividend_yield_pct": 2.69,
+      "eps": 241.1,
+      "payout_ratio_pct": 30.7
+    },
+    "trend": {
+      "code": "4507",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:20"
+  },
+  {
+    "code": "4519",
+    "name": "CHUGAI PHARMACEUTICAL CO",
+    "score": 92,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4519",
+      "roe_pct": 21.42,
+      "equity_ratio_pct": 82.76,
+      "market_cap_oku_yen": 120623.0,
+      "per": 27.23,
+      "dividend_yield_pct": 1.84,
+      "eps": 263.73,
+      "payout_ratio_pct": 50.1
+    },
+    "trend": {
+      "code": "4519",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 10,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:21"
+  },
+  {
+    "code": "4523",
+    "name": "EISAI CO LTD",
+    "score": 47,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4523",
+      "roe_pct": 4.29,
+      "equity_ratio_pct": 58.18,
+      "market_cap_oku_yen": 14547.0,
+      "per": 26.94,
+      "dividend_yield_pct": 3.21,
+      "eps": 136.78,
+      "payout_ratio_pct": 86.5
+    },
+    "trend": {
+      "code": "4523",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:22"
+  },
+  {
+    "code": "4543",
+    "name": "TERUMO CORP",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4543",
+      "roe_pct": 8.58,
+      "equity_ratio_pct": 70.01,
+      "market_cap_oku_yen": 38479.0,
+      "per": 19.85,
+      "dividend_yield_pct": 1.39,
+      "eps": 92.14,
+      "payout_ratio_pct": 27.6
+    },
+    "trend": {
+      "code": "4543",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:23"
+  },
+  {
+    "code": "4568",
+    "name": "DAIICHI SANKYO COMPANY LIMITED",
+    "score": 72,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4568",
+      "roe_pct": 16.61,
+      "equity_ratio_pct": 41.38,
+      "market_cap_oku_yen": 52254.0,
+      "per": 19.64,
+      "dividend_yield_pct": 3.57,
+      "eps": 151.17,
+      "payout_ratio_pct": 70.1
+    },
+    "trend": {
+      "code": "4568",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:23"
+  },
+  {
+    "code": "4578",
+    "name": "OTSUKA HLDGS CO LTD",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4578",
+      "roe_pct": 11.97,
+      "equity_ratio_pct": 73.7,
+      "market_cap_oku_yen": 66516.0,
+      "per": 18.13,
+      "dividend_yield_pct": 1.63,
+      "eps": 685.06,
+      "payout_ratio_pct": 29.6
+    },
+    "trend": {
+      "code": "4578",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:24"
+  },
+  {
+    "code": "4631",
+    "name": "DIC CORPORATION",
+    "score": 67,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4631",
+      "roe_pct": 8.11,
+      "equity_ratio_pct": 38.33,
+      "market_cap_oku_yen": 5358.0,
+      "per": 11.11,
+      "dividend_yield_pct": 2.66,
+      "eps": 341.71,
+      "payout_ratio_pct": 29.6
+    },
+    "trend": {
+      "code": "4631",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:25"
+  },
+  {
+    "code": "4661",
+    "name": "ORIENTAL LAND CO",
+    "score": 87,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4661",
+      "roe_pct": 11.47,
+      "equity_ratio_pct": 69.54,
+      "market_cap_oku_yen": 53707.0,
+      "per": 42.99,
+      "dividend_yield_pct": 0.54,
+      "eps": 74.34,
+      "payout_ratio_pct": 23.2
+    },
+    "trend": {
+      "code": "4661",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:26"
+  },
+  {
+    "code": "4689",
+    "name": "LY CORPORATION",
+    "score": 55,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4689",
+      "roe_pct": 6.46,
+      "equity_ratio_pct": 25.88,
+      "market_cap_oku_yen": 34423.0,
+      "per": 17.71,
+      "dividend_yield_pct": 2.2,
+      "eps": 27.97,
+      "payout_ratio_pct": 39.0
+    },
+    "trend": {
+      "code": "4689",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:26"
+  },
+  {
+    "code": "4704",
+    "name": "TREND MICRO INC",
+    "score": 72,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4704",
+      "roe_pct": 44.39,
+      "equity_ratio_pct": 27.8,
+      "market_cap_oku_yen": 9815.0,
+      "per": 24.7,
+      "dividend_yield_pct": 2.66,
+      "eps": 262.42,
+      "payout_ratio_pct": 65.7
+    },
+    "trend": {
+      "code": "4704",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:27"
+  },
+  {
+    "code": "4751",
+    "name": "CYBER AGENT",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4751",
+      "roe_pct": 19.04,
+      "equity_ratio_pct": 37.19,
+      "market_cap_oku_yen": 6328.0,
+      "per": 15.44,
+      "dividend_yield_pct": 1.6,
+      "eps": 62.52,
+      "payout_ratio_pct": 24.7
+    },
+    "trend": {
+      "code": "4751",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:28"
+  },
+  {
+    "code": "4755",
+    "name": "RAKUTEN GROUP INC",
+    "score": 27,
+    "passed": false,
+    "data_incomplete": true,
+    "metrics": {
+      "code": "4755",
+      "roe_pct": null,
+      "equity_ratio_pct": 2.94,
+      "market_cap_oku_yen": 16249.0,
+      "per": null,
+      "dividend_yield_pct": 0.0,
+      "eps": null,
+      "payout_ratio_pct": null
+    },
+    "trend": {
+      "code": "4755",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 10,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:28"
+  },
+  {
+    "code": "4901",
+    "name": "FUJIFILM HOLDINGS CORPORATION",
+    "score": 75,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4901",
+      "roe_pct": 7.21,
+      "equity_ratio_pct": 63.21,
+      "market_cap_oku_yen": 39468.0,
+      "per": 13.66,
+      "dividend_yield_pct": 2.35,
+      "eps": 229.91,
+      "payout_ratio_pct": 32.1
+    },
+    "trend": {
+      "code": "4901",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:29"
+  },
+  {
+    "code": "4902",
+    "name": "KONICA MINOLTA INC",
+    "score": 62,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "4902",
+      "roe_pct": 5.64,
+      "equity_ratio_pct": 44.78,
+      "market_cap_oku_yen": 3367.0,
+      "per": 11.63,
+      "dividend_yield_pct": 2.69,
+      "eps": 61.25,
+      "payout_ratio_pct": 31.3
+    },
+    "trend": {
+      "code": "4902",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:32"
+  },
+  {
+    "code": "5019",
+    "name": "IDEMITSU KOSAN CO.LTD",
+    "score": 59,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5019",
+      "roe_pct": 11.75,
+      "equity_ratio_pct": 27.19,
+      "market_cap_oku_yen": 15865.0,
+      "per": 20.73,
+      "dividend_yield_pct": 2.78,
+      "eps": 140.38,
+      "payout_ratio_pct": 57.6
+    },
+    "trend": {
+      "code": "5019",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:32"
+  },
+  {
+    "code": "5020",
+    "name": "ENEOS HOLDINGS INC",
+    "score": 52,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5020",
+      "roe_pct": 7.68,
+      "equity_ratio_pct": 38.93,
+      "market_cap_oku_yen": 34700.0,
+      "per": 8.23,
+      "dividend_yield_pct": 2.65,
+      "eps": 96.18,
+      "payout_ratio_pct": 21.8
+    },
+    "trend": {
+      "code": "5020",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:33"
+  },
+  {
+    "code": "5101",
+    "name": "YOKOHAMA RUBBER CO",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5101",
+      "roe_pct": 10.22,
+      "equity_ratio_pct": 51.79,
+      "market_cap_oku_yen": 12800.0,
+      "per": 10.37,
+      "dividend_yield_pct": 2.9,
+      "eps": 668.55,
+      "payout_ratio_pct": 30.1
+    },
+    "trend": {
+      "code": "5101",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:34"
+  },
+  {
+    "code": "5108",
+    "name": "BRIDGESTONE CORP",
+    "score": 65,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5108",
+      "roe_pct": 8.94,
+      "equity_ratio_pct": 64.06,
+      "market_cap_oku_yen": 56416.0,
+      "per": 15.48,
+      "dividend_yield_pct": 2.96,
+      "eps": 246.0,
+      "payout_ratio_pct": 45.8
+    },
+    "trend": {
+      "code": "5108",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:35"
+  },
+  {
+    "code": "5201",
+    "name": "AGC INC",
+    "score": 54,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5201",
+      "roe_pct": 4.66,
+      "equity_ratio_pct": 50.84,
+      "market_cap_oku_yen": 12828.0,
+      "per": 16.28,
+      "dividend_yield_pct": 3.56,
+      "eps": 326.2,
+      "payout_ratio_pct": 58.0
+    },
+    "trend": {
+      "code": "5201",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:36"
+  },
+  {
+    "code": "5202",
+    "name": "NIPPON SHEET GLASS CO",
+    "score": 55,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5202",
+      "roe_pct": 2.92,
+      "equity_ratio_pct": 13.43,
+      "market_cap_oku_yen": 684.0,
+      "per": 22.82,
+      "dividend_yield_pct": 0.0,
+      "eps": 44.51,
+      "payout_ratio_pct": 0.0
+    },
+    "trend": {
+      "code": "5202",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:36"
+  },
+  {
+    "code": "5214",
+    "name": "NIPPON ELECTRIC GLASS",
+    "score": 60,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5214",
+      "roe_pct": 7.11,
+      "equity_ratio_pct": 73.59,
+      "market_cap_oku_yen": 4497.0,
+      "per": 24.68,
+      "dividend_yield_pct": 3.18,
+      "eps": 382.32,
+      "payout_ratio_pct": 78.5
+    },
+    "trend": {
+      "code": "5214",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:38"
+  },
+  {
+    "code": "5232",
+    "name": "SUMITOMO OSAKA CEMENT CO",
+    "score": 75,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5232",
+      "roe_pct": 6.47,
+      "equity_ratio_pct": 53.97,
+      "market_cap_oku_yen": 1830.0,
+      "per": 18.09,
+      "dividend_yield_pct": 2.1,
+      "eps": 349.58,
+      "payout_ratio_pct": 38.0
+    },
+    "trend": {
+      "code": "5232",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:38"
+  },
+  {
+    "code": "5233",
+    "name": "TAIHEIYO CEMENT CORP",
+    "score": 62,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5233",
+      "roe_pct": 4.64,
+      "equity_ratio_pct": 42.39,
+      "market_cap_oku_yen": 4953.0,
+      "per": 7.25,
+      "dividend_yield_pct": 2.86,
+      "eps": 227.87,
+      "payout_ratio_pct": 20.7
+    },
+    "trend": {
+      "code": "5233",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:39"
+  },
+  {
+    "code": "5301",
+    "name": "TOKAI CARBON CO",
+    "score": 87,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5301",
+      "roe_pct": 10.96,
+      "equity_ratio_pct": 47.05,
+      "market_cap_oku_yen": 4091.0,
+      "per": 16.73,
+      "dividend_yield_pct": 2.2,
+      "eps": 94.04,
+      "payout_ratio_pct": 36.8
+    },
+    "trend": {
+      "code": "5301",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:40"
+  },
+  {
+    "code": "5332",
+    "name": "TOTO LTD",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5332",
+      "roe_pct": 9.69,
+      "equity_ratio_pct": 66.28,
+      "market_cap_oku_yen": 10906.0,
+      "per": 23.43,
+      "dividend_yield_pct": 1.83,
+      "eps": 243.01,
+      "payout_ratio_pct": 42.9
+    },
+    "trend": {
+      "code": "5332",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:40"
+  },
+  {
+    "code": "5333",
+    "name": "NGK CORP",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5333",
+      "roe_pct": 9.64,
+      "equity_ratio_pct": 66.17,
+      "market_cap_oku_yen": 16481.0,
+      "per": 19.77,
+      "dividend_yield_pct": 1.84,
+      "eps": 206.31,
+      "payout_ratio_pct": 36.4
+    },
+    "trend": {
+      "code": "5333",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:42"
+  },
+  {
+    "code": "5401",
+    "name": "NIPPON STEEL CORPORATION",
+    "score": 52,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5401",
+      "roe_pct": 0.31,
+      "equity_ratio_pct": 37.14,
+      "market_cap_oku_yen": 37131.0,
+      "per": 12.45,
+      "dividend_yield_pct": 3.47,
+      "eps": 3.28,
+      "payout_ratio_pct": 43.2
+    },
+    "trend": {
+      "code": "5401",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:43"
+  },
+  {
+    "code": "5406",
+    "name": "KOBE STEEL",
+    "score": 65,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5406",
+      "roe_pct": 8.82,
+      "equity_ratio_pct": 44.42,
+      "market_cap_oku_yen": 7930.0,
+      "per": 7.9,
+      "dividend_yield_pct": 4.0,
+      "eps": 237.81,
+      "payout_ratio_pct": 31.6
+    },
+    "trend": {
+      "code": "5406",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:43"
+  },
+  {
+    "code": "5411",
+    "name": "JFE HOLDINGS INC",
+    "score": 50,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5411",
+      "roe_pct": 2.68,
+      "equity_ratio_pct": 42.61,
+      "market_cap_oku_yen": 11656.0,
+      "per": 7.73,
+      "dividend_yield_pct": 4.39,
+      "eps": 110.3,
+      "payout_ratio_pct": 33.9
+    },
+    "trend": {
+      "code": "5411",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:44"
+  },
+  {
+    "code": "5541",
+    "name": "PACIFIC METALS CO",
+    "score": 47,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5541",
+      "roe_pct": 4.33,
+      "equity_ratio_pct": 92.93,
+      "market_cap_oku_yen": 519.0,
+      "per": 344.38,
+      "dividend_yield_pct": 4.9,
+      "eps": 146.01,
+      "payout_ratio_pct": 1687.5
+    },
+    "trend": {
+      "code": "5541",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:45"
+  },
+  {
+    "code": "5631",
+    "name": "JAPAN STEEL WORKS",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5631",
+      "roe_pct": 10.14,
+      "equity_ratio_pct": 50.44,
+      "market_cap_oku_yen": 5764.0,
+      "per": 30.01,
+      "dividend_yield_pct": 1.19,
+      "eps": 261.37,
+      "payout_ratio_pct": 35.7
+    },
+    "trend": {
+      "code": "5631",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:45"
+  },
+  {
+    "code": "5703",
+    "name": "NIPPON LIGHT METAL HLDGS CO LIM",
+    "score": 75,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5703",
+      "roe_pct": 6.94,
+      "equity_ratio_pct": 44.64,
+      "market_cap_oku_yen": 1825.0,
+      "per": 10.67,
+      "dividend_yield_pct": 3.74,
+      "eps": 253.24,
+      "payout_ratio_pct": 39.9
+    },
+    "trend": {
+      "code": "5703",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:46"
+  },
+  {
+    "code": "5706",
+    "name": "MITSUI KINZOKU CO LTD",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5706",
+      "roe_pct": 23.26,
+      "equity_ratio_pct": 58.68,
+      "market_cap_oku_yen": 16650.0,
+      "per": 20.74,
+      "dividend_yield_pct": 0.97,
+      "eps": 1595.45,
+      "payout_ratio_pct": 20.1
+    },
+    "trend": {
+      "code": "5706",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:47"
+  },
+  {
+    "code": "5707",
+    "name": "TOHO ZINC CO LTD",
+    "score": 52,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5707",
+      "roe_pct": 106.69,
+      "equity_ratio_pct": 13.76,
+      "market_cap_oku_yen": 136.0,
+      "per": 3.96,
+      "dividend_yield_pct": 0.0,
+      "eps": 161.88,
+      "payout_ratio_pct": 0.0
+    },
+    "trend": {
+      "code": "5707",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 10,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:48"
+  },
+  {
+    "code": "5711",
+    "name": "MITSUBISHI MATERIALS CORP",
+    "score": 42,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5711",
+      "roe_pct": 6.7,
+      "equity_ratio_pct": 26.37,
+      "market_cap_oku_yen": 6955.0,
+      "per": 4.94,
+      "dividend_yield_pct": 2.19,
+      "eps": 310.56,
+      "payout_ratio_pct": 10.8
+    },
+    "trend": {
+      "code": "5711",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:48"
+  },
+  {
+    "code": "5713",
+    "name": "SUMITOMO METAL MINING CO",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5713",
+      "roe_pct": 8.5,
+      "equity_ratio_pct": 58.72,
+      "market_cap_oku_yen": 28162.0,
+      "per": 12.04,
+      "dividend_yield_pct": 2.14,
+      "eps": 649.55,
+      "payout_ratio_pct": 25.8
+    },
+    "trend": {
+      "code": "5713",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:49"
+  },
+  {
+    "code": "5714",
+    "name": "DOWA HOLDINGS",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5714",
+      "roe_pct": 15.6,
+      "equity_ratio_pct": 57.47,
+      "market_cap_oku_yen": 5888.0,
+      "per": 9.86,
+      "dividend_yield_pct": 3.56,
+      "eps": 1049.82,
+      "payout_ratio_pct": 35.1
+    },
+    "trend": {
+      "code": "5714",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:50"
+  },
+  {
+    "code": "5715",
+    "name": "FURUKAWA CO",
+    "score": 92,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5715",
+      "roe_pct": 11.49,
+      "equity_ratio_pct": 54.05,
+      "market_cap_oku_yen": 1295.0,
+      "per": 25.31,
+      "dividend_yield_pct": 2.01,
+      "eps": 384.64,
+      "payout_ratio_pct": 50.9
+    },
+    "trend": {
+      "code": "5715",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 10,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:50"
+  },
+  {
+    "code": "5801",
+    "name": "FURUKAWA ELECTRIC CO",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5801",
+      "roe_pct": 20.36,
+      "equity_ratio_pct": 38.63,
+      "market_cap_oku_yen": 29835.0,
+      "per": 28.29,
+      "dividend_yield_pct": 0.52,
+      "eps": 103.02,
+      "payout_ratio_pct": 14.7
+    },
+    "trend": {
+      "code": "5801",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:51"
+  },
+  {
+    "code": "5802",
+    "name": "SUMITOMO ELECTRIC INDUSTRIES",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5802",
+      "roe_pct": 17.39,
+      "equity_ratio_pct": 55.12,
+      "market_cap_oku_yen": 72089.0,
+      "per": 20.83,
+      "dividend_yield_pct": 1.72,
+      "eps": 118.44,
+      "payout_ratio_pct": 35.8
+    },
+    "trend": {
+      "code": "5802",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:52"
+  },
+  {
+    "code": "5803",
+    "name": "FUJIKURA",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "5803",
+      "roe_pct": 34.73,
+      "equity_ratio_pct": 56.84,
+      "market_cap_oku_yen": 102960.0,
+      "per": 29.47,
+      "dividend_yield_pct": 0.66,
+      "eps": 94.93,
+      "payout_ratio_pct": 19.5
+    },
+    "trend": {
+      "code": "5803",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:53"
+  },
+  {
+    "code": "6098",
+    "name": "RECRUIT HOLDINGS CO LTD",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6098",
+      "roe_pct": 31.38,
+      "equity_ratio_pct": 60.99,
+      "market_cap_oku_yen": 245319.0,
+      "per": 30.72,
+      "dividend_yield_pct": 0.16,
+      "eps": 349.78,
+      "payout_ratio_pct": 4.9
+    },
+    "trend": {
+      "code": "6098",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:54"
+  },
+  {
+    "code": "6103",
+    "name": "OKUMA CORPORATION",
+    "score": 75,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6103",
+      "roe_pct": 6.28,
+      "equity_ratio_pct": 72.01,
+      "market_cap_oku_yen": 3652.0,
+      "per": 15.88,
+      "dividend_yield_pct": 2.22,
+      "eps": 208.02,
+      "payout_ratio_pct": 35.3
+    },
+    "trend": {
+      "code": "6103",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:54"
+  },
+  {
+    "code": "6113",
+    "name": "AMADA CO LTD",
+    "score": 54,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6113",
+      "roe_pct": 5.71,
+      "equity_ratio_pct": 70.09,
+      "market_cap_oku_yen": 8698.0,
+      "per": 25.01,
+      "dividend_yield_pct": 2.34,
+      "eps": 96.67,
+      "payout_ratio_pct": 58.5
+    },
+    "trend": {
+      "code": "6113",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:55"
+  },
+  {
+    "code": "6146",
+    "name": "DISCO CORPORATION",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6146",
+      "roe_pct": 23.83,
+      "equity_ratio_pct": 77.34,
+      "market_cap_oku_yen": 68301.0,
+      "per": 50.39,
+      "dividend_yield_pct": 0.8,
+      "eps": 1249.83,
+      "payout_ratio_pct": 40.3
+    },
+    "trend": {
+      "code": "6146",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 10,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:56"
+  },
+  {
+    "code": "6178",
+    "name": "JAPAN POST HLDGS CO LTD",
+    "score": 42,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6178",
+      "roe_pct": 4.29,
+      "equity_ratio_pct": 3.49,
+      "market_cap_oku_yen": 66329.0,
+      "per": 17.0,
+      "dividend_yield_pct": 2.54,
+      "eps": 129.14,
+      "payout_ratio_pct": 43.2
+    },
+    "trend": {
+      "code": "6178",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:57"
+  },
+  {
+    "code": "6273",
+    "name": "SMC CORP",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6273",
+      "roe_pct": 9.26,
+      "equity_ratio_pct": 90.97,
+      "market_cap_oku_yen": 50022.0,
+      "per": 28.96,
+      "dividend_yield_pct": 1.28,
+      "eps": 2640.04,
+      "payout_ratio_pct": 37.1
+    },
+    "trend": {
+      "code": "6273",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:57"
+  },
+  {
+    "code": "6301",
+    "name": "KOMATSU",
+    "score": 87,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6301",
+      "roe_pct": 10.72,
+      "equity_ratio_pct": 51.83,
+      "market_cap_oku_yen": 68370.0,
+      "per": 18.77,
+      "dividend_yield_pct": 2.59,
+      "eps": 414.13,
+      "payout_ratio_pct": 48.6
+    },
+    "trend": {
+      "code": "6301",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:58"
+  },
+  {
+    "code": "6302",
+    "name": "SUMITOMO HEAVY INDUSTRIES",
+    "score": 50,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6302",
+      "roe_pct": 6.22,
+      "equity_ratio_pct": 52.14,
+      "market_cap_oku_yen": 7366.0,
+      "per": 20.36,
+      "dividend_yield_pct": 2.42,
+      "eps": 252.92,
+      "payout_ratio_pct": 49.3
+    },
+    "trend": {
+      "code": "6302",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 10,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:59"
+  },
+  {
+    "code": "6305",
+    "name": "HITACHI CONSTRUCTION MACHINERY",
+    "score": 77,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6305",
+      "roe_pct": 8.13,
+      "equity_ratio_pct": 48.95,
+      "market_cap_oku_yen": 12227.0,
+      "per": 14.4,
+      "dividend_yield_pct": 3.34,
+      "eps": 344.06,
+      "payout_ratio_pct": 48.1
+    },
+    "trend": {
+      "code": "6305",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:07:59"
+  },
+  {
+    "code": "6326",
+    "name": "KUBOTA CORP",
+    "score": 62,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6326",
+      "roe_pct": 7.12,
+      "equity_ratio_pct": 43.98,
+      "market_cap_oku_yen": 30790.0,
+      "per": 10.54,
+      "dividend_yield_pct": 1.92,
+      "eps": 163.44,
+      "payout_ratio_pct": 20.2
+    },
+    "trend": {
+      "code": "6326",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:02"
+  },
+  {
+    "code": "6361",
+    "name": "EBARA CORP",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6361",
+      "roe_pct": 15.06,
+      "equity_ratio_pct": 46.77,
+      "market_cap_oku_yen": 26165.0,
+      "per": 26.26,
+      "dividend_yield_pct": 1.15,
+      "eps": 166.31,
+      "payout_ratio_pct": 30.2
+    },
+    "trend": {
+      "code": "6361",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 10,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:03"
+  },
+  {
+    "code": "6366",
+    "name": "CHIYODA CORP",
+    "score": 80,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6366",
+      "roe_pct": 68.34,
+      "equity_ratio_pct": 15.2,
+      "market_cap_oku_yen": 1840.0,
+      "per": 15.27,
+      "dividend_yield_pct": 0.0,
+      "eps": 326.71,
+      "payout_ratio_pct": 0.0
+    },
+    "trend": {
+      "code": "6366",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:04"
+  },
+  {
+    "code": "6367",
+    "name": "DAIKIN INDUSTRIES",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6367",
+      "roe_pct": 11.44,
+      "equity_ratio_pct": 50.18,
+      "market_cap_oku_yen": 65144.0,
+      "per": 22.25,
+      "dividend_yield_pct": 1.62,
+      "eps": 939.92,
+      "payout_ratio_pct": 36.0
+    },
+    "trend": {
+      "code": "6367",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:04"
+  },
+  {
+    "code": "6370",
+    "name": "KURITA WATER INDUSTRIES",
+    "score": 62,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6370",
+      "roe_pct": 4.68,
+      "equity_ratio_pct": 60.08,
+      "market_cap_oku_yen": 9914.0,
+      "per": 18.2,
+      "dividend_yield_pct": 1.57,
+      "eps": 145.33,
+      "payout_ratio_pct": 28.6
+    },
+    "trend": {
+      "code": "6370",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:05"
+  },
+  {
+    "code": "6383",
+    "name": "DAIFUKU CO LTD",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6383",
+      "roe_pct": 19.4,
+      "equity_ratio_pct": 62.46,
+      "market_cap_oku_yen": 23511.0,
+      "per": 26.64,
+      "dividend_yield_pct": 1.45,
+      "eps": 212.39,
+      "payout_ratio_pct": 38.6
+    },
+    "trend": {
+      "code": "6383",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 10,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:06"
+  },
+  {
+    "code": "6471",
+    "name": "NSK",
+    "score": 67,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6471",
+      "roe_pct": 3.4,
+      "equity_ratio_pct": 52.84,
+      "market_cap_oku_yen": 5885.0,
+      "per": 19.86,
+      "dividend_yield_pct": 2.89,
+      "eps": 46.75,
+      "payout_ratio_pct": 57.4
+    },
+    "trend": {
+      "code": "6471",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:07"
+  },
+  {
+    "code": "6472",
+    "name": "NTN CORP",
+    "score": 57,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6472",
+      "roe_pct": 6.51,
+      "equity_ratio_pct": 34.59,
+      "market_cap_oku_yen": 2318.0,
+      "per": 15.38,
+      "dividend_yield_pct": 3.35,
+      "eps": 23.4,
+      "payout_ratio_pct": 51.5
+    },
+    "trend": {
+      "code": "6472",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:07"
+  },
+  {
+    "code": "6473",
+    "name": "JTEKT CORPORATION",
+    "score": 62,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6473",
+      "roe_pct": 1.52,
+      "equity_ratio_pct": 50.45,
+      "market_cap_oku_yen": 6760.0,
+      "per": 13.51,
+      "dividend_yield_pct": 3.3,
+      "eps": 37.62,
+      "payout_ratio_pct": 44.6
+    },
+    "trend": {
+      "code": "6473",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:08"
+  },
+  {
+    "code": "6479",
+    "name": "MINEBEA MITSUMI INC",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6479",
+      "roe_pct": 11.02,
+      "equity_ratio_pct": 49.21,
+      "market_cap_oku_yen": 16028.0,
+      "per": 17.32,
+      "dividend_yield_pct": 1.6,
+      "eps": 246.6,
+      "payout_ratio_pct": 27.7
+    },
+    "trend": {
+      "code": "6479",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:09"
+  },
+  {
+    "code": "6501",
+    "name": "HITACHI",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6501",
+      "roe_pct": 12.22,
+      "equity_ratio_pct": 43.7,
+      "market_cap_oku_yen": 257120.0,
+      "per": 28.16,
+      "dividend_yield_pct": 0.88,
+      "eps": 176.76,
+      "payout_ratio_pct": 24.8
+    },
+    "trend": {
+      "code": "6501",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:10"
+  },
+  {
+    "code": "6503",
+    "name": "MITSUBISHI ELECTRIC CORP",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6503",
+      "roe_pct": 9.09,
+      "equity_ratio_pct": 63.07,
+      "market_cap_oku_yen": 124509.0,
+      "per": 24.36,
+      "dividend_yield_pct": 1.02,
+      "eps": 198.31,
+      "payout_ratio_pct": 24.8
+    },
+    "trend": {
+      "code": "6503",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:10"
+  },
+  {
+    "code": "6504",
+    "name": "FUJI ELECTRIC CO. LTD.",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6504",
+      "roe_pct": 14.55,
+      "equity_ratio_pct": 58.24,
+      "market_cap_oku_yen": 21633.0,
+      "per": 18.97,
+      "dividend_yield_pct": 1.38,
+      "eps": 665.17,
+      "payout_ratio_pct": 26.2
+    },
+    "trend": {
+      "code": "6504",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:11"
+  },
+  {
+    "code": "6506",
+    "name": "YASKAWA ELECTRIC CORP",
+    "score": 62,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6506",
+      "roe_pct": 7.29,
+      "equity_ratio_pct": 58.83,
+      "market_cap_oku_yen": 14545.0,
+      "per": 30.1,
+      "dividend_yield_pct": 1.32,
+      "eps": 135.87,
+      "payout_ratio_pct": 39.7
+    },
+    "trend": {
+      "code": "6506",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 10,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:12"
+  },
+  {
+    "code": "6526",
+    "name": "SOCIONEXT INC",
+    "score": 47,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6526",
+      "roe_pct": 6.7,
+      "equity_ratio_pct": 74.1,
+      "market_cap_oku_yen": 3534.0,
+      "per": 34.45,
+      "dividend_yield_pct": 2.55,
+      "eps": 49.74,
+      "payout_ratio_pct": 87.8
+    },
+    "trend": {
+      "code": "6526",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 5,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:12"
+  },
+  {
+    "code": "6594",
+    "name": "NIDEC CORPORATION",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6594",
+      "roe_pct": 9.56,
+      "equity_ratio_pct": 50.42,
+      "market_cap_oku_yen": 32604.0,
+      "per": 15.67,
+      "dividend_yield_pct": 0.82,
+      "eps": 142.88,
+      "payout_ratio_pct": 12.8
+    },
+    "trend": {
+      "code": "6594",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 10,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:13"
+  },
+  {
+    "code": "6645",
+    "name": "OMRON CORP",
+    "score": 54,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6645",
+      "roe_pct": 3.47,
+      "equity_ratio_pct": 60.12,
+      "market_cap_oku_yen": 14127.0,
+      "per": 33.26,
+      "dividend_yield_pct": 1.52,
+      "eps": 144.8,
+      "payout_ratio_pct": 50.6
+    },
+    "trend": {
+      "code": "6645",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:14"
+  },
+  {
+    "code": "6674",
+    "name": "GS YUASA CORP",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6674",
+      "roe_pct": 13.41,
+      "equity_ratio_pct": 52.48,
+      "market_cap_oku_yen": 5544.0,
+      "per": 14.02,
+      "dividend_yield_pct": 1.78,
+      "eps": 417.32,
+      "payout_ratio_pct": 25.0
+    },
+    "trend": {
+      "code": "6674",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:15"
+  },
+  {
+    "code": "6701",
+    "name": "NEC CORP",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6701",
+      "roe_pct": 12.3,
+      "equity_ratio_pct": 49.57,
+      "market_cap_oku_yen": 67025.0,
+      "per": 24.11,
+      "dividend_yield_pct": 0.81,
+      "eps": 202.95,
+      "payout_ratio_pct": 19.5
+    },
+    "trend": {
+      "code": "6701",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:15"
+  },
+  {
+    "code": "6702",
+    "name": "FUJITSU",
+    "score": 87,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6702",
+      "roe_pct": 22.15,
+      "equity_ratio_pct": 61.52,
+      "market_cap_oku_yen": 64389.0,
+      "per": 20.71,
+      "dividend_yield_pct": 1.49,
+      "eps": 254.83,
+      "payout_ratio_pct": 30.9
+    },
+    "trend": {
+      "code": "6702",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:16"
+  },
+  {
+    "code": "6703",
+    "name": "OKI ELECTRIC INDUSTRY CO",
+    "score": 87,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6703",
+      "roe_pct": 13.17,
+      "equity_ratio_pct": 41.4,
+      "market_cap_oku_yen": 2441.0,
+      "per": 13.49,
+      "dividend_yield_pct": 2.32,
+      "eps": 247.98,
+      "payout_ratio_pct": 31.3
+    },
+    "trend": {
+      "code": "6703",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:17"
+  },
+  {
+    "code": "6724",
+    "name": "SEIKO EPSON CORP",
+    "score": 62,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6724",
+      "roe_pct": 2.13,
+      "equity_ratio_pct": 54.75,
+      "market_cap_oku_yen": 11689.0,
+      "per": 14.53,
+      "dividend_yield_pct": 2.56,
+      "eps": 56.81,
+      "payout_ratio_pct": 37.2
+    },
+    "trend": {
+      "code": "6724",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:18"
+  },
+  {
+    "code": "6752",
+    "name": "PANASONIC HOLDINGS CORP",
+    "score": 50,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6752",
+      "roe_pct": 3.64,
+      "equity_ratio_pct": 51.84,
+      "market_cap_oku_yen": 112276.0,
+      "per": 23.73,
+      "dividend_yield_pct": 1.18,
+      "eps": 81.19,
+      "payout_ratio_pct": 28.0
+    },
+    "trend": {
+      "code": "6752",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:18"
+  },
+  {
+    "code": "6753",
+    "name": "SHARP CORP",
+    "score": 67,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6753",
+      "roe_pct": 36.02,
+      "equity_ratio_pct": 20.16,
+      "market_cap_oku_yen": 4286.0,
+      "per": 17.12,
+      "dividend_yield_pct": 0.0,
+      "eps": 73.05,
+      "payout_ratio_pct": 0.0
+    },
+    "trend": {
+      "code": "6753",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:19"
+  },
+  {
+    "code": "6754",
+    "name": "ANRITSU CORP",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6754",
+      "roe_pct": 8.8,
+      "equity_ratio_pct": 75.81,
+      "market_cap_oku_yen": 4877.0,
+      "per": 30.63,
+      "dividend_yield_pct": 1.39,
+      "eps": 91.19,
+      "payout_ratio_pct": 42.6
+    },
+    "trend": {
+      "code": "6754",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:20"
+  },
+  {
+    "code": "6758",
+    "name": "SONY GROUP CORPORATION",
+    "score": 62,
+    "passed": false,
+    "data_incomplete": true,
+    "metrics": {
+      "code": "6758",
+      "roe_pct": null,
+      "equity_ratio_pct": 52.15,
+      "market_cap_oku_yen": 224415.0,
+      "per": 18.26,
+      "dividend_yield_pct": 0.93,
+      "eps": null,
+      "payout_ratio_pct": 17.0
+    },
+    "trend": {
+      "code": "6758",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:21"
+  },
+  {
+    "code": "6762",
+    "name": "TDK CORP",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6762",
+      "roe_pct": 8.95,
+      "equity_ratio_pct": 48.39,
+      "market_cap_oku_yen": 60531.0,
+      "per": 26.27,
+      "dividend_yield_pct": 1.28,
+      "eps": 103.09,
+      "payout_ratio_pct": 33.6
+    },
+    "trend": {
+      "code": "6762",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:21"
+  },
+  {
+    "code": "6770",
+    "name": "ALPS ALPINE CO LTD",
+    "score": 75,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6770",
+      "roe_pct": 7.82,
+      "equity_ratio_pct": 55.93,
+      "market_cap_oku_yen": 4553.0,
+      "per": 14.23,
+      "dividend_yield_pct": 2.93,
+      "eps": 134.76,
+      "payout_ratio_pct": 41.7
+    },
+    "trend": {
+      "code": "6770",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:22"
+  },
+  {
+    "code": "6841",
+    "name": "YOKOGAWA ELECTRIC CORP",
+    "score": 87,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6841",
+      "roe_pct": 13.01,
+      "equity_ratio_pct": 65.42,
+      "market_cap_oku_yen": 14076.0,
+      "per": 23.44,
+      "dividend_yield_pct": 1.68,
+      "eps": 227.72,
+      "payout_ratio_pct": 39.4
+    },
+    "trend": {
+      "code": "6841",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:23"
+  },
+  {
+    "code": "6857",
+    "name": "ADVANTEST CORP",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6857",
+      "roe_pct": 47.17,
+      "equity_ratio_pct": 68.84,
+      "market_cap_oku_yen": 252906.0,
+      "per": 37.9,
+      "dividend_yield_pct": 0.17,
+      "eps": 515.15,
+      "payout_ratio_pct": 6.4
+    },
+    "trend": {
+      "code": "6857",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:26"
+  },
+  {
+    "code": "6861",
+    "name": "KEYENCE CORP",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6861",
+      "roe_pct": 13.04,
+      "equity_ratio_pct": 95.27,
+      "market_cap_oku_yen": 212077.0,
+      "per": 47.5,
+      "dividend_yield_pct": 0.63,
+      "eps": 1835.62,
+      "payout_ratio_pct": 29.9
+    },
+    "trend": {
+      "code": "6861",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 11,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:27"
+  },
+  {
+    "code": "6902",
+    "name": "DENSO CORP",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6902",
+      "roe_pct": 8.08,
+      "equity_ratio_pct": 58.13,
+      "market_cap_oku_yen": 56502.0,
+      "per": 12.74,
+      "dividend_yield_pct": 3.81,
+      "eps": 162.96,
+      "payout_ratio_pct": 48.5
+    },
+    "trend": {
+      "code": "6902",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:28"
+  },
+  {
+    "code": "6952",
+    "name": "CASIO COMPUTER CO",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6952",
+      "roe_pct": 9.13,
+      "equity_ratio_pct": 67.06,
+      "market_cap_oku_yen": 5545.0,
+      "per": 22.28,
+      "dividend_yield_pct": 1.9,
+      "eps": 80.05,
+      "payout_ratio_pct": 42.3
+    },
+    "trend": {
+      "code": "6952",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:29"
+  },
+  {
+    "code": "6954",
+    "name": "FANUC CORPORATION",
+    "score": 92,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6954",
+      "roe_pct": 10.1,
+      "equity_ratio_pct": 89.75,
+      "market_cap_oku_yen": 66008.0,
+      "per": 31.67,
+      "dividend_yield_pct": 1.59,
+      "eps": 178.47,
+      "payout_ratio_pct": 50.4
+    },
+    "trend": {
+      "code": "6954",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:29"
+  },
+  {
+    "code": "6971",
+    "name": "KYOCERA CORP",
+    "score": 75,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6971",
+      "roe_pct": 4.22,
+      "equity_ratio_pct": 72.18,
+      "market_cap_oku_yen": 53783.0,
+      "per": 30.75,
+      "dividend_yield_pct": 1.48,
+      "eps": 102.7,
+      "payout_ratio_pct": 45.5
+    },
+    "trend": {
+      "code": "6971",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:30"
+  },
+  {
+    "code": "6976",
+    "name": "TAIYO YUDEN CO LTD",
+    "score": 75,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6976",
+      "roe_pct": 4.99,
+      "equity_ratio_pct": 59.7,
+      "market_cap_oku_yen": 13901.0,
+      "per": 46.11,
+      "dividend_yield_pct": 0.88,
+      "eps": 118.49,
+      "payout_ratio_pct": 40.6
+    },
+    "trend": {
+      "code": "6976",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:31"
+  },
+  {
+    "code": "6988",
+    "name": "NITTO DENKO CORP",
+    "score": 87,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "6988",
+      "roe_pct": 11.63,
+      "equity_ratio_pct": 79.52,
+      "market_cap_oku_yen": 24262.0,
+      "per": 16.72,
+      "dividend_yield_pct": 1.79,
+      "eps": 197.2,
+      "payout_ratio_pct": 29.9
+    },
+    "trend": {
+      "code": "6988",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:32"
+  },
+  {
+    "code": "7003",
+    "name": "MITSUI E&S CO LTD",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7003",
+      "roe_pct": 25.61,
+      "equity_ratio_pct": 48.22,
+      "market_cap_oku_yen": 4395.0,
+      "per": 13.88,
+      "dividend_yield_pct": 1.41,
+      "eps": 381.14,
+      "payout_ratio_pct": 19.6
+    },
+    "trend": {
+      "code": "7003",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:32"
+  },
+  {
+    "code": "7004",
+    "name": "KANADEVIA CORPORATION",
+    "score": 42,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7004",
+      "roe_pct": 6.27,
+      "equity_ratio_pct": 29.04,
+      "market_cap_oku_yen": 2063.0,
+      "per": 9.71,
+      "dividend_yield_pct": 3.14,
+      "eps": 66.2,
+      "payout_ratio_pct": 30.5
+    },
+    "trend": {
+      "code": "7004",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:34"
+  },
+  {
+    "code": "7011",
+    "name": "MITSUBISHI HEAVY INDUSTRIES",
+    "score": 77,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7011",
+      "roe_pct": 10.75,
+      "equity_ratio_pct": 38.9,
+      "market_cap_oku_yen": 138117.0,
+      "per": 36.21,
+      "dividend_yield_pct": 0.71,
+      "eps": 98.86,
+      "payout_ratio_pct": 25.7
+    },
+    "trend": {
+      "code": "7011",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:35"
+  },
+  {
+    "code": "7012",
+    "name": "KAWASAKI HEAVY INDUSTRIES",
+    "score": 80,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7012",
+      "roe_pct": 12.32,
+      "equity_ratio_pct": 27.11,
+      "market_cap_oku_yen": 23299.0,
+      "per": 20.17,
+      "dividend_yield_pct": 1.44,
+      "eps": 129.41,
+      "payout_ratio_pct": 29.0
+    },
+    "trend": {
+      "code": "7012",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:36"
+  },
+  {
+    "code": "7013",
+    "name": "IHI CORPORATION",
+    "score": 80,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7013",
+      "roe_pct": 24.68,
+      "equity_ratio_pct": 28.3,
+      "market_cap_oku_yen": 31367.0,
+      "per": 17.86,
+      "dividend_yield_pct": 0.79,
+      "eps": 151.88,
+      "payout_ratio_pct": 14.1
+    },
+    "trend": {
+      "code": "7013",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:37"
+  },
+  {
+    "code": "7186",
+    "name": "YOKOHAMA FINANCIAL GROUP INC",
+    "score": 70,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7186",
+      "roe_pct": 8.73,
+      "equity_ratio_pct": 5.8,
+      "market_cap_oku_yen": 21461.0,
+      "per": 16.16,
+      "dividend_yield_pct": 2.51,
+      "eps": 94.03,
+      "payout_ratio_pct": 40.6
+    },
+    "trend": {
+      "code": "7186",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:37"
+  },
+  {
+    "code": "7201",
+    "name": "NISSAN MOTOR CO",
+    "score": 30,
+    "passed": false,
+    "data_incomplete": true,
+    "metrics": {
+      "code": "7201",
+      "roe_pct": null,
+      "equity_ratio_pct": 24.27,
+      "market_cap_oku_yen": 12479.0,
+      "per": 58.72,
+      "dividend_yield_pct": 0.0,
+      "eps": null,
+      "payout_ratio_pct": 0.0
+    },
+    "trend": {
+      "code": "7201",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:38"
+  },
+  {
+    "code": "7202",
+    "name": "ISUZU MOTORS",
+    "score": 77,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7202",
+      "roe_pct": 9.12,
+      "equity_ratio_pct": 40.71,
+      "market_cap_oku_yen": 15662.0,
+      "per": 9.77,
+      "dividend_yield_pct": 4.13,
+      "eps": 193.14,
+      "payout_ratio_pct": 40.4
+    },
+    "trend": {
+      "code": "7202",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:39"
+  },
+  {
+    "code": "7203",
+    "name": "TOYOTA MOTOR CORP",
+    "score": 67,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7203",
+      "roe_pct": 9.64,
+      "equity_ratio_pct": 36.35,
+      "market_cap_oku_yen": 437849.0,
+      "per": 10.93,
+      "dividend_yield_pct": 3.33,
+      "eps": 295.25,
+      "payout_ratio_pct": 36.4
+    },
+    "trend": {
+      "code": "7203",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:40"
+  },
+  {
+    "code": "7211",
+    "name": "MITSUBISHI MOTOR CORP",
+    "score": 44,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7211",
+      "roe_pct": 1.16,
+      "equity_ratio_pct": 39.61,
+      "market_cap_oku_yen": 5067.0,
+      "per": 18.58,
+      "dividend_yield_pct": 2.88,
+      "eps": 7.48,
+      "payout_ratio_pct": 53.5
+    },
+    "trend": {
+      "code": "7211",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:40"
+  },
+  {
+    "code": "7261",
+    "name": "MAZDA MOTOR CORP",
+    "score": 50,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7261",
+      "roe_pct": 2.34,
+      "equity_ratio_pct": 43.25,
+      "market_cap_oku_yen": 7366.0,
+      "per": 8.17,
+      "dividend_yield_pct": 4.72,
+      "eps": 55.64,
+      "payout_ratio_pct": 38.6
+    },
+    "trend": {
+      "code": "7261",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:41"
+  },
+  {
+    "code": "7267",
+    "name": "HONDA MOTOR CO",
+    "score": 44,
+    "passed": false,
+    "data_incomplete": true,
+    "metrics": {
+      "code": "7267",
+      "roe_pct": null,
+      "equity_ratio_pct": 35.89,
+      "market_cap_oku_yen": 75474.0,
+      "per": 16.2,
+      "dividend_yield_pct": 4.2,
+      "eps": null,
+      "payout_ratio_pct": 68.0
+    },
+    "trend": {
+      "code": "7267",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:42"
+  },
+  {
+    "code": "7269",
+    "name": "SUZUKI MOTOR CORP",
+    "score": 87,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7269",
+      "roe_pct": 12.99,
+      "equity_ratio_pct": 52.06,
+      "market_cap_oku_yen": 39409.0,
+      "per": 9.21,
+      "dividend_yield_pct": 2.54,
+      "eps": 227.69,
+      "payout_ratio_pct": 23.4
+    },
+    "trend": {
+      "code": "7269",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:42"
+  },
+  {
+    "code": "7270",
+    "name": "SUBARU CORPORATION",
+    "score": 54,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7270",
+      "roe_pct": 3.27,
+      "equity_ratio_pct": 51.24,
+      "market_cap_oku_yen": 18528.0,
+      "per": 14.0,
+      "dividend_yield_pct": 4.49,
+      "eps": 125.5,
+      "payout_ratio_pct": 62.9
+    },
+    "trend": {
+      "code": "7270",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:43"
+  },
+  {
+    "code": "7272",
+    "name": "YAMAHA MOTOR CO",
+    "score": 50,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7272",
+      "roe_pct": 1.42,
+      "equity_ratio_pct": 41.42,
+      "market_cap_oku_yen": 19344.0,
+      "per": 10.85,
+      "dividend_yield_pct": 2.63,
+      "eps": 16.59,
+      "payout_ratio_pct": 28.5
+    },
+    "trend": {
+      "code": "7272",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:44"
+  },
+  {
+    "code": "7731",
+    "name": "NIKON CORP",
+    "score": 42,
+    "passed": false,
+    "data_incomplete": true,
+    "metrics": {
+      "code": "7731",
+      "roe_pct": null,
+      "equity_ratio_pct": 54.08,
+      "market_cap_oku_yen": 6781.0,
+      "per": 66.97,
+      "dividend_yield_pct": 0.98,
+      "eps": null,
+      "payout_ratio_pct": 65.6
+    },
+    "trend": {
+      "code": "7731",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:45"
+  },
+  {
+    "code": "7733",
+    "name": "OLYMPUS CORPORATION",
+    "score": 77,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7733",
+      "roe_pct": 8.4,
+      "equity_ratio_pct": 49.0,
+      "market_cap_oku_yen": 23136.0,
+      "per": 32.37,
+      "dividend_yield_pct": 1.45,
+      "eps": 61.32,
+      "payout_ratio_pct": 46.9
+    },
+    "trend": {
+      "code": "7733",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 10,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:45"
+  },
+  {
+    "code": "7735",
+    "name": "SCREEN HOLDINGS CO LTD",
+    "score": 75,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7735",
+      "roe_pct": 20.6,
+      "equity_ratio_pct": 64.64,
+      "market_cap_oku_yen": 26219.0,
+      "per": 22.61,
+      "dividend_yield_pct": 1.33,
+      "eps": 486.62,
+      "payout_ratio_pct": 30.1
+    },
+    "trend": {
+      "code": "7735",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:46"
+  },
+  {
+    "code": "7741",
+    "name": "HOYA CORP",
+    "score": 75,
+    "passed": false,
+    "data_incomplete": true,
+    "metrics": {
+      "code": "7741",
+      "roe_pct": 24.8,
+      "equity_ratio_pct": 78.01,
+      "market_cap_oku_yen": 87091.0,
+      "per": 34.38,
+      "dividend_yield_pct": 1.13,
+      "eps": 743.93,
+      "payout_ratio_pct": 38.8
+    },
+    "trend": {
+      "code": "7741",
+      "revenue_growth": null,
+      "op_income_growth": null,
+      "years_available": 0
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:47"
+  },
+  {
+    "code": "7751",
+    "name": "CANON INC",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7751",
+      "roe_pct": 9.51,
+      "equity_ratio_pct": 54.62,
+      "market_cap_oku_yen": 60872.0,
+      "per": 11.4,
+      "dividend_yield_pct": 3.51,
+      "eps": 367.48,
+      "payout_ratio_pct": 40.0
+    },
+    "trend": {
+      "code": "7751",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:48"
+  },
+  {
+    "code": "7752",
+    "name": "RICOH CO",
+    "score": 75,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7752",
+      "roe_pct": 4.82,
+      "equity_ratio_pct": 46.34,
+      "market_cap_oku_yen": 9337.0,
+      "per": 14.93,
+      "dividend_yield_pct": 2.68,
+      "eps": 97.8,
+      "payout_ratio_pct": 40.0
+    },
+    "trend": {
+      "code": "7752",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:49"
+  },
+  {
+    "code": "7762",
+    "name": "CITIZEN WATCH CO LTD",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7762",
+      "roe_pct": 13.92,
+      "equity_ratio_pct": 62.61,
+      "market_cap_oku_yen": 6383.0,
+      "per": 23.02,
+      "dividend_yield_pct": 1.93,
+      "eps": 127.48,
+      "payout_ratio_pct": 44.4
+    },
+    "trend": {
+      "code": "7762",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 10,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:50"
+  },
+  {
+    "code": "7832",
+    "name": "BANDAI NAMCO HOLDINGS INC",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7832",
+      "roe_pct": 19.0,
+      "equity_ratio_pct": 75.1,
+      "market_cap_oku_yen": 34584.0,
+      "per": 26.45,
+      "dividend_yield_pct": 1.36,
+      "eps": 217.49,
+      "payout_ratio_pct": 36.0
+    },
+    "trend": {
+      "code": "7832",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:50"
+  },
+  {
+    "code": "7911",
+    "name": "TOPPAN HOLDINGS INC",
+    "score": 62,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7911",
+      "roe_pct": 5.54,
+      "equity_ratio_pct": 53.66,
+      "market_cap_oku_yen": 14493.0,
+      "per": 25.09,
+      "dividend_yield_pct": 1.18,
+      "eps": 227.07,
+      "payout_ratio_pct": 29.6
+    },
+    "trend": {
+      "code": "7911",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:51"
+  },
+  {
+    "code": "7912",
+    "name": "DAI NIPPON PRINTING CO",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7912",
+      "roe_pct": 10.57,
+      "equity_ratio_pct": 59.09,
+      "market_cap_oku_yen": 14256.0,
+      "per": 14.64,
+      "dividend_yield_pct": 1.26,
+      "eps": 235.49,
+      "payout_ratio_pct": 18.4
+    },
+    "trend": {
+      "code": "7912",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:52"
+  },
+  {
+    "code": "7951",
+    "name": "YAMAHA CORP",
+    "score": 75,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7951",
+      "roe_pct": 4.96,
+      "equity_ratio_pct": 77.18,
+      "market_cap_oku_yen": 6468.0,
+      "per": 19.82,
+      "dividend_yield_pct": 1.86,
+      "eps": 52.7,
+      "payout_ratio_pct": 36.9
+    },
+    "trend": {
+      "code": "7951",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:53"
+  },
+  {
+    "code": "7974",
+    "name": "NINTENDO CO LTD",
+    "score": 85,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "7974",
+      "roe_pct": 15.92,
+      "equity_ratio_pct": 76.46,
+      "market_cap_oku_yen": 109262.0,
+      "per": 31.57,
+      "dividend_yield_pct": 2.58,
+      "eps": 364.51,
+      "payout_ratio_pct": 81.5
+    },
+    "trend": {
+      "code": "7974",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:53"
+  },
+  {
+    "code": "8001",
+    "name": "ITOCHU CORP",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8001",
+      "roe_pct": 13.66,
+      "equity_ratio_pct": 39.41,
+      "market_cap_oku_yen": 166096.0,
+      "per": 15.43,
+      "dividend_yield_pct": 2.1,
+      "eps": 128.0,
+      "payout_ratio_pct": 32.4
+    },
+    "trend": {
+      "code": "8001",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:54"
+  },
+  {
+    "code": "8002",
+    "name": "MARUBENI CORP",
+    "score": 87,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8002",
+      "roe_pct": 12.46,
+      "equity_ratio_pct": 42.25,
+      "market_cap_oku_yen": 83303.0,
+      "per": 14.07,
+      "dividend_yield_pct": 2.29,
+      "eps": 330.42,
+      "payout_ratio_pct": 32.2
+    },
+    "trend": {
+      "code": "8002",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:55"
+  },
+  {
+    "code": "8015",
+    "name": "TOYOTA TSUSHO CORP",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8015",
+      "roe_pct": 11.73,
+      "equity_ratio_pct": 30.79,
+      "market_cap_oku_yen": 68011.0,
+      "per": 15.71,
+      "dividend_yield_pct": 1.74,
+      "eps": 350.95,
+      "payout_ratio_pct": 27.3
+    },
+    "trend": {
+      "code": "8015",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:56"
+  },
+  {
+    "code": "8031",
+    "name": "MITSUI & CO",
+    "score": 77,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8031",
+      "roe_pct": 9.51,
+      "equity_ratio_pct": 43.32,
+      "market_cap_oku_yen": 140368.0,
+      "per": 15.1,
+      "dividend_yield_pct": 2.86,
+      "eps": 291.12,
+      "payout_ratio_pct": 43.2
+    },
+    "trend": {
+      "code": "8031",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 8,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:56"
+  },
+  {
+    "code": "8035",
+    "name": "TOKYO ELECTRON",
+    "score": 87,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8035",
+      "roe_pct": 31.99,
+      "equity_ratio_pct": 71.67,
+      "market_cap_oku_yen": 272535.0,
+      "per": 46.09,
+      "dividend_yield_pct": 1.08,
+      "eps": 1254.57,
+      "payout_ratio_pct": 49.8
+    },
+    "trend": {
+      "code": "8035",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 10,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:57"
+  },
+  {
+    "code": "8053",
+    "name": "SUMITOMO CORP",
+    "score": 77,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8053",
+      "roe_pct": 12.97,
+      "equity_ratio_pct": 35.22,
+      "market_cap_oku_yen": 85187.0,
+      "per": 13.4,
+      "dividend_yield_pct": 2.24,
+      "eps": 124.88,
+      "payout_ratio_pct": 30.0
+    },
+    "trend": {
+      "code": "8053",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 8,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:58"
+  },
+  {
+    "code": "8058",
+    "name": "MITSUBISHI CORP",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8058",
+      "roe_pct": 8.48,
+      "equity_ratio_pct": 41.09,
+      "market_cap_oku_yen": 180183.0,
+      "per": 16.17,
+      "dividend_yield_pct": 2.57,
+      "eps": 210.92,
+      "payout_ratio_pct": 41.6
+    },
+    "trend": {
+      "code": "8058",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 8,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:58"
+  },
+  {
+    "code": "8233",
+    "name": "TAKASHIMAYA CO",
+    "score": 40,
+    "passed": false,
+    "data_incomplete": true,
+    "metrics": {
+      "code": "8233",
+      "roe_pct": null,
+      "equity_ratio_pct": 33.4,
+      "market_cap_oku_yen": 6940.0,
+      "per": 17.54,
+      "dividend_yield_pct": 1.76,
+      "eps": null,
+      "payout_ratio_pct": 30.9
+    },
+    "trend": {
+      "code": "8233",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:08:59"
+  },
+  {
+    "code": "8252",
+    "name": "MARUI GROUP CO LTD",
+    "score": 65,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8252",
+      "roe_pct": 12.2,
+      "equity_ratio_pct": 19.53,
+      "market_cap_oku_yen": 5487.0,
+      "per": 18.12,
+      "dividend_yield_pct": 4.48,
+      "eps": 158.35,
+      "payout_ratio_pct": 81.2
+    },
+    "trend": {
+      "code": "8252",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 5,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:00"
+  },
+  {
+    "code": "8267",
+    "name": "AEON CO LTD",
+    "score": 47,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8267",
+      "roe_pct": 7.09,
+      "equity_ratio_pct": 7.75,
+      "market_cap_oku_yen": 38802.0,
+      "per": 52.86,
+      "dividend_yield_pct": 1.08,
+      "eps": 26.87,
+      "payout_ratio_pct": 57.1
+    },
+    "trend": {
+      "code": "8267",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:01"
+  },
+  {
+    "code": "8306",
+    "name": "MITSUBISHI UFJ FINANCIAL GROUP ",
+    "score": 80,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8306",
+      "roe_pct": 13.98,
+      "equity_ratio_pct": 5.23,
+      "market_cap_oku_yen": 427949.0,
+      "per": 16.72,
+      "dividend_yield_pct": 2.66,
+      "eps": 213.17,
+      "payout_ratio_pct": 44.5
+    },
+    "trend": {
+      "code": "8306",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 10,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:01"
+  },
+  {
+    "code": "8308",
+    "name": "RESONA HOLDINGS",
+    "score": 80,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8308",
+      "roe_pct": 10.41,
+      "equity_ratio_pct": 3.91,
+      "market_cap_oku_yen": 54079.0,
+      "per": 15.94,
+      "dividend_yield_pct": 1.58,
+      "eps": 113.83,
+      "payout_ratio_pct": 25.2
+    },
+    "trend": {
+      "code": "8308",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:02"
+  },
+  {
+    "code": "8309",
+    "name": "SUMITOMO MITSUI TRUST GP INC",
+    "score": 80,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8309",
+      "roe_pct": 11.17,
+      "equity_ratio_pct": 4.35,
+      "market_cap_oku_yen": 47659.0,
+      "per": 12.36,
+      "dividend_yield_pct": 2.79,
+      "eps": 112.95,
+      "payout_ratio_pct": 34.5
+    },
+    "trend": {
+      "code": "8309",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:03"
+  },
+  {
+    "code": "8316",
+    "name": "SUMITOMO MITSUI FINANCIAL GROUP",
+    "score": 80,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8316",
+      "roe_pct": 13.47,
+      "equity_ratio_pct": 4.92,
+      "market_cap_oku_yen": 262451.0,
+      "per": 15.32,
+      "dividend_yield_pct": 2.63,
+      "eps": 411.97,
+      "payout_ratio_pct": 40.3
+    },
+    "trend": {
+      "code": "8316",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:04"
+  },
+  {
+    "code": "8354",
+    "name": "FUKUOKA FINANCIAL GROUP INC.",
+    "score": 70,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8354",
+      "roe_pct": 8.55,
+      "equity_ratio_pct": 3.4,
+      "market_cap_oku_yen": 14375.0,
+      "per": 14.21,
+      "dividend_yield_pct": 2.79,
+      "eps": 451.99,
+      "payout_ratio_pct": 39.6
+    },
+    "trend": {
+      "code": "8354",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:04"
+  },
+  {
+    "code": "8411",
+    "name": "MIZUHO FINANCIAL GROUP",
+    "score": 80,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8411",
+      "roe_pct": 12.6,
+      "equity_ratio_pct": 3.78,
+      "market_cap_oku_yen": 207689.0,
+      "per": 14.78,
+      "dividend_yield_pct": 1.76,
+      "eps": 502.93,
+      "payout_ratio_pct": 26.0
+    },
+    "trend": {
+      "code": "8411",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:05"
+  },
+  {
+    "code": "8473",
+    "name": "SBI HOLDINGS INC",
+    "score": 80,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8473",
+      "roe_pct": 23.82,
+      "equity_ratio_pct": 4.76,
+      "market_cap_oku_yen": 20271.0,
+      "per": 4.64,
+      "dividend_yield_pct": 3.1,
+      "eps": 666.83,
+      "payout_ratio_pct": 14.4
+    },
+    "trend": {
+      "code": "8473",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 8,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:06"
+  },
+  {
+    "code": "8601",
+    "name": "DAIWA SECURITIES GROUP",
+    "score": 72,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8601",
+      "roe_pct": 11.8,
+      "equity_ratio_pct": 4.51,
+      "market_cap_oku_yen": 28358.0,
+      "per": 14.31,
+      "dividend_yield_pct": 3.54,
+      "eps": 126.04,
+      "payout_ratio_pct": 50.7
+    },
+    "trend": {
+      "code": "8601",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 10,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:07"
+  },
+  {
+    "code": "8604",
+    "name": "NOMURA HOLDINGS INC.",
+    "score": 70,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8604",
+      "roe_pct": 9.77,
+      "equity_ratio_pct": 5.62,
+      "market_cap_oku_yen": 48366.0,
+      "per": 12.64,
+      "dividend_yield_pct": 3.26,
+      "eps": 123.08,
+      "payout_ratio_pct": 41.2
+    },
+    "trend": {
+      "code": "8604",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 10,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:08"
+  },
+  {
+    "code": "8630",
+    "name": "SOMPO HOLDINGS INC",
+    "score": 80,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8630",
+      "roe_pct": 12.39,
+      "equity_ratio_pct": 27.78,
+      "market_cap_oku_yen": 65246.0,
+      "per": 12.72,
+      "dividend_yield_pct": 2.86,
+      "eps": 701.04,
+      "payout_ratio_pct": 36.4
+    },
+    "trend": {
+      "code": "8630",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:08"
+  },
+  {
+    "code": "8697",
+    "name": "JAPAN EXCHANGE GROUP",
+    "score": 65,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8697",
+      "roe_pct": 22.94,
+      "equity_ratio_pct": 0.48,
+      "market_cap_oku_yen": 23235.0,
+      "per": 23.33,
+      "dividend_yield_pct": 3.42,
+      "eps": 76.81,
+      "payout_ratio_pct": 79.8
+    },
+    "trend": {
+      "code": "8697",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:09"
+  },
+  {
+    "code": "8750",
+    "name": "DAIICHI LIFE GROUP INC",
+    "score": 72,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8750",
+      "roe_pct": 19.23,
+      "equity_ratio_pct": 5.99,
+      "market_cap_oku_yen": 67982.0,
+      "per": 13.18,
+      "dividend_yield_pct": 3.84,
+      "eps": 119.83,
+      "payout_ratio_pct": 50.6
+    },
+    "trend": {
+      "code": "8750",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:10"
+  },
+  {
+    "code": "8766",
+    "name": "TOKIO MARINE HOLDINGS INC",
+    "score": 34,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8766",
+      "roe_pct": 6.68,
+      "equity_ratio_pct": 24.34,
+      "market_cap_oku_yen": 149904.0,
+      "per": 17.74,
+      "dividend_yield_pct": 3.16,
+      "eps": 279.36,
+      "payout_ratio_pct": 56.1
+    },
+    "trend": {
+      "code": "8766",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:11"
+  },
+  {
+    "code": "8795",
+    "name": "T&D HOLDINGS INC",
+    "score": 72,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8795",
+      "roe_pct": 19.69,
+      "equity_ratio_pct": 9.57,
+      "market_cap_oku_yen": 23975.0,
+      "per": 17.42,
+      "dividend_yield_pct": 3.34,
+      "eps": 279.64,
+      "payout_ratio_pct": 58.2
+    },
+    "trend": {
+      "code": "8795",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:12"
+  },
+  {
+    "code": "8801",
+    "name": "MITSUI FUDOSAN",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8801",
+      "roe_pct": 11.11,
+      "equity_ratio_pct": 31.37,
+      "market_cap_oku_yen": 39473.0,
+      "per": 13.71,
+      "dividend_yield_pct": 2.55,
+      "eps": 101.04,
+      "payout_ratio_pct": 35.0
+    },
+    "trend": {
+      "code": "8801",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:12"
+  },
+  {
+    "code": "8802",
+    "name": "MITSUBISHI ESTATE CO",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8802",
+      "roe_pct": 13.79,
+      "equity_ratio_pct": 31.84,
+      "market_cap_oku_yen": 44617.0,
+      "per": 18.86,
+      "dividend_yield_pct": 1.33,
+      "eps": 181.8,
+      "payout_ratio_pct": 25.1
+    },
+    "trend": {
+      "code": "8802",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:13"
+  },
+  {
+    "code": "8804",
+    "name": "TOKYO TATEMONO CO",
+    "score": 80,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8804",
+      "roe_pct": 12.77,
+      "equity_ratio_pct": 24.51,
+      "market_cap_oku_yen": 7025.0,
+      "per": 10.76,
+      "dividend_yield_pct": 3.73,
+      "eps": 283.08,
+      "payout_ratio_pct": 40.1
+    },
+    "trend": {
+      "code": "8804",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:14"
+  },
+  {
+    "code": "8830",
+    "name": "SUMITOMO REALTY & DEVELOPMENT C",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "8830",
+      "roe_pct": 10.47,
+      "equity_ratio_pct": 35.35,
+      "market_cap_oku_yen": 31880.0,
+      "per": 14.11,
+      "dividend_yield_pct": 1.53,
+      "eps": 228.42,
+      "payout_ratio_pct": 21.6
+    },
+    "trend": {
+      "code": "8830",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:15"
+  },
+  {
+    "code": "9001",
+    "name": "TOBU RAILWAY CO",
+    "score": 77,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9001",
+      "roe_pct": 11.21,
+      "equity_ratio_pct": 33.86,
+      "market_cap_oku_yen": 5860.0,
+      "per": 10.37,
+      "dividend_yield_pct": 2.52,
+      "eps": 282.92,
+      "payout_ratio_pct": 26.1
+    },
+    "trend": {
+      "code": "9001",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:16"
+  },
+  {
+    "code": "9005",
+    "name": "TOKYU CORP",
+    "score": 77,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9005",
+      "roe_pct": 10.73,
+      "equity_ratio_pct": 31.7,
+      "market_cap_oku_yen": 10266.0,
+      "per": 10.3,
+      "dividend_yield_pct": 1.95,
+      "eps": 152.24,
+      "payout_ratio_pct": 20.1
+    },
+    "trend": {
+      "code": "9005",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:16"
+  },
+  {
+    "code": "9007",
+    "name": "ODAKYU ELECTRIC RAILWAY CO",
+    "score": 59,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9007",
+      "roe_pct": 8.09,
+      "equity_ratio_pct": 36.34,
+      "market_cap_oku_yen": 6257.0,
+      "per": 15.17,
+      "dividend_yield_pct": 3.53,
+      "eps": 108.24,
+      "payout_ratio_pct": 53.6
+    },
+    "trend": {
+      "code": "9007",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:17"
+  },
+  {
+    "code": "9008",
+    "name": "KEIO CORPORATION",
+    "score": 77,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9008",
+      "roe_pct": 10.61,
+      "equity_ratio_pct": 38.81,
+      "market_cap_oku_yen": 4453.0,
+      "per": 10.23,
+      "dividend_yield_pct": 2.89,
+      "eps": 73.0,
+      "payout_ratio_pct": 29.6
+    },
+    "trend": {
+      "code": "9008",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:18"
+  },
+  {
+    "code": "9009",
+    "name": "KEISEI ELECTRIC RAILWAY CO",
+    "score": 77,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9009",
+      "roe_pct": 8.93,
+      "equity_ratio_pct": 46.56,
+      "market_cap_oku_yen": 6605.0,
+      "per": 15.67,
+      "dividend_yield_pct": 1.72,
+      "eps": 99.58,
+      "payout_ratio_pct": 27.0
+    },
+    "trend": {
+      "code": "9009",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:18"
+  },
+  {
+    "code": "9020",
+    "name": "EAST JAPAN RAILWAY CO",
+    "score": 70,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9020",
+      "roe_pct": 8.54,
+      "equity_ratio_pct": 29.06,
+      "market_cap_oku_yen": 39182.0,
+      "per": 15.29,
+      "dividend_yield_pct": 2.43,
+      "eps": 219.42,
+      "payout_ratio_pct": 37.2
+    },
+    "trend": {
+      "code": "9020",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:19"
+  },
+  {
+    "code": "9021",
+    "name": "WEST JAPAN RAILWAY CO",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9021",
+      "roe_pct": 10.96,
+      "equity_ratio_pct": 31.39,
+      "market_cap_oku_yen": 13033.0,
+      "per": 13.02,
+      "dividend_yield_pct": 3.41,
+      "eps": 277.73,
+      "payout_ratio_pct": 44.4
+    },
+    "trend": {
+      "code": "9021",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:20"
+  },
+  {
+    "code": "9022",
+    "name": "CENTRAL JAPAN RAILWAY CO",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9022",
+      "roe_pct": 11.28,
+      "equity_ratio_pct": 47.98,
+      "market_cap_oku_yen": 38254.0,
+      "per": 8.12,
+      "dividend_yield_pct": 0.84,
+      "eps": 570.84,
+      "payout_ratio_pct": 6.8
+    },
+    "trend": {
+      "code": "9022",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:20"
+  },
+  {
+    "code": "9064",
+    "name": "YAMATO HOLDINGS CO LTD",
+    "score": 60,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9064",
+      "roe_pct": 2.52,
+      "equity_ratio_pct": 43.48,
+      "market_cap_oku_yen": 6982.0,
+      "per": 38.34,
+      "dividend_yield_pct": 2.37,
+      "eps": 43.07,
+      "payout_ratio_pct": 90.9
+    },
+    "trend": {
+      "code": "9064",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:21"
+  },
+  {
+    "code": "9101",
+    "name": "NIPPON YUSEN KABUSHIKI KAISHA",
+    "score": 65,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9101",
+      "roe_pct": 9.27,
+      "equity_ratio_pct": 57.71,
+      "market_cap_oku_yen": 24838.0,
+      "per": 10.3,
+      "dividend_yield_pct": 3.92,
+      "eps": 504.85,
+      "payout_ratio_pct": 40.4
+    },
+    "trend": {
+      "code": "9101",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:22"
+  },
+  {
+    "code": "9104",
+    "name": "MITSUI O.S.K. LINES LTD",
+    "score": 77,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9104",
+      "roe_pct": 9.66,
+      "equity_ratio_pct": 48.02,
+      "market_cap_oku_yen": 22384.0,
+      "per": 8.83,
+      "dividend_yield_pct": 3.32,
+      "eps": 619.78,
+      "payout_ratio_pct": 29.3
+    },
+    "trend": {
+      "code": "9104",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:23"
+  },
+  {
+    "code": "9107",
+    "name": "KAWASAKI KISEN KAISHA",
+    "score": 57,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9107",
+      "roe_pct": 9.38,
+      "equity_ratio_pct": 75.87,
+      "market_cap_oku_yen": 18350.0,
+      "per": 12.87,
+      "dividend_yield_pct": 4.18,
+      "eps": 210.42,
+      "payout_ratio_pct": 53.8
+    },
+    "trend": {
+      "code": "9107",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:23"
+  },
+  {
+    "code": "9202",
+    "name": "ANA HOLDINGS INC",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9202",
+      "roe_pct": 12.44,
+      "equity_ratio_pct": 35.62,
+      "market_cap_oku_yen": 14906.0,
+      "per": 13.98,
+      "dividend_yield_pct": 1.95,
+      "eps": 362.9,
+      "payout_ratio_pct": 27.3
+    },
+    "trend": {
+      "code": "9202",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:24"
+  },
+  {
+    "code": "9301",
+    "name": "MITSUBISHI LOGISTICS CORP",
+    "score": 67,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9301",
+      "roe_pct": 17.31,
+      "equity_ratio_pct": 58.54,
+      "market_cap_oku_yen": 5435.0,
+      "per": 22.23,
+      "dividend_yield_pct": 2.93,
+      "eps": 155.84,
+      "payout_ratio_pct": 65.1
+    },
+    "trend": {
+      "code": "9301",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:25"
+  },
+  {
+    "code": "9432",
+    "name": "NTT INC",
+    "score": 80,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9432",
+      "roe_pct": 10.66,
+      "equity_ratio_pct": 20.77,
+      "market_cap_oku_yen": 143069.0,
+      "per": 13.13,
+      "dividend_yield_pct": 3.42,
+      "eps": 12.61,
+      "payout_ratio_pct": 44.9
+    },
+    "trend": {
+      "code": "9432",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:26"
+  },
+  {
+    "code": "9433",
+    "name": "KDDI CORPORATION",
+    "score": 67,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9433",
+      "roe_pct": 13.93,
+      "equity_ratio_pct": 27.19,
+      "market_cap_oku_yen": 113531.0,
+      "per": 14.76,
+      "dividend_yield_pct": 2.97,
+      "eps": 183.59,
+      "payout_ratio_pct": 43.8
+    },
+    "trend": {
+      "code": "9433",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:27"
+  },
+  {
+    "code": "9434",
+    "name": "SOFTBANK CORP.",
+    "score": 65,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9434",
+      "roe_pct": 18.62,
+      "equity_ratio_pct": 15.06,
+      "market_cap_oku_yen": 109959.0,
+      "per": 19.57,
+      "dividend_yield_pct": 3.84,
+      "eps": 11.55,
+      "payout_ratio_pct": 75.1
+    },
+    "trend": {
+      "code": "9434",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:27"
+  },
+  {
+    "code": "9501",
+    "name": "TOKYO ELEC POWER CO HLDGS INC",
+    "score": 27,
+    "passed": false,
+    "data_incomplete": true,
+    "metrics": {
+      "code": "9501",
+      "roe_pct": null,
+      "equity_ratio_pct": 22.09,
+      "market_cap_oku_yen": 8308.0,
+      "per": null,
+      "dividend_yield_pct": 0.0,
+      "eps": null,
+      "payout_ratio_pct": null
+    },
+    "trend": {
+      "code": "9501",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 10,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:28"
+  },
+  {
+    "code": "9502",
+    "name": "CHUBU ELECTRIC POWER CO INC",
+    "score": 65,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9502",
+      "roe_pct": 8.83,
+      "equity_ratio_pct": 41.46,
+      "market_cap_oku_yen": 20685.0,
+      "per": 12.88,
+      "dividend_yield_pct": 2.57,
+      "eps": 301.57,
+      "payout_ratio_pct": 33.1
+    },
+    "trend": {
+      "code": "9502",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:29"
+  },
+  {
+    "code": "9503",
+    "name": "KANSAI ELECTRIC POWER CO INC",
+    "score": 65,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9503",
+      "roe_pct": 12.36,
+      "equity_ratio_pct": 36.33,
+      "market_cap_oku_yen": 26446.0,
+      "per": 8.53,
+      "dividend_yield_pct": 3.37,
+      "eps": 341.14,
+      "payout_ratio_pct": 28.7
+    },
+    "trend": {
+      "code": "9503",
+      "revenue_growth": false,
+      "op_income_growth": false,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:29"
+  },
+  {
+    "code": "9531",
+    "name": "TOKYO GAS CO",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9531",
+      "roe_pct": 16.25,
+      "equity_ratio_pct": 44.62,
+      "market_cap_oku_yen": 20208.0,
+      "per": 14.55,
+      "dividend_yield_pct": 1.99,
+      "eps": 654.76,
+      "payout_ratio_pct": 29.0
+    },
+    "trend": {
+      "code": "9531",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:30"
+  },
+  {
+    "code": "9532",
+    "name": "OSAKA GAS CO",
+    "score": 87,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9532",
+      "roe_pct": 11.31,
+      "equity_ratio_pct": 52.45,
+      "market_cap_oku_yen": 21277.0,
+      "per": 14.56,
+      "dividend_yield_pct": 2.34,
+      "eps": 391.15,
+      "payout_ratio_pct": 34.1
+    },
+    "trend": {
+      "code": "9532",
+      "revenue_growth": false,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:31"
+  },
+  {
+    "code": "9602",
+    "name": "TOHO CO LTD",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9602",
+      "roe_pct": 11.58,
+      "equity_ratio_pct": 72.56,
+      "market_cap_oku_yen": 12690.0,
+      "per": 30.29,
+      "dividend_yield_pct": 1.47,
+      "eps": 61.2,
+      "payout_ratio_pct": 44.5
+    },
+    "trend": {
+      "code": "9602",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:32"
+  },
+  {
+    "code": "9735",
+    "name": "SECOM CO",
+    "score": 90,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9735",
+      "roe_pct": 9.38,
+      "equity_ratio_pct": 59.98,
+      "market_cap_oku_yen": 30557.0,
+      "per": 24.82,
+      "dividend_yield_pct": 1.83,
+      "eps": 276.17,
+      "payout_ratio_pct": 45.4
+    },
+    "trend": {
+      "code": "9735",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:33"
+  },
+  {
+    "code": "9766",
+    "name": "KONAMI GROUP CORPORATION",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9766",
+      "roe_pct": 17.72,
+      "equity_ratio_pct": 77.12,
+      "market_cap_oku_yen": 31082.0,
+      "per": 29.07,
+      "dividend_yield_pct": 1.03,
+      "eps": 737.79,
+      "payout_ratio_pct": 29.9
+    },
+    "trend": {
+      "code": "9766",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:34"
+  },
+  {
+    "code": "9983",
+    "name": "FAST RETAILING CO LTD",
+    "score": 100,
+    "passed": true,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9983",
+      "roe_pct": 19.05,
+      "equity_ratio_pct": 61.56,
+      "market_cap_oku_yen": 248371.0,
+      "per": 47.9,
+      "dividend_yield_pct": 0.82,
+      "eps": 1411.43,
+      "payout_ratio_pct": 39.3
+    },
+    "trend": {
+      "code": "9983",
+      "revenue_growth": true,
+      "op_income_growth": true,
+      "years_available": 9,
+      "latest_year": 2025
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:34"
+  },
+  {
+    "code": "9984",
+    "name": "SOFTBANK GROUP CORP",
+    "score": 67,
+    "passed": false,
+    "data_incomplete": false,
+    "metrics": {
+      "code": "9984",
+      "roe_pct": 28.39,
+      "equity_ratio_pct": 28.28,
+      "market_cap_oku_yen": 315294.0,
+      "per": 6.29,
+      "dividend_yield_pct": 0.2,
+      "eps": 876.78,
+      "payout_ratio_pct": 1.3
+    },
+    "trend": {
+      "code": "9984",
+      "revenue_growth": true,
+      "op_income_growth": false,
+      "years_available": 10,
+      "latest_year": 2026
+    },
+    "errors": [],
+    "scored_at": "2026-08-13T13:09:36"
+  }
+]
