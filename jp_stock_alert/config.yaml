@@ -26,7 +26,7 @@ signal:
     drawdown_pct: -15.0            # 直近lookback_days日の高値からの下落率がこれ以下
   volume_surge:
     avg_period_days: 20            # 平均出来高の算出期間（当日を除く直近営業日数）
-    multiplier: 2.5                # 平均出来高の何倍で急増と判定するか
+    multiplier: 2.0                # 平均出来高の何倍で急増と判定するか
     intraday_prorate: true         # ザラ場中は経過時間で按分補正する
     min_elapsed_minutes: 30        # 寄り付き直後は誤検知しやすいため按分判定自体をスキップする下限
 
