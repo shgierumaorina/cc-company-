@@ -17,6 +17,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 import re
 import json
+import os
 import time
 import urllib.request
 from datetime import datetime, timedelta
@@ -169,10 +170,15 @@ def score_with_claude(entries: list[dict], timeout: int = 180) -> dict[str, dict
     periods_text = "\n\n".join(f"[{e['date']}]\n{e['extracted_text']}" for e in entries)
     prompt = CLAUDE_PROMPT_TEMPLATE.format(periods_text=periods_text)
 
+    # OmniRoute（ローカルプロキシ、圧縮・キャッシュで節約）経由でclaude -pを呼ぶ。
+    # このスクリプトの子プロセスだけに適用し、他のセッション設定には影響しない。
+    env = {**os.environ, "ANTHROPIC_BASE_URL": "http://localhost:20128/v1", "ANTHROPIC_AUTH_TOKEN": "omniroute-local"}
+
     try:
         result = subprocess.run(
             ["claude", "-p", prompt],
             capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=timeout,
+            env=env,
         )
     except FileNotFoundError:
         print("[エラー] claude CLIが見つかりません。Claude CodeがインストールされPATHが通っているか確認してください")
