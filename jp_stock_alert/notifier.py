@@ -16,6 +16,19 @@ import obsidian_writer
 import risk_calc
 
 STATE_PATH = Path(__file__).resolve().parent / "notified_state.json"
+NOTIFIED_LOG_PATH = Path(__file__).resolve().parent / "notified_log.tsv"
+
+
+def log_notification(code: str, name: str, price: float, strength: str) -> None:
+    """通知1件（日時・コード・銘柄名・通知価格・強弱）をnotified_log.tsvに追記する。
+    followup_report.pyがこのログを元に、通知後の複数ホライズンのリターンを集計する。
+    notified_state.jsonは銘柄コードごとに上書きされ通知価格を保持しないため、別途この追記専用ログが必要。
+    """
+    is_new = not NOTIFIED_LOG_PATH.exists()
+    with open(NOTIFIED_LOG_PATH, "a", encoding="utf-8") as f:
+        if is_new:
+            f.write("datetime\tcode\tname\tprice\tstrength\n")
+        f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M')}\t{code}\t{name}\t{price:.1f}\t{strength}\n")
 
 
 def load_state() -> dict:
@@ -141,5 +154,6 @@ def send_signals(results_with_names: list[tuple], cfg: dict) -> None:
 
         for code, result, name in batch:
             state = mark_notified(state, code)
+            log_notification(code, name, result["price"], result["strength"])
             obsidian_writer.record_notification(cfg, code, name, result)
         save_state(state)

@@ -174,6 +174,64 @@ def record_quality_stocks(cfg: dict, passed_entries: list[dict]) -> None:
         print(f"[警告] ObsidianVaultへの優良銘柄記録に失敗しました: {e}")
 
 
+def record_followup_report(cfg: dict, rows: list[dict], days: int) -> None:
+    """followup_report.pyの集計結果を wiki/japan-stock.md に日付セクションとして追記する。
+    record_quality_stocksと同じ位置づけ（既存セクションは上書きしない、過去の記録を消さない）。
+    vault未設定・書き込み失敗、rowsの形が想定と違う場合の例外もここで完結させ、呼び出し元には伝播させない。
+    """
+    try:
+        vault = _vault_path(cfg)
+        if vault is None or not rows:
+            return
+
+        now = datetime.now()
+        horizons = [(1, "翌日"), (2, "2日後"), (3, "3日後"), (4, "4日後"),
+                    (5, "5日後"), (10, "2週間後")]
+        table_rows = []
+        for r in rows:
+            if r.get("error"):
+                table_rows.append(f"| {r['code']} | {r['name']} | {r['dt']:%m/%d %H:%M} | "
+                                   f"{r['strength']} | {r['price']:,.0f} | " + " | ".join(["-"] * 6) +
+                                   f" | {r['error']} |")
+                continue
+            cells = []
+            for h, _ in horizons:
+                v = r.get(f"ret_{h}")
+                cells.append(f"{v:+.1f}%" if v is not None else "未到達")
+            table_rows.append(f"| {r['code']} | {r['name']} | {r['dt']:%m/%d %H:%M} | "
+                               f"{r['strength']} | {r['price']:,.0f} | " + " | ".join(cells) + " | - |")
+
+        header = "| コード | 銘柄 | 通知日時 | 強弱 | 通知価格 | " + " | ".join(l for _, l in horizons) + " | 備考 |"
+        sep = "|" + "---|" * (5 + len(horizons) + 1)
+
+        section = (
+            f"\n## jp_stock_alert フォローアップレポート — {now.strftime('%Y-%m-%d')}"
+            f"（過去{days}日、{len(rows)}件）\n\n"
+            f"通知価格を基準に、通知後の各営業日ホライズンでの騰落率を集計。\n\n"
+            f"{header}\n{sep}\n" + "\n".join(table_rows) + "\n\n"
+            f"### 出典\n- `jp_stock_alert/followup_report.py`"
+            f"（notified_log.tsv + yfinance、{now.strftime('%Y-%m-%d')}時点）\n"
+        )
+
+        note_path = vault / JAPAN_STOCK_NOTE
+        if note_path.exists():
+            fm, body = _split_frontmatter(note_path.read_text(encoding="utf-8"))
+        else:
+            fm, body = {}, "\n# Japan Stock\n"
+        if not fm:
+            fm = {"type": "note", "status": "active", "created": now.strftime("%Y-%m-%d"),
+                  "tags": ["japan-stock", "screening", "finance"]}
+
+        fm["updated"] = now.strftime("%Y-%m-%d")
+        body = body.rstrip() + "\n" + section
+
+        note_path.parent.mkdir(parents=True, exist_ok=True)
+        note_path.write_text(_join_frontmatter(fm, body), encoding="utf-8")
+        print(f"[OK] ObsidianVault {JAPAN_STOCK_NOTE} にフォローアップレポートを追記しました")
+    except Exception as e:
+        print(f"[警告] ObsidianVaultへのフォローアップレポート記録に失敗しました: {e}")
+
+
 def _fmt_pct(v) -> str:
     return f"{v:.1f}%" if v is not None else "-"
 
