@@ -13,6 +13,7 @@ from envutil import get_secret
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import obsidian_writer
+import risk_calc
 
 STATE_PATH = Path(__file__).resolve().parent / "notified_state.json"
 
@@ -43,10 +44,13 @@ def mark_notified(state: dict, code: str) -> dict:
     return state
 
 
-def build_embed(result: dict, name: str) -> dict:
+def build_embed(result: dict, name: str, cfg: dict) -> dict:
     code = result["code"]
     lp = result["low_price"]
     vs = result["volume_surge"]
+    liq = result["liquidity"]
+    conf = result["confirmation"]
+    strength = result["strength"]
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
 
     lines = []
@@ -60,14 +64,36 @@ def build_embed(result: dict, name: str) -> dict:
     if dd is not None:
         lines.append(f"直近高値からの下落率: {dd:+.2f}%")
 
+    if strength == "strong":
+        title_prefix, color = "🔥【強】", 0x00C851
+        trend_line = f"MA25/75上抜け:{'○' if conf['ma_cross_up'] else '-'} " \
+                     f"反発初動:{'○' if conf['bounce_from_low'] else '-'} " \
+                     f"陽線(値幅{conf['day_range_pct']}%)"
+    else:
+        title_prefix, color = "⚠️【弱】", 0xFFA500
+        trend_line = f"未達（陽線:{'○' if conf['bullish'] else '×'} " \
+                     f"MAクロス:{'○' if conf['ma_cross_up'] else '×'} " \
+                     f"反発初動:{'○' if conf['bounce_from_low'] else '×'}）"
+
+    risk = risk_calc.calc_risk(result["price"], cfg)
+    risk_lines = (
+        f"許容損失: ¥{risk['loss_min_yen']:,}({risk['risk_pct_min']}%)〜"
+        f"¥{risk['loss_max_yen']:,}({risk['risk_pct_max']}%)\n"
+        f"損切価格: ¥{risk['stop_price_tight']:,.0f}(-{risk['stop_loss_pct_min']}%)〜"
+        f"¥{risk['stop_price_wide']:,.0f}(-{risk['stop_loss_pct_max']}%)\n"
+        f"最大許容株数: {risk['shares_min']:,}〜{risk['shares_max']:,}株（単元株調整済み）"
+    )
+
     return {
-        "title": f"優良銘柄 安値圏×出来高急増: {name} ({code})",
-        "color": 0x00C851,
+        "title": f"{title_prefix}優良銘柄 安値圏×出来高急増: {name} ({code})",
+        "color": color,
         "fields": [
             {"name": "現在値", "value": f"¥{result['price']:,.0f}", "inline": True},
-            {"name": "当日出来高", "value": f"{vs['today_volume']:,}", "inline": True},
-            {"name": "平均出来高比", "value": f"{vs['ratio']}倍", "inline": True},
+            {"name": "当日出来高", "value": f"{vs['today_volume']:,}（平均比{vs['ratio']}倍）", "inline": True},
+            {"name": "売買代金", "value": f"{liq['turnover_oku_yen']:.1f}億円", "inline": True},
             {"name": "安値圏シグナル", "value": "\n".join(lines) or "-", "inline": False},
+            {"name": "トレンド確認", "value": trend_line, "inline": False},
+            {"name": f"💰 リスク管理（口座残高¥{risk['balance_yen']:,}）", "value": risk_lines, "inline": False},
         ],
         "footer": {"text": f"jp_stock_alert | 判定時刻 {now_str}"},
     }
@@ -92,7 +118,7 @@ def send_signals(results_with_names: list[tuple], cfg: dict) -> None:
         if in_cooldown(state, code, cooldown_hours):
             print(f"[SKIP] {code} はクールダウン中のため通知しません")
             continue
-        embeds.append(build_embed(result, name))
+        embeds.append(build_embed(result, name, cfg))
         to_notify.append((code, result, name))
 
     if not embeds:
