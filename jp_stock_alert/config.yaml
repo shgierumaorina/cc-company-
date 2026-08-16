@@ -27,7 +27,7 @@ signal:
   volume_surge:
     avg_period_days: 20            # 平均出来高の算出期間（当日を除く直近営業日数）
     multiplier: 2.0                # 平均出来高の何倍で急増と判定するか（弱シグナルの下限）
-    strong_multiplier: 3.0         # 強シグナルの下限（この倍率以上で「強」候補）
+    strong_multiplier: 3.5         # 強シグナルの下限（この倍率以上で「強」候補）。2026-08-16バックテストで最良(64%勝率/平均+3.38%)のため3.0→3.5に引き上げ
     intraday_prorate: true         # ザラ場中は経過時間で按分補正する
     min_elapsed_minutes: 30        # 寄り付き直後は誤検知しやすいため按分判定自体をスキップする下限
   confirmation:
@@ -45,8 +45,8 @@ risk_management:
   account_balance_yen: 1000000      # 口座残高（円）。実際の残高に合わせて編集する
   risk_pct_min: 5.0                 # 1トレードの許容損失（残高比、下限）
   risk_pct_max: 8.0                 # 1トレードの許容損失（残高比、上限）
-  stop_loss_pct_min: 7.0            # 損切り幅（下限、タイトな損切り）
-  stop_loss_pct_max: 10.0           # 損切り幅（上限、ワイドな損切り）
+  stop_loss_pct_min: 9.0            # 損切り幅（下限、タイトな損切り）。2026-08-16バックテストで-10%が最良だったため7.0→9.0に引き上げ(レンジ表示は維持)
+  stop_loss_pct_max: 10.0           # 損切り幅（上限、ワイドな損切り）。バックテストの最良値と一致のため据え置き
   share_unit: 100                   # 単元株数（この単位で切り捨てる）
 
 notify:
