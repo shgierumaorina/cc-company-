@@ -26,14 +26,28 @@ signal:
     drawdown_pct: -15.0            # 直近lookback_days日の高値からの下落率がこれ以下
   volume_surge:
     avg_period_days: 20            # 平均出来高の算出期間（当日を除く直近営業日数）
-    multiplier: 2.0                # 平均出来高の何倍で急増と判定するか
+    multiplier: 2.0                # 平均出来高の何倍で急増と判定するか（弱シグナルの下限）
+    strong_multiplier: 3.0         # 強シグナルの下限（この倍率以上で「強」候補）
     intraday_prorate: true         # ザラ場中は経過時間で按分補正する
     min_elapsed_minutes: 30        # 寄り付き直後は誤検知しやすいため按分判定自体をスキップする下限
+  confirmation:
+    min_day_range_pct: 3.0         # 当日値幅(高値-安値)/前日終値がこれ未満なら見せかけ出来高として除外
+    bounce_lookback_days: 5        # 反発初動判定に使う直近安値の探索日数
+  liquidity:
+    min_turnover_oku_yen: 1.0      # 売買代金(現在値×当日出来高、億円換算)がこれ未満は除外
 
 market_hours:
   sessions:
     - ["09:00", "11:30"]
     - ["12:30", "15:00"]
+
+risk_management:
+  account_balance_yen: 1000000      # 口座残高（円）。実際の残高に合わせて編集する
+  risk_pct_min: 5.0                 # 1トレードの許容損失（残高比、下限）
+  risk_pct_max: 8.0                 # 1トレードの許容損失（残高比、上限）
+  stop_loss_pct_min: 7.0            # 損切り幅（下限、タイトな損切り）
+  stop_loss_pct_max: 10.0           # 損切り幅（上限、ワイドな損切り）
+  share_unit: 100                   # 単元株数（この単位で切り捨てる）
 
 notify:
   cooldown_hours: 24                # 同一銘柄・同日内の重複通知を防止

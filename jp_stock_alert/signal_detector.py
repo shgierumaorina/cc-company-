@@ -56,7 +56,7 @@ def _fetch_today_row_yfinance(code: str):
     last = recent.iloc[[-1]]
     if last.index[0].date() != datetime.now().date():
         return None
-    return last[["Close", "High", "Low", "Volume"]]
+    return last[["Open", "Close", "High", "Low", "Volume"]]
 
 
 def _fetch_history_jquants(code: str):
@@ -75,7 +75,7 @@ def _fetch_history_jquants(code: str):
     for q in quotes:
         if q.get("Close") is None:
             continue  # 権利落ち等で当日欠測の日はスキップ
-        rows.append({"Date": pd.to_datetime(q["Date"]), "Close": q["Close"],
+        rows.append({"Date": pd.to_datetime(q["Date"]), "Open": q["Open"], "Close": q["Close"],
                       "High": q["High"], "Low": q["Low"], "Volume": q["Volume"]})
     if not rows:
         return None
@@ -178,6 +178,7 @@ def check_volume_surge(hist, cfg: dict, now: datetime = None) -> dict:
 
     ratio = today_vol / avg_vol if avg_vol else None
     passed = bool(ratio is not None and ratio >= vs["multiplier"])
+    strong_passed = bool(ratio is not None and ratio >= vs["strong_multiplier"])
 
     return {
         "today_volume": int(today_vol),
@@ -185,7 +186,83 @@ def check_volume_surge(hist, cfg: dict, now: datetime = None) -> dict:
         "ratio": round(ratio, 2) if ratio is not None else None,
         "prorated": prorated,
         "passed": passed,
+        "strong_passed": strong_passed,
     }
+
+
+def check_liquidity(hist, cfg: dict) -> dict:
+    """売買代金(現在値×当日出来高)が閾値未満の薄商い銘柄を除外する。
+    約定・損切り執行のリスクが高いため、強弱シグナルを問わずハード除外の対象とする。
+    """
+    liq = cfg["signal"]["liquidity"]
+    price = hist["Close"].iloc[-1]
+    today_vol = hist["Volume"].iloc[-1]
+    turnover_oku_yen = price * today_vol / 1e8
+    return {
+        "turnover_oku_yen": round(turnover_oku_yen, 2),
+        "passed": bool(turnover_oku_yen >= liq["min_turnover_oku_yen"]),
+    }
+
+
+def check_confirmation(hist, cfg: dict) -> dict:
+    """出来高急増が値動きを伴う本物のシグナルかを確認する。
+    - bullish: 当日が陽線(始値<終値)
+    - meaningful_move: 当日値幅が前日終値比で一定以上(見せかけ出来高の除外)
+    - trend_confirm: MA25/MA75の上抜け、または直近安値からの反発初動
+    """
+    conf = cfg["signal"]["confirmation"]
+    opens, closes = hist["Open"], hist["Close"]
+    highs, lows = hist["High"], hist["Low"]
+
+    today_open, today_close = opens.iloc[-1], closes.iloc[-1]
+    today_high, today_low = highs.iloc[-1], lows.iloc[-1]
+    prev_close = closes.iloc[-2] if len(closes) >= 2 else None
+
+    bullish = bool(today_open < today_close)
+
+    day_range_pct = None
+    meaningful_move = False
+    if prev_close and prev_close > 0:
+        day_range_pct = (today_high - today_low) / prev_close * 100
+        meaningful_move = bool(day_range_pct >= conf["min_day_range_pct"])
+
+    ma_cross_up = False
+    for period in (25, 75):
+        if len(closes) >= period + 1:
+            ma_today = closes.rolling(period).mean().iloc[-1]
+            ma_prev = closes.rolling(period).mean().iloc[-2]
+            if closes.iloc[-2] <= ma_prev and today_close > ma_today:
+                ma_cross_up = True
+                break
+
+    n = conf["bounce_lookback_days"]
+    bounce_from_low = False
+    if len(lows) > n:
+        recent_low = lows.iloc[-(n + 1):-1].min()
+        bounce_from_low = bool(today_close > recent_low and bullish)
+
+    trend_confirm = ma_cross_up or bounce_from_low
+
+    return {
+        "bullish": bullish,
+        "day_range_pct": round(day_range_pct, 2) if day_range_pct is not None else None,
+        "meaningful_move": meaningful_move,
+        "fake_volume": not meaningful_move,
+        "ma_cross_up": ma_cross_up,
+        "bounce_from_low": bounce_from_low,
+        "trend_confirm": trend_confirm,
+    }
+
+
+def classify_strength(low_price: dict, volume_surge: dict, liquidity: dict, confirmation: dict) -> str | None:
+    """4種の判定結果から強/弱/シグナルなしを決める共通ロジック。
+    backtest.py も同じ判定式を使うためここに切り出している(判定ロジックの重複・乖離を防ぐ)。
+    """
+    core_ok = (low_price["passed"] and volume_surge["passed"]
+               and liquidity["passed"] and not confirmation["fake_volume"])
+    strong_ok = (core_ok and volume_surge["strong_passed"]
+                 and confirmation["bullish"] and confirmation["trend_confirm"])
+    return "strong" if strong_ok else "weak" if core_ok else None
 
 
 def evaluate(code: str, cfg: dict, now: datetime = None) -> dict | None:
@@ -194,12 +271,19 @@ def evaluate(code: str, cfg: dict, now: datetime = None) -> dict | None:
         return None
     low_price = check_low_price(hist, cfg)
     volume_surge = check_volume_surge(hist, cfg, now)
+    liquidity = check_liquidity(hist, cfg)
+    confirmation = check_confirmation(hist, cfg)
+    strength = classify_strength(low_price, volume_surge, liquidity, confirmation)
+
     return {
         "code": code,
         "price": low_price["price"],
         "low_price": low_price,
         "volume_surge": volume_surge,
-        "signal": low_price["passed"] and volume_surge["passed"],
+        "liquidity": liquidity,
+        "confirmation": confirmation,
+        "strength": strength,
+        "signal": strength is not None,
     }
 
 
