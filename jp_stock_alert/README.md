@@ -17,7 +17,9 @@ jp_stock_alert/
 ├── rescreen.py              # 優良銘柄マスタの再選定バッチ（デフォルト母集団=日経225）
 ├── jquants_client.py        # J-Quants APIクライアント（未検証、下記参照）
 ├── signal_detector.py       # 安値圏×出来高急増の判定（単体実行可）
-├── notifier.py                # Discord Webhook通知 + 当日重複防止
+├── notifier.py                # Discord Webhook通知 + 当日重複防止 + notified_log.tsvへの通知記録
+├── notified_log.tsv           # 通知履歴（日時・コード・銘柄名・通知価格・強弱、追記専用）
+├── followup_report.py         # 通知済み銘柄のフォローアップ（複数ホライズンのリターン集計、手動実行）
 ├── check_signals.py          # 1回分のチェック実行（タスクスケジューラから呼ぶ）
 └── watch.py                   # 常駐ループ版
 ```
@@ -45,6 +47,11 @@ python check_signals.py
 
 # 4. 常駐ループ（タスクスケジューラを使わない場合）
 python watch.py
+
+# 5. 通知済み銘柄のフォローアップ（翌日〜5営業日後・2週間後のリターンを集計、手動実行）
+python followup_report.py
+# 遡る日数を指定: python followup_report.py --days 30
+# Discord通知を送らずコンソール表示とObsidian記録のみ: python followup_report.py --no-notify
 
 # 各モジュール単体テスト
 python irbank_client.py 7203
