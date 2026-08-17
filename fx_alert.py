@@ -46,7 +46,7 @@ def log(msg: str):
 
 
 # --- グローバル設定 ---
-DISCORD_WEBHOOK_URL = get_secret("DISCORD_WEBHOOK_URL")
+DISCORD_WEBHOOK_URL = get_secret("DISCORD_WEBHOOK_URL_FX")
 
 RSI_PERIOD = 14
 MACD_FAST = 12

@@ -121,9 +121,9 @@ def build_discord_content(results: list[dict], days: int) -> str:
 
 
 def send_discord_report(results: list[dict], days: int) -> None:
-    webhook_url = get_secret("DISCORD_WEBHOOK_URL")
+    webhook_url = get_secret("DISCORD_WEBHOOK_URL_KABU")
     if not webhook_url:
-        print("[ERROR] DISCORD_WEBHOOK_URL が設定されていません（リポジトリ直下の.envを確認）")
+        print("[ERROR] DISCORD_WEBHOOK_URL_KABU が設定されていません（リポジトリ直下の.envを確認）")
         return
     content = build_discord_content(results, days)
     resp = requests.post(webhook_url, json={"content": content}, timeout=30)

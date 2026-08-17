@@ -5,7 +5,7 @@
   --mode value     割安高配当 厳選10         … 毎日17:00 (cc-value-picks)
   --mode bottom    底値反転確認 厳選10       … 毎日18:00 (cc-bottom-picks)
   --mode volsurge  出来高急増 上位40(場中)   … 平日 9:30 (cc-volsurge-picks) ※成績不振で通知停止中
-  --mode higherlow 底値切り上げ 上位20(場中) … 平日10:00 (cc-higherlow-picks) ★
+  --mode higherlow 底値切り上げ 上位20(場中) … 平日9:00-15:30 30分おき (cc-higherlow-picks) ★
   --mode macro     朝の地合い予報            … 平日 7:30 (cc-macro-report) ★
   --mode gap       寄りギャップ 上位20       … 平日 9:20 (cc-gap-picks) ★
   --mode closestrong 引け強銘柄 上位20       … 平日15:50 (cc-closestrong-picks) ★
@@ -39,14 +39,14 @@ sys.path.insert(0, ROOT)
 from envutil import get_secret
 
 # stock-screener.py と同じ株アラート用チャンネル
-DISCORD_WEBHOOK_URL = get_secret("DISCORD_WEBHOOK_URL")
+DISCORD_WEBHOOK_URL = get_secret("DISCORD_WEBHOOK_URL_KABU")
 
 MODES = {
     "surge":     {"top": 20, "emoji": "📊", "title": "急騰候補 上位20"},
     "value":     {"top": 10, "emoji": "💰", "title": "割安高配当 厳選10"},
     "bottom":    {"top": 10, "emoji": "🔄", "title": "底値反転 厳選10"},
     "volsurge":  {"top": 40, "emoji": "⚡", "title": "出来高急増 上位40（9:30時点）"},
-    "higherlow": {"top": 20, "emoji": "📈", "title": "底値切り上げ 上位20（10:00時点）"},
+    "higherlow": {"top": 20, "emoji": "📈", "title": "底値切り上げ 上位20"},
     "macro":     {"top": 0,  "emoji": "🌅", "title": "朝の地合い予報"},
     "gap":       {"top": 20, "emoji": "🌄", "title": "寄りギャップ 上位20"},
     "closestrong": {"top": 20, "emoji": "🔒", "title": "引け強銘柄 上位20"},

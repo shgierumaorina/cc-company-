@@ -114,11 +114,11 @@ def build_embed(result: dict, name: str, cfg: dict) -> dict:
 
 def send_signals(results_with_names: list[tuple], cfg: dict) -> None:
     """results_with_names: [(signal_detector.evaluate結果, 銘柄名), ...]
-    クールダウン判定・送信・state更新を行う。DISCORD_WEBHOOK_URL未設定時は送信せずログのみ出す。
+    クールダウン判定・送信・state更新を行う。DISCORD_WEBHOOK_URL_KABU未設定時は送信せずログのみ出す。
     """
-    webhook_url = get_secret("DISCORD_WEBHOOK_URL")
+    webhook_url = get_secret("DISCORD_WEBHOOK_URL_KABU")
     if not webhook_url:
-        print("[ERROR] DISCORD_WEBHOOK_URL が設定されていません（リポジトリ直下の.envを確認）")
+        print("[ERROR] DISCORD_WEBHOOK_URL_KABU が設定されていません（リポジトリ直下の.envを確認）")
         return
 
     cooldown_hours = cfg["notify"]["cooldown_hours"]

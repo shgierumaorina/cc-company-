@@ -31,7 +31,7 @@ def now_jst() -> datetime:
     """Renderのコンテナ時計はUTCのため、JSTの壁時計時刻を返す（tzinfoなし）"""
     return datetime.utcnow() + JST_OFFSET
 
-DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "")
+DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL_FX", "")
 TICKER = "MXNJPY=X"
 HOLD_PRICE_DROP = 0.01        # 放置ポジション エントリーから0.01下落でアラート
 INCOME_STOP_LOSS = -500       # 利益取りポジション 損切りアラート（円）
@@ -77,7 +77,7 @@ def get_price() -> float:
 
 def send_discord(message: str) -> bool:
     if not DISCORD_WEBHOOK_URL:
-        print("[WARN] DISCORD_WEBHOOK_URL が未設定です")
+        print("[WARN] DISCORD_WEBHOOK_URL_FX が未設定です")
         return False
     try:
         res = requests.post(DISCORD_WEBHOOK_URL, json={"content": message}, timeout=10)
