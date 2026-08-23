@@ -221,5 +221,76 @@
   </dialog>
 
   <div id="toast-container"></div>
+
+<script>
+const API_BASE = 'http://localhost:3000';
+const agentsById = new Map();
+const cardElementsById = new Map();
+
+function formatElapsed(sec) {
+  if (sec < 60) return `${sec}秒前`;
+  if (sec < 3600) return `${Math.floor(sec / 60)}分前`;
+  return `${Math.floor(sec / 3600)}時間前`;
+}
+
+function computeElapsedSec(agent) {
+  const changedAt = new Date(agent.lastChangedAt).getTime();
+  return Math.max(0, Math.floor((Date.now() - changedAt) / 1000));
+}
+
+function renderAgentCard(agent) {
+  const template = document.getElementById('agent-card-template');
+  const card = template.content.cloneNode(true).querySelector('.agent-card');
+  updateAgentCard(card, agent);
+  card.querySelector('.agent-output-preview').addEventListener('click', () => openOutputModal(agent.id));
+  return card;
+}
+
+function updateAgentCard(cardEl, agent) {
+  cardEl.dataset.agentId = agent.id;
+  cardEl.querySelector('.agent-name').textContent = agent.name;
+  const badge = cardEl.querySelector('.status-badge');
+  badge.textContent = agent.status;
+  badge.className = `status-badge ${agent.status}`;
+  cardEl.querySelector('.agent-output-preview').textContent = agent.lastOutputPreview || '(出力なし)';
+  cardEl.querySelector('.agent-elapsed').textContent = formatElapsed(computeElapsedSec(agent));
+}
+
+function upsertCard(agent) {
+  agentsById.set(agent.id, agent);
+  let card = cardElementsById.get(agent.id);
+  if (!card) {
+    card = renderAgentCard(agent);
+    cardElementsById.set(agent.id, card);
+    document.getElementById('agent-grid').appendChild(card);
+  } else {
+    updateAgentCard(card, agent);
+  }
+}
+
+async function loadInitialAgents() {
+  try {
+    const res = await fetch(`${API_BASE}/api/agents`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const body = await res.json();
+    body.agents.forEach(upsertCard);
+    document.getElementById('load-error').style.display = 'none';
+  } catch (err) {
+    const el = document.getElementById('load-error');
+    el.textContent = `バックエンドに接続できません（${API_BASE}）: ${err.message}`;
+    el.style.display = 'block';
+  }
+}
+
+setInterval(() => {
+  cardElementsById.forEach((card, id) => {
+    const agent = agentsById.get(id);
+    if (!agent) return;
+    card.querySelector('.agent-elapsed').textContent = formatElapsed(computeElapsedSec(agent));
+  });
+}, 1000);
+
+loadInitialAgents();
+</script>
 </body>
 </html>
