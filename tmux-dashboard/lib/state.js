@@ -20,7 +20,7 @@ function formatAgentSummary(id, data, now) {
   return {
     id,
     name: data.name,
-    session: data.session,
+    cwd: data.cwd,
     status: data.status,
     lastOutputPreview: preview,
     lastChangedAt: data.lastChangedAt.toISOString(),
