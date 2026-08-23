@@ -1,0 +1,19 @@
+{
+  "name": "tmux-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "tmuxで並行実行しているエージェントセッションの監視・操作API/WebSocketサーバー",
+  "main": "server.js",
+  "type": "commonjs",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "serve": "node serve.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "ws": "^8.18.0"
+  }
+}

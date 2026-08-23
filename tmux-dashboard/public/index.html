@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tmux エージェント監視ダッシュボード</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0f0f1a;
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 24px;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #a78bfa;
+    letter-spacing: -0.02em;
+  }
+  #connection-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: #94a3b8;
+  }
+  #connection-status .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #f87171;
+  }
+  #connection-status.connected .dot { background: #4ade80; }
+  #connection-status.connected .label::after { content: '接続中'; }
+  #connection-status:not(.connected) .label::after { content: '切断・再接続中'; }
+
+  .broadcast-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    background: #1e1e2e;
+    border: 1px solid #2d2d44;
+    border-radius: 12px;
+    padding: 12px 16px;
+  }
+  .broadcast-bar input {
+    flex: 1;
+    background: #0f0f1a;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    color: #e2e8f0;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+  button {
+    background: #a78bfa;
+    color: #0f0f1a;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  #agent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .agent-card {
+    background: #1e1e2e;
+    border: 1px solid #2d2d44;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .agent-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .agent-name { font-weight: 600; font-size: 1rem; }
+  .status-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 3px 10px;
+    border-radius: 999px;
+    color: #0f0f1a;
+  }
+  .status-badge.working { background: #4ade80; }
+  .status-badge.waiting_input { background: #facc15; }
+  .status-badge.idle { background: #94a3b8; }
+  .status-badge.stale { background: #fb923c; }
+  .status-badge.not_running { background: #475569; color: #cbd5e1; }
+  .status-badge.unresponsive { background: #f87171; }
+
+  .agent-output-preview {
+    background: #0f0f1a;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-family: 'Consolas', monospace;
+    font-size: 0.78rem;
+    color: #94a3b8;
+    white-space: pre-wrap;
+    max-height: 90px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .agent-elapsed { font-size: 0.75rem; color: #64748b; }
+
+  .agent-send-row { display: flex; gap: 8px; }
+  .agent-send-row input {
+    flex: 1;
+    background: #0f0f1a;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    color: #e2e8f0;
+    padding: 6px 10px;
+    font-size: 0.82rem;
+  }
+  .agent-send-feedback { font-size: 0.72rem; min-height: 1em; }
+  .agent-send-feedback.ok { color: #4ade80; }
+  .agent-send-feedback.error { color: #f87171; }
+
+  dialog#output-modal {
+    background: #1e1e2e;
+    color: #e2e8f0;
+    border: 1px solid #2d2d44;
+    border-radius: 12px;
+    padding: 20px;
+    width: min(700px, 90vw);
+    max-height: 80vh;
+  }
+  dialog#output-modal::backdrop { background: rgba(0,0,0,0.6); }
+  #output-modal-body {
+    font-family: 'Consolas', monospace;
+    font-size: 0.8rem;
+    white-space: pre-wrap;
+    overflow-y: auto;
+    max-height: 55vh;
+    margin: 12px 0;
+  }
+
+  #toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .toast {
+    background: #1e1e2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 0.82rem;
+  }
+  .toast.error { border-color: #f87171; color: #fca5a5; }
+
+  #load-error {
+    background: #1e1e2e;
+    border: 1px solid #f87171;
+    color: #fca5a5;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: none;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>tmux エージェント監視ダッシュボード</h1>
+    <div id="connection-status"><span class="dot"></span><span class="label"></span></div>
+  </header>
+
+  <div id="load-error"></div>
+
+  <div class="broadcast-bar">
+    <input type="text" id="broadcast-input" placeholder="全エージェントへの指示を入力...">
+    <button id="broadcast-button">全員に送信</button>
+  </div>
+
+  <div id="agent-grid"></div>
+
+  <template id="agent-card-template">
+    <div class="agent-card">
+      <div class="agent-card-header">
+        <span class="agent-name"></span>
+        <span class="status-badge"></span>
+      </div>
+      <pre class="agent-output-preview"></pre>
+      <div class="agent-elapsed"></div>
+      <div class="agent-send-row">
+        <input type="text" class="agent-send-input" placeholder="指示を入力...">
+        <button class="agent-send-button">送信</button>
+      </div>
+      <div class="agent-send-feedback"></div>
+    </div>
+  </template>
+
+  <dialog id="output-modal">
+    <strong id="output-modal-title"></strong>
+    <div id="output-modal-body"></div>
+    <button id="output-modal-close">閉じる</button>
+  </dialog>
+
+  <div id="toast-container"></div>
+
+<script>
+const API_BASE = 'http://localhost:3000';
+const agentsById = new Map();
+const cardElementsById = new Map();
+
+function formatElapsed(sec) {
+  if (sec < 60) return `${sec}秒前`;
+  if (sec < 3600) return `${Math.floor(sec / 60)}分前`;
+  return `${Math.floor(sec / 3600)}時間前`;
+}
+
+function computeElapsedSec(agent) {
+  const changedAt = new Date(agent.lastChangedAt).getTime();
+  return Math.max(0, Math.floor((Date.now() - changedAt) / 1000));
+}
+
+function renderAgentCard(agent) {
+  const template = document.getElementById('agent-card-template');
+  const card = template.content.cloneNode(true).querySelector('.agent-card');
+  updateAgentCard(card, agent);
+  card.querySelector('.agent-output-preview').addEventListener('click', () => openOutputModal(agent.id));
+
+  const sendInput = card.querySelector('.agent-send-input');
+  const sendButton = card.querySelector('.agent-send-button');
+  const feedback = card.querySelector('.agent-send-feedback');
+
+  async function sendToAgent() {
+    const text = sendInput.value.trim();
+    if (!text) return;
+    sendButton.disabled = true;
+    feedback.textContent = '';
+    feedback.className = 'agent-send-feedback';
+    try {
+      const res = await fetch(`${API_BASE}/api/agents/${encodeURIComponent(agent.id)}/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      });
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error || `HTTP ${res.status}`);
+      feedback.textContent = '送信しました';
+      feedback.className = 'agent-send-feedback ok';
+      sendInput.value = '';
+    } catch (err) {
+      feedback.textContent = err.message;
+      feedback.className = 'agent-send-feedback error';
+    } finally {
+      sendButton.disabled = false;
+      setTimeout(() => { feedback.textContent = ''; feedback.className = 'agent-send-feedback'; }, 3000);
+    }
+  }
+
+  sendButton.addEventListener('click', sendToAgent);
+  sendInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') sendToAgent();
+  });
+
+  return card;
+}
+
+function updateAgentCard(cardEl, agent) {
+  cardEl.dataset.agentId = agent.id;
+  cardEl.querySelector('.agent-name').textContent = agent.name;
+  const badge = cardEl.querySelector('.status-badge');
+  badge.textContent = agent.status;
+  badge.className = `status-badge ${agent.status}`;
+  cardEl.querySelector('.agent-output-preview').textContent = agent.lastOutputPreview || '(出力なし)';
+  cardEl.querySelector('.agent-elapsed').textContent = formatElapsed(computeElapsedSec(agent));
+}
+
+function upsertCard(agent) {
+  agentsById.set(agent.id, agent);
+  let card = cardElementsById.get(agent.id);
+  if (!card) {
+    card = renderAgentCard(agent);
+    cardElementsById.set(agent.id, card);
+    document.getElementById('agent-grid').appendChild(card);
+  } else {
+    updateAgentCard(card, agent);
+  }
+}
+
+async function loadInitialAgents() {
+  try {
+    const res = await fetch(`${API_BASE}/api/agents`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const body = await res.json();
+    body.agents.forEach(upsertCard);
+    document.getElementById('load-error').style.display = 'none';
+  } catch (err) {
+    const el = document.getElementById('load-error');
+    el.textContent = `バックエンドに接続できません（${API_BASE}）: ${err.message}`;
+    el.style.display = 'block';
+  }
+}
+
+setInterval(() => {
+  cardElementsById.forEach((card, id) => {
+    const agent = agentsById.get(id);
+    if (!agent) return;
+    card.querySelector('.agent-elapsed').textContent = formatElapsed(computeElapsedSec(agent));
+  });
+}, 1000);
+
+loadInitialAgents();
+</script>
+
+<script>
+function setConnectionStatus(connected) {
+  const el = document.getElementById('connection-status');
+  el.classList.toggle('connected', connected);
+}
+
+function connectWebSocket() {
+  const wsUrl = API_BASE.replace(/^http/, 'ws') + '/ws';
+  const ws = new WebSocket(wsUrl);
+
+  ws.onopen = () => setConnectionStatus(true);
+
+  ws.onmessage = (event) => {
+    const msg = JSON.parse(event.data);
+    if (msg.type === 'snapshot' || msg.type === 'update') {
+      msg.agents.forEach(upsertCard);
+    }
+  };
+
+  ws.onclose = () => {
+    setConnectionStatus(false);
+    setTimeout(connectWebSocket, 2000);
+  };
+
+  ws.onerror = () => ws.close();
+}
+
+connectWebSocket();
+</script>
+
+<script>
+async function openOutputModal(agentId) {
+  const modal = document.getElementById('output-modal');
+  const agent = agentsById.get(agentId);
+  document.getElementById('output-modal-title').textContent = agent ? agent.name : agentId;
+  document.getElementById('output-modal-body').textContent = '読み込み中...';
+  modal.showModal();
+
+  try {
+    const res = await fetch(`${API_BASE}/api/agents/${encodeURIComponent(agentId)}/output`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const body = await res.json();
+    document.getElementById('output-modal-body').textContent = body.output || '(出力なし)';
+  } catch (err) {
+    document.getElementById('output-modal-body').textContent = `取得に失敗しました: ${err.message}`;
+  }
+}
+
+document.getElementById('output-modal-close').addEventListener('click', () => {
+  document.getElementById('output-modal').close();
+});
+</script>
+
+<script>
+function showToast(message, isError) {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast${isError ? ' error' : ''}`;
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+document.getElementById('broadcast-button').addEventListener('click', async () => {
+  const input = document.getElementById('broadcast-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const button = document.getElementById('broadcast-button');
+  button.disabled = true;
+  try {
+    const res = await fetch(`${API_BASE}/api/agents/broadcast`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text }),
+    });
+    const body = await res.json();
+    const okCount = body.results.filter((r) => r.ok).length;
+    const failCount = body.results.length - okCount;
+    showToast(`一斉送信: 成功${okCount}件 / 失敗${failCount}件`, failCount > 0);
+    input.value = '';
+  } catch (err) {
+    showToast(`一斉送信に失敗しました: ${err.message}`, true);
+  } finally {
+    button.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
