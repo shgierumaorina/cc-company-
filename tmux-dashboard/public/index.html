@@ -243,6 +243,42 @@ function renderAgentCard(agent) {
   const card = template.content.cloneNode(true).querySelector('.agent-card');
   updateAgentCard(card, agent);
   card.querySelector('.agent-output-preview').addEventListener('click', () => openOutputModal(agent.id));
+
+  const sendInput = card.querySelector('.agent-send-input');
+  const sendButton = card.querySelector('.agent-send-button');
+  const feedback = card.querySelector('.agent-send-feedback');
+
+  async function sendToAgent() {
+    const text = sendInput.value.trim();
+    if (!text) return;
+    sendButton.disabled = true;
+    feedback.textContent = '';
+    feedback.className = 'agent-send-feedback';
+    try {
+      const res = await fetch(`${API_BASE}/api/agents/${encodeURIComponent(agent.id)}/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      });
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error || `HTTP ${res.status}`);
+      feedback.textContent = '送信しました';
+      feedback.className = 'agent-send-feedback ok';
+      sendInput.value = '';
+    } catch (err) {
+      feedback.textContent = err.message;
+      feedback.className = 'agent-send-feedback error';
+    } finally {
+      sendButton.disabled = false;
+      setTimeout(() => { feedback.textContent = ''; feedback.className = 'agent-send-feedback'; }, 3000);
+    }
+  }
+
+  sendButton.addEventListener('click', sendToAgent);
+  sendInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') sendToAgent();
+  });
+
   return card;
 }
 
@@ -343,6 +379,41 @@ async function openOutputModal(agentId) {
 
 document.getElementById('output-modal-close').addEventListener('click', () => {
   document.getElementById('output-modal').close();
+});
+</script>
+
+<script>
+function showToast(message, isError) {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast${isError ? ' error' : ''}`;
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+document.getElementById('broadcast-button').addEventListener('click', async () => {
+  const input = document.getElementById('broadcast-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const button = document.getElementById('broadcast-button');
+  button.disabled = true;
+  try {
+    const res = await fetch(`${API_BASE}/api/agents/broadcast`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text }),
+    });
+    const body = await res.json();
+    const okCount = body.results.filter((r) => r.ok).length;
+    const failCount = body.results.length - okCount;
+    showToast(`一斉送信: 成功${okCount}件 / 失敗${failCount}件`, failCount > 0);
+    input.value = '';
+  } catch (err) {
+    showToast(`一斉送信に失敗しました: ${err.message}`, true);
+  } finally {
+    button.disabled = false;
+  }
 });
 </script>
 </body>
