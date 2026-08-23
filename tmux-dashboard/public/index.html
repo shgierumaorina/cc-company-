@@ -292,5 +292,35 @@ setInterval(() => {
 
 loadInitialAgents();
 </script>
+
+<script>
+function setConnectionStatus(connected) {
+  const el = document.getElementById('connection-status');
+  el.classList.toggle('connected', connected);
+}
+
+function connectWebSocket() {
+  const wsUrl = API_BASE.replace(/^http/, 'ws') + '/ws';
+  const ws = new WebSocket(wsUrl);
+
+  ws.onopen = () => setConnectionStatus(true);
+
+  ws.onmessage = (event) => {
+    const msg = JSON.parse(event.data);
+    if (msg.type === 'snapshot' || msg.type === 'update') {
+      msg.agents.forEach(upsertCard);
+    }
+  };
+
+  ws.onclose = () => {
+    setConnectionStatus(false);
+    setTimeout(connectWebSocket, 2000);
+  };
+
+  ws.onerror = () => ws.close();
+}
+
+connectWebSocket();
+</script>
 </body>
 </html>
