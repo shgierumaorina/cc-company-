@@ -8,7 +8,8 @@
   "engines": { "node": ">=18" },
   "scripts": {
     "start": "node server.js",
-    "test": "node --test"
+    "test": "node --test",
+    "serve": "node serve.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
