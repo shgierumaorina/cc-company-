@@ -322,5 +322,28 @@ function connectWebSocket() {
 
 connectWebSocket();
 </script>
+
+<script>
+async function openOutputModal(agentId) {
+  const modal = document.getElementById('output-modal');
+  const agent = agentsById.get(agentId);
+  document.getElementById('output-modal-title').textContent = agent ? agent.name : agentId;
+  document.getElementById('output-modal-body').textContent = '読み込み中...';
+  modal.showModal();
+
+  try {
+    const res = await fetch(`${API_BASE}/api/agents/${encodeURIComponent(agentId)}/output`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const body = await res.json();
+    document.getElementById('output-modal-body').textContent = body.output || '(出力なし)';
+  } catch (err) {
+    document.getElementById('output-modal-body').textContent = `取得に失敗しました: ${err.message}`;
+  }
+}
+
+document.getElementById('output-modal-close').addEventListener('click', () => {
+  document.getElementById('output-modal').close();
+});
+</script>
 </body>
 </html>
