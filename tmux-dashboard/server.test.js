@@ -4,22 +4,22 @@ const WebSocket = require('ws');
 const { createApp, attachWebSocketServer } = require('./server');
 const { createState } = require('./lib/state');
 
-function setupApp({ sessions = [], captureOutput = 'hello', sendKeysError = null } = {}) {
+function setupApp({ writeError = null } = {}) {
   const state = createState();
-  state.setAgent('agent1', { name: 'A', session: 'cc-agent1', status: 'working', rawOutput: 'hello\nworld', lastChangedAt: new Date() });
-  const tmux = {
-    listSessions: async () => sessions,
-    capturePane: async () => captureOutput,
-    sendKeys: async () => {
-      if (sendKeysError) throw new Error(sendKeysError);
+  state.setAgent('agent1', { name: 'A', cwd: 'C:\\proj1', status: 'working', rawOutput: 'hello\nworld', lastChangedAt: new Date() });
+  const writeCalls = [];
+  const manager = {
+    sendToAgent: (id, text) => {
+      if (writeError) throw new Error(writeError);
+      writeCalls.push({ id, text });
     },
   };
   const agentsConfig = [
-    { id: 'agent1', name: 'A', session: 'cc-agent1' },
-    { id: 'agent2', name: 'B', session: 'cc-agent2' },
+    { id: 'agent1', name: 'A', cwd: 'C:\\proj1' },
+    { id: 'agent2', name: 'B', cwd: 'C:\\proj2' },
   ];
-  const app = createApp({ state, tmux, agentsConfig });
-  return { app, state };
+  const app = createApp({ state, manager, agentsConfig });
+  return { app, state, writeCalls };
 }
 
 test('GET /api/agents returns all agents with summary fields', async () => {
@@ -30,7 +30,7 @@ test('GET /api/agents returns all agents with summary fields', async () => {
     const res = await fetch(`http://localhost:${port}/api/agents`);
     assert.strictEqual(res.status, 200);
     const body = await res.json();
-    assert.strictEqual(body.agents.length, 1); // agent2は未ポーリングなのでstateに無い→一覧には出さない
+    assert.strictEqual(body.agents.length, 1); // agent2は未spawn扱いなのでstateに無い→一覧には出さない
     assert.strictEqual(body.agents[0].id, 'agent1');
     assert.strictEqual(body.agents[0].status, 'working');
   } finally {
@@ -38,7 +38,7 @@ test('GET /api/agents returns all agents with summary fields', async () => {
   }
 });
 
-test('GET /api/agents/:id/output returns full output for known id', async () => {
+test('GET /api/agents/:id/output returns full output and cwd for known id', async () => {
   const { app } = setupApp();
   const server = app.listen(0);
   const { port } = server.address();
@@ -47,6 +47,7 @@ test('GET /api/agents/:id/output returns full output for known id', async () => 
     assert.strictEqual(res.status, 200);
     const body = await res.json();
     assert.strictEqual(body.output, 'hello\nworld');
+    assert.strictEqual(body.cwd, 'C:\\proj1');
   } finally {
     server.close();
   }
@@ -64,8 +65,8 @@ test('GET /api/agents/:id/output returns 404 for unknown id', async () => {
   }
 });
 
-test('POST /api/agents/:id/send sends text and returns ok', async () => {
-  const { app } = setupApp();
+test('POST /api/agents/:id/send writes text via manager and returns ok', async () => {
+  const { app, writeCalls } = setupApp();
   const server = app.listen(0);
   const { port } = server.address();
   try {
@@ -78,6 +79,8 @@ test('POST /api/agents/:id/send sends text and returns ok', async () => {
     const body = await res.json();
     assert.strictEqual(body.ok, true);
     assert.strictEqual(body.id, 'agent1');
+    assert.strictEqual(writeCalls.length, 1);
+    assert.strictEqual(writeCalls[0].text, 'hello agent');
   } finally {
     server.close();
   }
@@ -116,7 +119,7 @@ test('POST /api/agents/:id/send returns 404 for unknown id', async () => {
 });
 
 test('POST /api/agents/broadcast sends to all configured agents and reports per-agent result', async () => {
-  const { app } = setupApp({ sendKeysError: null });
+  const { app } = setupApp();
   const server = app.listen(0);
   const { port } = server.address();
   try {
@@ -139,8 +142,8 @@ test('WebSocket /ws sends a snapshot on connect', async () => {
   const server = app.listen(0);
   const { port } = server.address();
   const agentsConfig = [
-    { id: 'agent1', name: 'A', session: 'cc-agent1' },
-    { id: 'agent2', name: 'B', session: 'cc-agent2' },
+    { id: 'agent1', name: 'A', cwd: 'C:\\proj1' },
+    { id: 'agent2', name: 'B', cwd: 'C:\\proj2' },
   ];
   try {
     attachWebSocketServer({ httpServer: server, state, agentsConfig });
@@ -161,7 +164,7 @@ test('broadcastUpdate pushes an update message with only changed agents', async 
   const { app, state } = setupApp();
   const server = app.listen(0);
   const { port } = server.address();
-  const agentsConfig = [{ id: 'agent1', name: 'A', session: 'cc-agent1' }];
+  const agentsConfig = [{ id: 'agent1', name: 'A', cwd: 'C:\\proj1' }];
 
   try {
     const { broadcastUpdate } = attachWebSocketServer({ httpServer: server, state, agentsConfig });
