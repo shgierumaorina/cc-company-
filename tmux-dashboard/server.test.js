@@ -1,6 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert');
-const { createApp } = require('./server');
+const WebSocket = require('ws');
+const { createApp, attachWebSocketServer } = require('./server');
 const { createState } = require('./lib/state');
 
 function setupApp({ sessions = [], captureOutput = 'hello', sendKeysError = null } = {}) {
@@ -128,6 +129,58 @@ test('POST /api/agents/broadcast sends to all configured agents and reports per-
     const body = await res.json();
     assert.strictEqual(body.ok, true);
     assert.strictEqual(body.results.length, 2);
+  } finally {
+    server.close();
+  }
+});
+
+test('WebSocket /ws sends a snapshot on connect', async () => {
+  const { app, state } = setupApp();
+  const server = app.listen(0);
+  const { port } = server.address();
+  const agentsConfig = [
+    { id: 'agent1', name: 'A', session: 'cc-agent1' },
+    { id: 'agent2', name: 'B', session: 'cc-agent2' },
+  ];
+  try {
+    attachWebSocketServer({ httpServer: server, state, agentsConfig });
+    const ws = new WebSocket(`ws://localhost:${port}/ws`);
+    const message = await new Promise((resolve, reject) => {
+      ws.on('message', (data) => resolve(JSON.parse(data.toString())));
+      ws.on('error', reject);
+    });
+    assert.strictEqual(message.type, 'snapshot');
+    assert.strictEqual(message.agents.length, 1);
+    ws.close();
+  } finally {
+    server.close();
+  }
+});
+
+test('broadcastUpdate pushes an update message with only changed agents', async () => {
+  const { app, state } = setupApp();
+  const server = app.listen(0);
+  const { port } = server.address();
+  const agentsConfig = [{ id: 'agent1', name: 'A', session: 'cc-agent1' }];
+
+  try {
+    const { broadcastUpdate } = attachWebSocketServer({ httpServer: server, state, agentsConfig });
+    const ws = new WebSocket(`ws://localhost:${port}/ws`);
+    await new Promise((resolve, reject) => {
+      ws.on('message', () => resolve()); // snapshot受信を待つ
+      ws.on('error', reject);
+    });
+
+    const updatePromise = new Promise((resolve, reject) => {
+      ws.on('message', (data) => resolve(JSON.parse(data.toString())));
+      ws.on('error', reject);
+    });
+    broadcastUpdate(['agent1']);
+    const message = await updatePromise;
+    assert.strictEqual(message.type, 'update');
+    assert.strictEqual(message.agents.length, 1);
+    assert.strictEqual(message.agents[0].id, 'agent1');
+    ws.close();
   } finally {
     server.close();
   }

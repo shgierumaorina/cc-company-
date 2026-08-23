@@ -1,6 +1,12 @@
+const http = require('node:http');
+const fs = require('node:fs');
+const path = require('node:path');
 const express = require('express');
 const cors = require('cors');
-const { formatAgentSummary } = require('./lib/state');
+const { WebSocketServer } = require('ws');
+const { formatAgentSummary, createState } = require('./lib/state');
+const { startPolling } = require('./lib/poller');
+const tmuxLib = require('./lib/tmux');
 
 function findAgentConfig(agentsConfig, id) {
   return agentsConfig.find((a) => a.id === id);
@@ -75,4 +81,58 @@ function createApp({ state, tmux, agentsConfig }) {
   return app;
 }
 
-module.exports = { createApp };
+function attachWebSocketServer({ httpServer, state, agentsConfig }) {
+  const wss = new WebSocketServer({ server: httpServer, path: '/ws' });
+
+  wss.on('connection', (ws) => {
+    const now = new Date();
+    const agents = state
+      .getAllIds()
+      .map((id) => formatAgentSummary(id, state.getAgent(id), now));
+    ws.send(JSON.stringify({ type: 'snapshot', agents }));
+  });
+
+  function broadcastUpdate(changedIds) {
+    const now = new Date();
+    const agents = changedIds
+      .filter((id) => state.getAgent(id))
+      .map((id) => formatAgentSummary(id, state.getAgent(id), now));
+    if (agents.length === 0) return;
+    const payload = JSON.stringify({ type: 'update', agents });
+    wss.clients.forEach((client) => {
+      if (client.readyState === client.OPEN) client.send(payload);
+    });
+  }
+
+  return { wss, broadcastUpdate };
+}
+
+function main() {
+  const configPath = path.join(__dirname, 'config.json');
+  const agentsPath = path.join(__dirname, 'agents.json');
+  const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  const agentsConfig = JSON.parse(fs.readFileSync(agentsPath, 'utf8'));
+
+  const state = createState();
+  const app = createApp({ state, tmux: tmuxLib, agentsConfig });
+  const httpServer = http.createServer(app);
+  const { broadcastUpdate } = attachWebSocketServer({ httpServer, state, agentsConfig });
+
+  startPolling({
+    agentsConfig,
+    tmux: tmuxLib,
+    state,
+    config,
+    onChange: broadcastUpdate,
+  });
+
+  httpServer.listen(config.PORT, () => {
+    console.log(`tmux-dashboard server listening on port ${config.PORT}`);
+  });
+}
+
+if (require.main === module) {
+  main();
+}
+
+module.exports = { createApp, attachWebSocketServer, main };
