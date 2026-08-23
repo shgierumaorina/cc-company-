@@ -1,0 +1,4 @@
+[
+  { "id": "agent1", "name": "リサーチ担当", "session": "cc-agent1" },
+  { "id": "agent2", "name": "コンテンツ担当", "session": "cc-agent2" }
+]
