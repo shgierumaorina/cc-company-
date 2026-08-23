@@ -65,6 +65,7 @@ test('spawnAgentProcess captures stdout from the spawned process', async () => {
     proc.onData((d) => { buf += d; });
     proc.onExit(() => resolve(buf));
   });
+  proc.kill(); // node-ptyはonExit後もConPTYハンドルを保持し続けるため、明示的にkillしないとテストプロセスが自然終了しない
   assert.ok(output.includes('HELLO_PTY_TEST'));
 });
 
@@ -83,6 +84,7 @@ test('writeToProcess sends text followed by a carriage return to a running shell
     proc.onExit(() => resolve(buf));
     setTimeout(() => writeToProcess(proc, 'echo HELLO_FROM_WRITE'), 800);
   });
+  proc.kill();
   assert.ok(output.includes('HELLO_FROM_WRITE'));
 });
 ```
