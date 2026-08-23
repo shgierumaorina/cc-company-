@@ -102,6 +102,16 @@ tmuxコマンドはWSL経由（`wsl -e tmux ...`）で実行します。Windows�
 - 接続時: `{ "type": "snapshot", "agents": [...] }`（全件）
 - 以降: `{ "type": "update", "agents": [...] }`（状態変化のあったエージェントのみ、`POLL_INTERVAL_MS`ごと）
 
+## フロントエンド
+
+`public/index.html` にバニラJSのダッシュボードがあります。追加のnpm依存はありません。
+
+```bash
+npm run serve
+```
+
+既定で `http://localhost:8080` で配信されます。`public/index.html` 内の `API_BASE` 定数（既定 `http://localhost:3000`）を編集すればバックエンドの接続先を変更できます。
+
 ## テスト
 
 ```bash
