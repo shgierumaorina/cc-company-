@@ -1,4 +1,4 @@
 [
-  { "id": "agent1", "name": "リサーチ担当", "session": "cc-agent1" },
-  { "id": "agent2", "name": "コンテンツ担当", "session": "cc-agent2" }
+  { "id": "agent1", "name": "リサーチ担当", "cwd": "C:\\path\\to\\project1" },
+  { "id": "agent2", "name": "コンテンツ担当", "cwd": "C:\\path\\to\\project2" }
 ]

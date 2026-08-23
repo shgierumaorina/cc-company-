@@ -1,6 +1,6 @@
 # tmux-dashboard
 
-tmuxで並行実行している複数のClaude Codeセッションを監視・操作するAPI/WebSocketサーバー。
+複数のClaude Codeセッションを監視・操作するAPI/WebSocketサーバー。node-pty経由でバックエンド自身が各エージェントの`claude`プロセスを起動・保有する。
 
 ## セットアップ
 
@@ -8,31 +8,33 @@ tmuxで並行実行している複数のClaude Codeセッションを監視・�
 cd tmux-dashboard
 npm install
 cp agents.example.json agents.json
-# agents.json を実際のtmuxセッションに合わせて編集
+# agents.json を実際に監視したいディレクトリに合わせて編集
 npm start
 ```
 
 デフォルトで `http://localhost:3000` で起動します。ポート等は `config.json` で変更できます。
 
-tmuxコマンドはWSL経由（`wsl -e tmux ...`）で実行します。Windows上でこのサーバーを実行し、監視対象のtmuxセッションはWSL内で動作している前提です。
+サーバー起動時に、`agents.json` に登録した各エージェントについて `claude` プロセスを対応する `cwd`（作業ディレクトリ）で自動的に起動します（node-pty使用）。あらかじめターミナルを手動で開いておく必要はありません。
 
 ## agents.json
 
 ```json
 [
-  { "id": "agent1", "name": "リサーチ担当", "session": "cc-agent1" }
+  { "id": "agent1", "name": "リサーチ担当", "cwd": "C:\\path\\to\\project1" }
 ]
 ```
+
+各エージェントは `claude` を `cwd` で起動する。コマンド自体（`claude`固定）は変更できない。
 
 ## config.json
 
 | キー | 既定値 | 説明 |
 |---|---|---|
 | PORT | 3000 | HTTP/WebSocketのポート |
-| POLL_INTERVAL_MS | 2500 | tmux poll間隔（ミリ秒） |
+| POLL_INTERVAL_MS | 2500 | 状態再判定・WebSocket配信のティック間隔（ミリ秒） |
 | IDLE_THRESHOLD_SEC | 60 | この秒数以上出力変化がなければ`idle` |
 | STALE_THRESHOLD_SEC | 300 | この秒数以上出力変化がなければ`stale` |
-| OUTPUT_LINES | 200 | capture-paneで取得する行数 |
+| OUTPUT_LINES | 200 | 出力バッファに保持する行数 |
 
 ## 状態(status)一覧
 
@@ -40,8 +42,8 @@ tmuxコマンドはWSL経由（`wsl -e tmux ...`）で実行します。Windows�
 - `waiting_input`: 出力末尾が確認プロンプトらしき文字列
 - `idle`: 一定時間出力変化なし
 - `stale`: 長時間出力変化なし（応答なし疑い）
-- `not_running`: tmuxセッション未起動
-- `unresponsive`: tmuxコマンド実行エラー
+- `not_running`: プロセス未起動、またはクラッシュ・終了済み（自動再起動はしない）
+- `unresponsive`: プロセスのspawn自体に失敗（`cwd`が存在しない、`claude`コマンドが見つからない等）
 
 ## API
 
@@ -55,7 +57,7 @@ tmuxコマンドはWSL経由（`wsl -e tmux ...`）で実行します。Windows�
     {
       "id": "agent1",
       "name": "リサーチ担当",
-      "session": "cc-agent1",
+      "cwd": "C:\\path\\to\\project1",
       "status": "working",
       "lastOutputPreview": "...(直近5行)...",
       "lastChangedAt": "2026-08-23T19:15:00.000Z",
@@ -70,7 +72,7 @@ tmuxコマンドはWSL経由（`wsl -e tmux ...`）で実行します。Windows�
 指定エージェントの直近出力全文を返す。未登録idは404。
 
 ```json
-{ "id": "agent1", "session": "cc-agent1", "output": "...(capture-pane全文)..." }
+{ "id": "agent1", "cwd": "C:\\path\\to\\project1", "output": "...(直近の出力全文)..." }
 ```
 
 ### POST /api/agents/:id/send
@@ -92,7 +94,7 @@ tmuxコマンドはWSL経由（`wsl -e tmux ...`）で実行します。Windows�
   "ok": true,
   "results": [
     { "id": "agent1", "ok": true },
-    { "id": "agent2", "ok": false, "error": "session not found" }
+    { "id": "agent2", "ok": false, "error": "agent process not found" }
   ]
 }
 ```
