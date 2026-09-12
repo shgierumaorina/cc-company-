@@ -2,6 +2,7 @@ import { createClient, type Client } from "@libsql/client";
 import fs from "fs";
 import path from "path";
 import type { Category } from "./categories";
+import { HABITS, NOTE_FIELDS, type Habit, type NoteField } from "./habits";
 
 declare global {
   var __diaryDb: Client | undefined;
@@ -77,6 +78,24 @@ async function getDb(): Promise<Client> {
     `);
     await migrateLegacyTable(client);
     await ensureMemoColumn(client);
+    await client.execute(`
+      CREATE TABLE IF NOT EXISTS habit_checks (
+        date TEXT NOT NULL,
+        habit TEXT NOT NULL,
+        done INTEGER NOT NULL,
+        updated_at TEXT NOT NULL,
+        PRIMARY KEY(date, habit)
+      );
+    `);
+    await client.execute(`
+      CREATE TABLE IF NOT EXISTS daily_notes (
+        date TEXT NOT NULL,
+        field TEXT NOT NULL,
+        value TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        PRIMARY KEY(date, field)
+      );
+    `);
   })();
 
   await globalThis.__diaryDbReady;
@@ -181,6 +200,70 @@ export async function listEntryDatesInRange(
     args: [from, to],
   });
   return result.rows.map((r) => String(r.date));
+}
+
+export type HabitState = Record<Habit, boolean>;
+
+export async function getHabitsForDate(date: string): Promise<HabitState> {
+  const db = await getDb();
+  const result = await db.execute({
+    sql: "SELECT habit, done FROM habit_checks WHERE date = ?",
+    args: [date],
+  });
+  const checks = Object.fromEntries(HABITS.map((h) => [h, false])) as HabitState;
+  for (const row of result.rows) {
+    const habit = String(row.habit) as Habit;
+    if (habit in checks) checks[habit] = Number(row.done) === 1;
+  }
+  return checks;
+}
+
+export async function setHabit(
+  date: string,
+  habit: Habit,
+  done: boolean
+): Promise<HabitState> {
+  const db = await getDb();
+  const now = new Date().toISOString();
+  await db.execute({
+    sql: `INSERT INTO habit_checks (date, habit, done, updated_at)
+          VALUES (?, ?, ?, ?)
+          ON CONFLICT(date, habit) DO UPDATE SET done = excluded.done, updated_at = excluded.updated_at`,
+    args: [date, habit, done ? 1 : 0, now],
+  });
+  return getHabitsForDate(date);
+}
+
+export type NoteState = Record<NoteField, string>;
+
+export async function getNotesForDate(date: string): Promise<NoteState> {
+  const db = await getDb();
+  const result = await db.execute({
+    sql: "SELECT field, value FROM daily_notes WHERE date = ?",
+    args: [date],
+  });
+  const notes = Object.fromEntries(NOTE_FIELDS.map((f) => [f, ""])) as NoteState;
+  for (const row of result.rows) {
+    const field = String(row.field) as NoteField;
+    if (field in notes) notes[field] = String(row.value);
+  }
+  return notes;
+}
+
+export async function setNote(
+  date: string,
+  field: NoteField,
+  value: string
+): Promise<NoteState> {
+  const db = await getDb();
+  const now = new Date().toISOString();
+  await db.execute({
+    sql: `INSERT INTO daily_notes (date, field, value, updated_at)
+          VALUES (?, ?, ?, ?)
+          ON CONFLICT(date, field) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at`,
+    args: [date, field, value, now],
+  });
+  return getNotesForDate(date);
 }
 
 function shiftDateKey(dateKey: string, deltaDays: number): string {
