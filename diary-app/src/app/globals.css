@@ -96,12 +96,71 @@ button {
 /* ---------- Shared panel look ---------- */
 
 .calendar-panel,
+.habit-panel,
 .diary-panel {
   background: var(--color-panel);
   color: var(--color-text);
   border-radius: 18px;
   border: 1px solid var(--color-panel-border);
   padding: 22px;
+}
+
+/* ---------- Habit checks ---------- */
+
+.habit-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  padding: 16px 22px;
+}
+
+.habit-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.habit-check input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+
+.habit-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+}
+
+.habit-note input {
+  background: var(--color-panel-soft);
+  color: var(--color-text);
+  border: 1px solid var(--color-panel-border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.habit-note input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.habit-note-weight input {
+  width: 5.5em;
+}
+
+.habit-note-other input {
+  width: 14em;
+}
+
+.habit-note-unit {
+  color: var(--color-text-muted);
 }
 
 .calendar-panel-toolbar {
