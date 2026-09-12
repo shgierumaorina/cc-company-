@@ -1,12 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import WeekStrip from "@/components/WeekStrip";
 import MonthGrid from "@/components/MonthGrid";
 import StreakBadge from "@/components/StreakBadge";
 import DiaryPanel from "@/components/DiaryPanel";
-import type { DiaryEntry } from "@/lib/db";
+import HabitChecks from "@/components/HabitChecks";
+import type { DiaryEntry, HabitState, NoteState } from "@/lib/db";
 import type { Category } from "@/lib/categories";
+import { NOTE_LABELS, type Habit, type NoteField } from "@/lib/habits";
 import { daysInMonth, getWeekDates, monthKey, pad2, toDateKey } from "@/lib/date";
 
 type ViewMode = "week" | "month";
@@ -15,6 +17,17 @@ const EMPTY_ENTRIES: Record<Category, DiaryEntry | null> = {
   free: null,
   work: null,
   study: null,
+};
+
+const EMPTY_HABITS: HabitState = {
+  workout: false,
+  english: false,
+  self_improve: false,
+};
+
+const EMPTY_NOTES: NoteState = {
+  weight: "",
+  other: "",
 };
 
 export default function Home() {
@@ -32,6 +45,9 @@ export default function Home() {
   const [markedDates, setMarkedDates] = useState<Set<string>>(new Set());
   const [entries, setEntries] = useState<Record<Category, DiaryEntry | null>>(EMPTY_ENTRIES);
   const [streak, setStreak] = useState(0);
+  const [habits, setHabits] = useState<HabitState>(EMPTY_HABITS);
+  const [notes, setNotes] = useState<NoteState>(EMPTY_NOTES);
+  const [loadingHabits, setLoadingHabits] = useState(true);
 
   const [loadingEntry, setLoadingEntry] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -99,10 +115,43 @@ export default function Home() {
     };
   }, [selectedDate]);
 
+  const selectedDateRef = useRef(selectedDate);
+  const savedNotesRef = useRef<NoteState>(EMPTY_NOTES);
+
+  useEffect(() => {
+    selectedDateRef.current = selectedDate;
+    let cancelled = false;
+    const load = async <T,>(url: string): Promise<T> => {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("読み込みに失敗しました");
+      return (await res.json()) as T;
+    };
+    Promise.all([
+      load<HabitState>(`/api/habits/${selectedDate}`),
+      load<NoteState>(`/api/notes/${selectedDate}`),
+    ])
+      .then(([habitData, noteData]) => {
+        if (cancelled) return;
+        setHabits(habitData);
+        setNotes(noteData);
+        savedNotesRef.current = noteData;
+      })
+      .catch(() => {
+        if (!cancelled) setError("チェックの読み込みに失敗しました");
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingHabits(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedDate]);
+
   const handleSelectDate = (date: string) => {
     if (date !== selectedDate) {
       setSelectedDate(date);
       setLoadingEntry(true);
+      setLoadingHabits(true);
       setError(null);
     }
   };
@@ -124,6 +173,54 @@ export default function Home() {
   const handleToggleView = () => {
     setViewMode((prev) => (prev === "week" ? "month" : "week"));
   };
+
+  const handleToggleHabit = useCallback(
+    async (habit: Habit, done: boolean) => {
+      setHabits((prev) => ({ ...prev, [habit]: done }));
+      setError(null);
+      try {
+        const res = await fetch(`/api/habits/${selectedDate}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ habit, done }),
+        });
+        if (!res.ok) throw new Error("チェックの保存に失敗しました");
+      } catch {
+        // 保存中に別の日へ切り替えていたら、その日の表示は巻き戻さない
+        if (selectedDateRef.current === selectedDate) {
+          setHabits((prev) => ({ ...prev, [habit]: !done }));
+        }
+        setError("チェックの保存に失敗しました");
+      }
+    },
+    [selectedDate]
+  );
+
+  const handleChangeNote = (field: NoteField, value: string) => {
+    setNotes((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSaveNote = useCallback(
+    async (field: NoteField) => {
+      const value = notes[field].trim();
+      if (value === savedNotesRef.current[field]) return;
+      setError(null);
+      try {
+        const res = await fetch(`/api/notes/${selectedDate}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ field, value }),
+        });
+        if (!res.ok) throw new Error("保存に失敗しました");
+        if (selectedDateRef.current === selectedDate) {
+          savedNotesRef.current = { ...savedNotesRef.current, [field]: value };
+        }
+      } catch {
+        setError(`${NOTE_LABELS[field]}の保存に失敗しました`);
+      }
+    },
+    [selectedDate, notes]
+  );
 
   const handleSave = useCallback(
     async (category: Category, contentJa: string) => {
@@ -259,6 +356,14 @@ export default function Home() {
             />
           )}
         </div>
+        <HabitChecks
+          checks={habits}
+          notes={notes}
+          disabled={loadingHabits}
+          onToggle={handleToggleHabit}
+          onChangeNote={handleChangeNote}
+          onSaveNote={handleSaveNote}
+        />
         <DiaryPanel
           selectedDate={selectedDate}
           entries={entries}
