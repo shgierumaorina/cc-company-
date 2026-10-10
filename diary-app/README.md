@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# diary-app
 
-## Getting Started
+日記・習慣チェックアプリ（Next.js）。本番は Render（`render.yaml`）にデプロイ。
 
-First, run the development server:
+## ローカルPCで動かす（Windows）
 
-```bash
+前提: [Node.js](https://nodejs.org/) 20.9 以上
+
+1. `diary-app\start-local.bat` をダブルクリック
+   - 初回のみ `npm ci` で依存をインストール → ビルド → `http://localhost:3000` を起動しブラウザを開く
+   - ブラウザが先に開いて表示されない場合は数秒後に再読み込み
+2. 停止はコマンドプロンプトで `Ctrl+C`
+
+手動で動かす場合:
+
+```bat
+cd diary-app
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 環境変数（任意）
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`.env.example` を `.env.local` にコピーして設定する（`.env*` はコミット対象外）。
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| 変数 | 未設定時の動作 |
+|---|---|
+| `TURSO_DATABASE_URL` / `TURSO_AUTH_TOKEN` | `data/diary.db`（ローカルSQLite）に保存。Render本番のデータとは別になる |
+| `DEEPL_API_KEY` | 英訳ボタンがエラーになる（他の機能は動く） |
+| `DIARY_PASSWORD` | Basic認証なしで開ける |
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+本番と同じデータを使いたい場合は `TURSO_DATABASE_URL` と `TURSO_AUTH_TOKEN` を設定する。
