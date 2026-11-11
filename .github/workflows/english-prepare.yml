@@ -31,7 +31,6 @@ jobs:
       TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
       TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      ENGLISH_APP_WORK: ${{ runner.temp }}/english
     steps:
       - uses: actions/checkout@v4
         with:
@@ -67,8 +66,10 @@ jobs:
 
       - name: 文字起こし部品のインストール
         if: steps.check.outputs.has_work == 'true'
-        run: pip install -r requirements.txt
+        run: pip install -r requirements-actions.txt
 
       - name: 文字起こし・問題作成
         if: steps.check.outputs.has_work == 'true'
+        env:
+          ENGLISH_APP_WORK: ${{ runner.temp }}/english
         run: python -m app.prepare ${{ steps.check.outputs.mode }}

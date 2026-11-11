@@ -15,7 +15,7 @@
 
 - 画面で「準備する」を押すと順番待ちになり、30分以内にGitHub Actionsが文字起こしを始める（38分の回で15分前後が目安）。
 - 毎朝JST 3:07に、新着確認と各番組の未準備の最新回1本の準備を自動で行う。
-- 追加ライブラリなし（Render側は標準ライブラリのみ）。Actionsだけ `faster-whisper` を入れる。
+- 追加ライブラリなし（Render側は標準ライブラリのみ）。Actionsだけ `requirements-actions.txt`（faster-whisper）を入れる。
 
 ## 初回セットアップ（ユーザーが行う）
 
