@@ -104,7 +104,7 @@ routes.shows = async () => {
     const ck = document.getElementById("check"); if (ck) ck.onclick = (e) => act(e.currentTarget, () => api("/api/feeds/check", {}), "確認中");
     document.querySelectorAll("[data-auto]").forEach((b) => (b.onclick = () => act(b, () => api("/api/feeds/toggle", { id: b.dataset.auto }))));
     document.querySelectorAll("[data-prep]").forEach((b) => (b.onclick = () => act(b, () => api("/api/episodes/prepare", { id: b.dataset.prep }))));
-    document.querySelectorAll("[data-cancel]").forEach((b) => (b.onclick = () => { if (confirm("この回の準備を中断しますか？")) act(b, () => api("/api/episodes/cancel", { id: b.dataset.cancel }), "中断中"); }));
+    document.querySelectorAll("[data-cancel]").forEach((b) => (b.onclick = () => act(b, () => api("/api/episodes/cancel", { id: b.dataset.cancel }), "中断中")));
     document.querySelectorAll("[data-regen]").forEach((b) => (b.onclick = () => act(b, () => api("/api/episodes/regenerate", { id: b.dataset.regen }))));
     document.getElementById("addYt").onclick = (e) => act(e.currentTarget, () => api("/api/youtube", { url: document.getElementById("yt").value, title: document.getElementById("ytt").value }));
     document.querySelectorAll("[data-rmyt]").forEach((b) => (b.onclick = () => act(b, () => api("/api/youtube/remove", { id: b.dataset.rmyt }))));

@@ -46,6 +46,9 @@ def download(ep_id):
         return path
     last = time.time()
     with feeds.http_get(meta["audio_url"], timeout=120) as r, open(path + ".part", "wb") as f:
+        ctype = (r.headers.get("Content-Type") or "").lower()
+        if ctype.startswith(("image/", "text/")):
+            raise RuntimeError(f"この回のファイルは音声ではありませんでした（{ctype.split(';')[0]}）")
         while True:
             chunk = r.read(1 << 16)
             if not chunk:
