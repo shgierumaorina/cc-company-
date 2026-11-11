@@ -80,14 +80,17 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header("Content-Length", "0")
             self.end_headers()
             return
+        whole = not self.headers.get("Range") and size <= audiostore.MAX_RESPONSE
         end = min(end, start + audiostore.MAX_RESPONSE - 1)
         data = audiostore.read(meta["id"], start, end)
-        self.send_response(206)
+        if not data:
+            return self.send_error(404)
+        self.send_response(200 if whole else 206)
         self.send_header("Content-Type", meta.get("audio_mime") or "audio/mp4")
         self.send_header("Accept-Ranges", "bytes")
         self.send_header("Content-Range", f"bytes {start}-{start + len(data) - 1}/{size}")
         self.send_header("Content-Length", str(len(data)))
-        self.send_header("Cache-Control", "private, max-age=86400")
+        self.send_header("Cache-Control", "no-cache")  # 作り直すと同じURLで中身が変わるため
         self.end_headers()
         self.wfile.write(data)
 

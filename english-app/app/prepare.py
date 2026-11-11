@@ -130,14 +130,17 @@ def prepare(ep_id):
         # 音声を保存していない回（以前の版で準備した回）は、広告で時刻がずれるので最初からやり直す
         lines = store.get(f"ep:{ep_id}:transcript") if store.episode_meta(ep_id).get("audio_size") else None
         if not lines:
+            for part in ("transcript", "sections"):  # 古い文字起こしは新しい音声と合わないので消す
+                store.delete(f"ep:{ep_id}:{part}")
             path = download(ep_id)
             _check_cancel(ep_id)
             _set(ep_id, status="transcribing", progress=0, message="音声を保存中")
-            stored = os.path.join(store.work_dir(ep_id), "stored.m4a")
-            audiostore.transcode(path, stored)
+            compressed = os.path.join(store.work_dir(ep_id), "compressed.m4a")
+            audiostore.transcode(path, compressed)
             _check_cancel(ep_id)
-            _set(ep_id, audio_size=audiostore.save(ep_id, stored), audio_mime="audio/mp4")
+            size = audiostore.save(ep_id, compressed)
             lines = transcribe(ep_id, path)
+            _set(ep_id, audio_size=size, audio_mime="audio/mp4")  # 文字起こしが済んでから「保存済み」にする
         if not lines:
             raise RuntimeError("文字起こし結果が空でした")
         make_sections(ep_id, lines)
@@ -171,7 +174,8 @@ def regenerate_questions(ep_id):
 
 def prune_audio():
     """保存している音声が多すぎたら、準備が古い回から削除する。"""
-    eps = [e for e in store.list_episodes() if e.get("audio_size") and e.get("status") == "ready"]
+    eps = [e for e in store.list_episodes()
+           if e.get("audio_size") and e.get("status") not in ("queued",) + ACTIVE]
     eps.sort(key=lambda e: e.get("prepared_at", ""), reverse=True)
     for e in eps[MAX_AUDIO:]:
         audiostore.delete(e["id"])
