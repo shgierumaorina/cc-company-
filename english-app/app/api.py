@@ -24,10 +24,10 @@ def public_state():
             "today": store.today()}
 
 
-def _set_status(ep_id, status, message):
+def _set_status(ep_id, status, message, cancelled=False):
     meta = store.episode_meta(ep_id)
     if meta:
-        meta.update(status=status, message=message, progress=0, updated=store.now_iso())
+        meta.update(status=status, message=message, progress=0, updated=store.now_iso(), cancelled=cancelled)
         store.save_episode_meta(ep_id, meta)
 
 
@@ -134,6 +134,11 @@ def route(p, b):
                     else "順番待ち（30分以内に自動で文字起こしが始まります）")
         if has_token:
             _background(_dispatch)
+        return public_state()
+    if p == "/api/episodes/cancel":
+        # 処理中のActionsは、次の進み具合の更新時（20秒以内）に気づいて止まる
+        if store.episode_meta(b["id"]).get("status") in ("queued",) + prepare.ACTIVE:
+            _set_status(b["id"], "new", "中断しました", cancelled=True)
         return public_state()
     if p == "/api/episodes/regenerate":
         _set_status(b["id"], "generating", "要旨問題と表現を作成中")

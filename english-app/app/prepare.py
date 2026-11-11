@@ -19,8 +19,19 @@ ACTIVE = ("downloading", "transcribing", "generating")
 MAX_PER_RUN = 3
 
 
+class Cancelled(Exception):
+    """画面で「中断」が押された。"""
+
+
+def _check_cancel(ep_id):
+    if store.episode_meta(ep_id).get("cancelled"):
+        raise Cancelled(ep_id)
+
+
 def _set(ep_id, **kw):
     meta = store.episode_meta(ep_id)
+    if meta.get("cancelled"):  # 中断済みの回の状態は上書きしない
+        raise Cancelled(ep_id)
     meta.update(kw, updated=store.now_iso())
     store.save_episode_meta(ep_id, meta)
     return meta
@@ -33,12 +44,16 @@ def download(ep_id):
     path = os.path.join(store.work_dir(ep_id), "audio" + ext)
     if os.path.exists(path) and os.path.getsize(path) > 10000:
         return path
+    last = time.time()
     with feeds.http_get(meta["audio_url"], timeout=120) as r, open(path + ".part", "wb") as f:
         while True:
             chunk = r.read(1 << 16)
             if not chunk:
                 break
             f.write(chunk)
+            if time.time() - last > 15:
+                _check_cancel(ep_id)
+                last = time.time()
     os.replace(path + ".part", path)
     return path
 
@@ -72,8 +87,10 @@ def transcribe(ep_id, path):
             continue
         lines.append({"start": round(s.start, 2), "end": round(s.end, 2), "text": text})
         if time.time() - last > 20 and info.duration:
+            _check_cancel(ep_id)
             _set(ep_id, progress=min(99, int(s.end * 100 / info.duration)))
             last = time.time()
+    _check_cancel(ep_id)
     store.put(f"ep:{ep_id}:transcript", lines)
     _set(ep_id, duration=round(info.duration or 0, 1))
     print("transcribed", len(lines), "lines", flush=True)
@@ -96,6 +113,7 @@ def make_sections(ep_id, lines):
         s.update(topic_ja=q.get("topic_ja", ""), summary_ja=q.get("summary_ja", ""), choices=choices,
                  answer=choices.index(q["correct_ja"]) if q.get("correct_ja") in choices else -1,
                  chunks=q.get("chunks", []))
+    _check_cancel(ep_id)
     store.put(f"ep:{ep_id}:sections", sections)
     _set(ep_id, status="ready", progress=100, sections=len(sections), message=message,
          prepared_at=store.now_iso())
@@ -104,15 +122,23 @@ def make_sections(ep_id, lines):
 def prepare(ep_id):
     """1エピソードを学習できる状態にする。"""
     try:
+        _check_cancel(ep_id)
         lines = store.get(f"ep:{ep_id}:transcript")
         if not lines:
-            lines = transcribe(ep_id, download(ep_id))
+            path = download(ep_id)
+            _check_cancel(ep_id)
+            lines = transcribe(ep_id, path)
         if not lines:
             raise RuntimeError("文字起こし結果が空でした")
         make_sections(ep_id, lines)
+    except Cancelled:
+        print("cancelled:", ep_id, flush=True)  # 状態は画面側で「未準備」に戻してある
     except Exception as e:  # noqa: BLE001
         traceback.print_exc()
-        _set(ep_id, status="error", message=str(e)[:300])
+        try:
+            _set(ep_id, status="error", message=str(e)[:300])
+        except Cancelled:
+            pass
     return store.episode_meta(ep_id)
 
 
@@ -122,6 +148,12 @@ def regenerate_questions(ep_id):
         if not lines:
             raise RuntimeError("文字起こしがまだありません。「準備する」を押してください")
         make_sections(ep_id, lines)
+    except Cancelled:
+        # 作り直しの中断：前の問題が残っていれば「準備完了」に戻す
+        meta = store.episode_meta(ep_id)
+        meta.update(status="ready" if store.exists(f"ep:{ep_id}:sections") else "new",
+                    cancelled=False, message="中断しました", updated=store.now_iso())
+        store.save_episode_meta(ep_id, meta)
     except Exception as e:  # noqa: BLE001
         traceback.print_exc()
         _set(ep_id, status="error", message=str(e)[:300])
@@ -146,7 +178,8 @@ def todo(auto):
         if cfg.get("auto_prepare", True):
             for f in cfg["feeds"]:
                 if f.get("auto", True):
-                    new = [e for e in eps if e.get("feed_id") == f["id"] and e.get("status") in ("new", "error")]
+                    new = [e for e in eps if e.get("feed_id") == f["id"] and e.get("status") in ("new", "error")
+                           and not e.get("cancelled")]
                     picks += new[:1]
     seen, out = set(), []
     for e in picks:
