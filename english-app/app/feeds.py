@@ -107,10 +107,14 @@ def _media_url(item):
         for c in cands:
             if c.get("url") and (c.get("type") or "").lower().startswith(prefix):
                 return c.get("url")
-    for c in cands:
-        url = c.get("url") or ""
-        if not c.get("type") and urllib.parse.urlparse(url).path.lower().endswith(MEDIA_EXT):
-            return url
+    # 種類の書き方が曖昧な配信（application/octet-stream など）は、画像・文章でなければ拡張子で判断
+    usable = [c for c in cands if c.get("url") and not (c.get("type") or "").lower().startswith(("image/", "text/"))]
+    for c in usable:
+        if urllib.parse.urlparse(c.get("url")).path.lower().endswith(MEDIA_EXT):
+            return c.get("url")
+    for c in usable:
+        if not urllib.parse.urlparse(c.get("url")).path.lower().endswith(IMAGE_EXT):
+            return c.get("url")
     return None
 
 
