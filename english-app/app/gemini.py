@@ -64,6 +64,7 @@ def pick_model(key, force=False):
     names = _candidates(key)
     if not names:
         raise GeminiError("使えるGeminiモデルが見つかりません")
+    last = None
     for n in names[:6]:
         try:
             # 応答が返ればOK（中身は問わない）
@@ -75,8 +76,11 @@ def pick_model(key, force=False):
             cfg["gemini_model"] = n
             store.save_config(cfg)
             return n
-        except GeminiError:
+        except GeminiError as e:
+            last = e
             continue
+    if last and str(last).startswith(BUSY):  # どのモデルも混雑中ならキーの問題ではない
+        raise _friendly(last)
     raise GeminiError("無料枠で使えるモデルが見つかりません（キーの設定を確認してください）")
 
 
@@ -130,13 +134,19 @@ def generate(prompt, system=None, max_tokens=4096, json_mode=False, history=None
         except GeminiError as e:
             msg = str(e)
             if ("HTTP 404" in msg or "HTTP 403" in msg) and not reselected:
-                model, reselected = pick_model(key, force=True), True  # モデルが使えなくなったら選び直す
+                try:
+                    model, reselected = pick_model(key, force=True), True  # モデルが使えなくなったら選び直す
+                except GeminiError as e2:
+                    raise _friendly(e2) from None
                 continue
             if not msg.startswith(BUSY) or attempt == len(WAITS):
                 raise _friendly(e) from None
             time.sleep(WAITS[attempt])
             if attempt >= 1:  # 同じモデルが混んでいたら、別のモデルを試す
-                model = next((n for n in _candidates(key) if n not in tried), model)
+                try:
+                    model = next((n for n in _candidates(key) if n not in tried), model)
+                except GeminiError:
+                    pass  # 一覧も取れないほど混んでいる時は同じモデルで再試行
     if json_mode:
         return parse_json(text)
     return text
