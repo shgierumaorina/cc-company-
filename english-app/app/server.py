@@ -13,7 +13,7 @@ import traceback
 import urllib.parse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-from . import api, gemini, store, talk, turso
+from . import api, audiostore, gemini, store, talk, turso
 
 STATIC = os.path.join(store.BASE, "static")
 OPEN_PATHS = ("/api/health", "/static/")  # パスワードなしで開ける（アイコン等）
@@ -64,6 +64,36 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(data)
 
+    def _audio(self, meta):
+        size = int(meta["audio_size"])
+        start, end = 0, size - 1
+        m = re.match(r"bytes=(\d*)-(\d*)", self.headers.get("Range", ""))
+        if m and (m.group(1) or m.group(2)):
+            if m.group(1):
+                start = int(m.group(1))
+                end = min(int(m.group(2)), size - 1) if m.group(2) else size - 1
+            else:
+                start = max(0, size - int(m.group(2)))
+        if start >= size or start > end:
+            self.send_response(416)
+            self.send_header("Content-Range", f"bytes */{size}")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+        whole = not self.headers.get("Range") and size <= audiostore.MAX_RESPONSE
+        end = min(end, start + audiostore.MAX_RESPONSE - 1)
+        data = audiostore.read(meta["id"], start, end)
+        if not data:
+            return self.send_error(404)
+        self.send_response(200 if whole else 206)
+        self.send_header("Content-Type", meta.get("audio_mime") or "audio/mp4")
+        self.send_header("Accept-Ranges", "bytes")
+        self.send_header("Content-Range", f"bytes {start}-{start + len(data) - 1}/{size}")
+        self.send_header("Content-Length", str(len(data)))
+        self.send_header("Cache-Control", "no-cache")  # 作り直すと同じURLで中身が変わるため
+        self.end_headers()
+        self.wfile.write(data)
+
     def _redirect(self, url):
         self.send_response(302)
         self.send_header("Location", url)
@@ -88,6 +118,8 @@ class Handler(BaseHTTPRequestHandler):
             if p.startswith("/audio/"):
                 # 音声は保存せず、番組の配信元から直接再生する
                 meta = store.episode_meta(re.sub(r"[^0-9a-f]", "", p[len("/audio/"):]))
+                if meta.get("audio_size"):
+                    return self._audio(meta)  # 文字起こしと同じ音声
                 if not meta.get("audio_url"):
                     return self.send_error(404)
                 return self._redirect(meta["audio_url"])

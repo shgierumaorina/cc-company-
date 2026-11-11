@@ -12,11 +12,12 @@ import traceback
 import urllib.parse
 from datetime import datetime
 
-from . import feeds, gemini, store
+from . import audiostore, feeds, gemini, store
 from .questions import build_questions, split_sections
 
 ACTIVE = ("downloading", "transcribing", "generating")
 MAX_PER_RUN = 3
+MAX_AUDIO = 40  # 音声を保存しておく回数の上限（古い回から削除して容量を抑える）
 
 
 class Cancelled(Exception):
@@ -126,11 +127,20 @@ def prepare(ep_id):
     """1エピソードを学習できる状態にする。"""
     try:
         _check_cancel(ep_id)
-        lines = store.get(f"ep:{ep_id}:transcript")
+        # 音声を保存していない回（以前の版で準備した回）は、広告で時刻がずれるので最初からやり直す
+        lines = store.get(f"ep:{ep_id}:transcript") if store.episode_meta(ep_id).get("audio_size") else None
         if not lines:
+            for part in ("transcript", "sections"):  # 古い文字起こしは新しい音声と合わないので消す
+                store.delete(f"ep:{ep_id}:{part}")
             path = download(ep_id)
             _check_cancel(ep_id)
+            _set(ep_id, status="transcribing", progress=0, message="音声を保存中")
+            compressed = os.path.join(store.work_dir(ep_id), "compressed.m4a")
+            audiostore.transcode(path, compressed)
+            _check_cancel(ep_id)
+            size = audiostore.save(ep_id, compressed)
             lines = transcribe(ep_id, path)
+            _set(ep_id, audio_size=size, audio_mime="audio/mp4")  # 文字起こしが済んでから「保存済み」にする
         if not lines:
             raise RuntimeError("文字起こし結果が空でした")
         make_sections(ep_id, lines)
@@ -160,6 +170,23 @@ def regenerate_questions(ep_id):
     except Exception as e:  # noqa: BLE001
         traceback.print_exc()
         _set(ep_id, status="error", message=str(e)[:300])
+
+
+def prune_audio():
+    """保存している音声が多すぎたら、準備が古い回から削除する。"""
+    eps = [e for e in store.list_episodes()
+           if e.get("audio_size") and e.get("status") not in ("queued",) + ACTIVE]
+    eps.sort(key=lambda e: e.get("prepared_at", ""), reverse=True)
+    for e in eps[MAX_AUDIO:]:
+        audiostore.delete(e["id"])
+        for part in ("transcript", "sections"):
+            store.delete(f"ep:{e['id']}:{part}")
+        meta = store.episode_meta(e["id"])
+        meta.pop("audio_size", None)
+        meta.update(status="new", sections=0, updated=store.now_iso(),
+                    message="容量節約のため古い回の音声を削除しました（「準備する」でまた使えます）")
+        store.save_episode_meta(e["id"], meta)
+        print("pruned audio:", e["id"], flush=True)
 
 
 def _stale(meta, hours=3):
@@ -201,6 +228,8 @@ def main():
     for e in eps:
         print("prepare:", e["id"], flush=True)
         prepare(e["id"])
+    if eps:
+        prune_audio()
 
 
 if __name__ == "__main__":

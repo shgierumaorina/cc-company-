@@ -68,6 +68,7 @@ routes.shows = async () => {
               <span style="font-size:12px;font-weight:700;color:${st[1]}">${act ? '<span class="spin"></span> ' : ""}${st[0]}${act && e.progress ? ` ${e.progress}%` : ""}</span>
               ${act ? `<div class="bar" style="height:6px"><div style="width:${e.progress || 0}%;background:${st[1]}"></div></div>` : ""}
             </div>
+            ${e.status === "ready" && !e.audio_size ? `<button class="btn sm ghost" data-prep="${e.id}" title="広告で音声と文字がずれるため、音声を保存して作り直します">音声を保存して作り直す</button>` : ""}
             ${e.status === "ready" ? `<a class="btn sm" href="#listen/${e.id}/0">聞く</a><button class="btn plain sm" data-regen="${e.id}" title="要旨問題と表現を作り直す">問題を作り直す</button>`
               : act ? `<button class="btn plain sm" data-cancel="${e.id}">中断</button>` : `<button class="btn sm ghost" data-prep="${e.id}">${e.status === "error" ? "再試行" : "準備する"}</button>`}
           </div>`; }).join("") || '<div class="empty">エピソードがありません</div>'}</div>
