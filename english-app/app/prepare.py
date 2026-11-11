@@ -43,7 +43,22 @@ def download(ep_id):
     return path
 
 
+def _patch_av():
+    """PyAV 15以降で消えた引数（metadata_errors）をfaster-whisperが渡すため、互換用に取り除く。"""
+    import av
+    if getattr(av.open, "_ll_compat", False):
+        return
+    original = av.open
+
+    def compat_open(*a, **k):
+        k.pop("metadata_errors", None)
+        return original(*a, **k)
+    compat_open._ll_compat = True
+    av.open = compat_open
+
+
 def transcribe(ep_id, path):
+    _patch_av()
     from faster_whisper import WhisperModel  # 重いので必要な時だけ読み込む
     name = store.config().get("whisper_model") or "small.en"
     _set(ep_id, status="transcribing", progress=0, message="文字起こし中")

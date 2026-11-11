@@ -2,6 +2,7 @@
 import hashlib
 import json
 import re
+import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from email.utils import parsedate_to_datetime
@@ -11,6 +12,8 @@ from . import store
 UA = "Mozilla/5.0 (compatible; ListeningLab/1.0)"
 ITUNES = "{http://www.itunes.com/dtds/podcast-1.0.dtd}"
 KEEP = 15  # 1番組あたり一覧に載せる最新回の数
+NOT_RSS = ("このURLは番組のRSSではありませんでした。Apple Podcastsで番組を開き、"
+           "そのページのURL（podcasts.apple.com/…）を貼ってください")
 
 
 def http_get(url, timeout=60):
@@ -38,12 +41,41 @@ def resolve_feed_url(url):
     return url
 
 
+def _discover_rss(html, base_url):
+    """番組のWebページ（HTML）から、RSSへのリンクを探す。"""
+    for tag in re.findall(r"<link\b[^>]*>", html, flags=re.I):
+        if re.search(r"application/(rss|atom)\+xml", tag, flags=re.I):
+            m = re.search(r"href=[\"']([^\"']+)", tag, flags=re.I)
+            if m:
+                return urllib.parse.urljoin(base_url, m.group(1).replace("&amp;", "&"))
+    return None
+
+
+def find_feed(url):
+    """URLがRSSならそのまま、番組のWebページならページ内のRSSリンクを返す。"""
+    with http_get(url) as r:
+        body = r.read()
+    try:
+        if ET.fromstring(body).find("channel") is not None:
+            return url
+    except ET.ParseError:
+        pass
+    rss = _discover_rss(body.decode("utf-8", "replace"), url)
+    if not rss:
+        raise ValueError(NOT_RSS)
+    return rss
+
+
 def fetch_feed(feed_url):
     with http_get(feed_url) as r:
-        root = ET.fromstring(r.read())
+        body = r.read()
+    try:
+        root = ET.fromstring(body)
+    except ET.ParseError:
+        raise ValueError(NOT_RSS) from None
     ch = root.find("channel")
     if ch is None:
-        raise ValueError("RSSとして読めませんでした")
+        raise ValueError(NOT_RSS)
     title = (ch.findtext("title") or "").strip()
     items = []
     for it in ch.findall("item"):
@@ -80,7 +112,7 @@ def register_items(fid, show_title, items):
 
 
 def add_feed(url):
-    feed_url = resolve_feed_url(url)
+    feed_url = find_feed(resolve_feed_url(url))
     title, items = fetch_feed(feed_url)
     cfg = store.config()
     fid = hashlib.sha1(feed_url.encode("utf-8")).hexdigest()[:10]
