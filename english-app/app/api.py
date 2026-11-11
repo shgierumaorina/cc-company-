@@ -174,7 +174,7 @@ def route(p, b):
     if p == "/api/review/delete":
         return _edit_progress(lambda pr: pr.update(review=[r for r in pr["review"] if r["id"] != b.get("id")]))
     if p == "/api/talk/delete":
-        store.delete(f"talk:{b.get('id', '')}")
+        store.delete("talk:" + re.sub(r"[^0-9A-Za-z-]", "", str(b.get("id", ""))))
         return {"talks": talk.summaries()}
     if p == "/api/episodes/regenerate":
         _set_status(b["id"], "generating", "要旨問題と表現を作成中")

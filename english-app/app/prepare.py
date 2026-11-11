@@ -140,6 +140,11 @@ def prepare(ep_id):
             audiostore.transcode(path, compressed)
             _check_cancel(ep_id)
             size = audiostore.save(ep_id, compressed)
+            try:
+                _check_cancel(ep_id)
+            except Cancelled:
+                audiostore.delete(ep_id)  # 保存中に中断・削除された分を残さない
+                raise
             lines = transcribe(ep_id, path)
             _set(ep_id, audio_size=size, audio_mime="audio/mp4")  # 文字起こしが済んでから「保存済み」にする
         if not lines:
@@ -163,8 +168,10 @@ def regenerate_questions(ep_id):
             raise RuntimeError("文字起こしがまだありません。「準備する」を押してください")
         make_sections(ep_id, lines)
     except Cancelled:
-        # 作り直しの中断：前の問題が残っていれば「準備完了」に戻す
+        # 作り直しの中断：前の問題が残っていれば「準備完了」に戻す（削除された回は戻さない）
         meta = store.episode_meta(ep_id)
+        if not meta or meta.get("status") == "deleted":
+            return
         meta.update(status="ready" if store.exists(f"ep:{ep_id}:sections") else "new",
                     cancelled=False, message="中断しました", updated=store.now_iso())
         store.save_episode_meta(ep_id, meta)
