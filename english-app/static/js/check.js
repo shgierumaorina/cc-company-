@@ -73,7 +73,13 @@ routes.check = async (epId, idx) => {
         el.classList.toggle("playing", !player.paused && player.currentTime >= ln.start && player.currentTime < ln.end);
       });
     };
-    document.querySelectorAll("[data-play]").forEach((b) => (b.onclick = () => { const ln = s.lines[+b.dataset.play]; playRange(src, Math.max(0, ln.start - 0.15), ln.end + 0.2, L.rate); }));
+    document.querySelectorAll("[data-play]").forEach((b) => (b.onclick = () => {
+      // 前後の文に入り込まないよう、前の文の終わり〜次の文の始まりの範囲に収める
+      const i = +b.dataset.play, ln = s.lines[i], prev = s.lines[i - 1], next = s.lines[i + 1];
+      const from = Math.min(ln.start, Math.max(prev ? prev.end : 0, ln.start - 0.15));
+      const to = next ? Math.max(ln.start + 0.3, Math.min(ln.end + 0.1, next.start)) : ln.end + 0.2;
+      playRange(src, from, to, L.rate);
+    }));
     document.querySelectorAll("[data-miss]").forEach((b) => (b.onclick = () => { const i = +b.dataset.miss; L.missed[i] = !L.missed[i]; draw(); }));
     document.querySelectorAll("[data-cause]").forEach((b) => (b.onclick = () => { L.cause[+b.dataset.li2] = b.dataset.cause; draw(); }));
     document.getElementById("jaBtn").onclick = async (e) => {
@@ -127,7 +133,7 @@ routes.review = async () => {
         </div>
         <button class="small" id="rmrev" style="background:none;border:none;color:var(--muted);text-decoration:underline;cursor:pointer">この文を復習リストから削除</button>
       </section></div>`;
-    const play = (r, silent) => playRange(`/audio/${it.ep}`, Math.max(0, it.start - 0.15), it.end + 0.2, r, silent);
+    const play = (r, silent) => playRange(`/audio/${it.ep}`, Math.max(0, it.start - 0.15), it.end + 0.1, r, silent);
     mediaSession("復習", ep ? ep.title : "", { play: () => play(1), pause: () => player.pause(), previoustrack: () => play(1) });
     document.getElementById("rp").onclick = () => play(1);
     document.getElementById("rslow").onclick = () => play(0.75);

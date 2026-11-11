@@ -69,7 +69,8 @@ routes.shows = async () => {
               <span style="font-size:12px;font-weight:700;color:${st[1]}">${act ? '<span class="spin"></span> ' : ""}${st[0]}${act && e.progress ? ` ${e.progress}%` : ""}</span>
               ${act ? `<div class="bar" style="height:6px"><div style="width:${e.progress || 0}%;background:${st[1]}"></div></div>` : ""}
             </div>
-            ${e.status === "ready" && !e.audio_size ? `<button class="btn sm ghost" data-prep="${e.id}" title="広告で音声と文字がずれるため、音声を保存して作り直します">音声を保存して作り直す</button>` : ""}
+            ${e.status === "ready" && !e.audio_size ? `<button class="btn sm ghost" data-prep="${e.id}" title="広告で音声と文字がずれるため、音声を保存して作り直します">音声を保存して作り直す</button>`
+              : e.status === "ready" && e.timing !== "word" ? `<button class="btn sm ghost" data-redo="${e.id}" title="1文ずつ再生したとき次の文まで流れないよう、文の区切りを単語単位で取り直します">区切りを正確にして作り直す</button>` : ""}
             ${e.status === "ready" ? `<a class="btn sm" href="#listen/${e.id}/0">聞く</a><button class="btn plain sm" data-regen="${e.id}" title="要旨問題と表現を作り直す">問題を作り直す</button>`
               : act ? `<button class="btn plain sm" data-cancel="${e.id}">中断</button>` : `<button class="btn sm ghost" data-prep="${e.id}">${e.status === "error" ? "再試行" : "準備する"}</button>`}
             <button class="btn plain sm" data-rmep="${e.id}" title="この回を一覧から消し、保存した音声・文字起こしも削除">削除</button>
@@ -107,6 +108,7 @@ routes.shows = async () => {
     const ck = document.getElementById("check"); if (ck) ck.onclick = (e) => act(e.currentTarget, () => api("/api/feeds/check", {}), "確認中");
     document.querySelectorAll("[data-auto]").forEach((b) => (b.onclick = () => act(b, () => api("/api/feeds/toggle", { id: b.dataset.auto }))));
     document.querySelectorAll("[data-prep]").forEach((b) => (b.onclick = () => act(b, () => api("/api/episodes/prepare", { id: b.dataset.prep }))));
+    document.querySelectorAll("[data-redo]").forEach((b) => (b.onclick = () => act(b, () => api("/api/episodes/prepare", { id: b.dataset.redo, redo: true }))));
     document.querySelectorAll("[data-cancel]").forEach((b) => (b.onclick = () => act(b, () => api("/api/episodes/cancel", { id: b.dataset.cancel }), "中断中")));
     document.querySelectorAll("[data-regen]").forEach((b) => (b.onclick = () => act(b, () => api("/api/episodes/regenerate", { id: b.dataset.regen }))));
     document.getElementById("addYt").onclick = (e) => act(e.currentTarget, () => api("/api/youtube", { url: document.getElementById("yt").value, title: document.getElementById("ytt").value }));

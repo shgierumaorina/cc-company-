@@ -119,14 +119,20 @@ async function render() {
 window.addEventListener("hashchange", render);
 
 // ---------- プレーヤー ----------
-let stopAt = null, loop = null, onTick = null;
-player.addEventListener("timeupdate", () => {
+let stopAt = null, loop = null, onTick = null, stopFrame = null;
+function checkStop() {
   if (stopAt !== null && player.currentTime >= stopAt) {
     if (loop) { player.currentTime = loop; } else { player.pause(); stopAt = null; }
   }
-  onTick && onTick();
-});
-player.addEventListener("play", () => onTick && onTick());
+}
+// timeupdate は約0.25秒おきにしか来ず止まるのが遅れるため、再生中は画面の描画ごと（約0.016秒）に確認する
+function watchStop() {
+  cancelAnimationFrame(stopFrame);
+  const tick = () => { checkStop(); if (stopAt !== null && !player.paused) stopFrame = requestAnimationFrame(tick); };
+  stopFrame = requestAnimationFrame(tick);
+}
+player.addEventListener("timeupdate", () => { checkStop(); onTick && onTick(); });
+player.addEventListener("play", () => { watchStop(); onTick && onTick(); });
 player.addEventListener("pause", () => onTick && onTick());
 function stopPlayer() { player.pause(); stopAt = null; loop = null; onTick = null; }
 // ロック画面・イヤホンのボタンで操作できるように
