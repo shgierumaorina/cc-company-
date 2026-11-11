@@ -30,6 +30,8 @@ def _check_cancel(ep_id):
 
 def _set(ep_id, **kw):
     meta = store.episode_meta(ep_id)
+    if meta.get("cancelled"):  # 中断済みの回の状態は上書きしない
+        raise Cancelled(ep_id)
     meta.update(kw, updated=store.now_iso())
     store.save_episode_meta(ep_id, meta)
     return meta
@@ -42,12 +44,16 @@ def download(ep_id):
     path = os.path.join(store.work_dir(ep_id), "audio" + ext)
     if os.path.exists(path) and os.path.getsize(path) > 10000:
         return path
+    last = time.time()
     with feeds.http_get(meta["audio_url"], timeout=120) as r, open(path + ".part", "wb") as f:
         while True:
             chunk = r.read(1 << 16)
             if not chunk:
                 break
             f.write(chunk)
+            if time.time() - last > 15:
+                _check_cancel(ep_id)
+                last = time.time()
     os.replace(path + ".part", path)
     return path
 
@@ -129,7 +135,10 @@ def prepare(ep_id):
         print("cancelled:", ep_id, flush=True)  # 状態は画面側で「未準備」に戻してある
     except Exception as e:  # noqa: BLE001
         traceback.print_exc()
-        _set(ep_id, status="error", message=str(e)[:300])
+        try:
+            _set(ep_id, status="error", message=str(e)[:300])
+        except Cancelled:
+            pass
     return store.episode_meta(ep_id)
 
 
@@ -139,6 +148,12 @@ def regenerate_questions(ep_id):
         if not lines:
             raise RuntimeError("文字起こしがまだありません。「準備する」を押してください")
         make_sections(ep_id, lines)
+    except Cancelled:
+        # 作り直しの中断：前の問題が残っていれば「準備完了」に戻す
+        meta = store.episode_meta(ep_id)
+        meta.update(status="ready" if store.exists(f"ep:{ep_id}:sections") else "new",
+                    cancelled=False, message="中断しました", updated=store.now_iso())
+        store.save_episode_meta(ep_id, meta)
     except Exception as e:  # noqa: BLE001
         traceback.print_exc()
         _set(ep_id, status="error", message=str(e)[:300])
@@ -163,7 +178,8 @@ def todo(auto):
         if cfg.get("auto_prepare", True):
             for f in cfg["feeds"]:
                 if f.get("auto", True):
-                    new = [e for e in eps if e.get("feed_id") == f["id"] and e.get("status") in ("new", "error")]
+                    new = [e for e in eps if e.get("feed_id") == f["id"] and e.get("status") in ("new", "error")
+                           and not e.get("cancelled")]
                     picks += new[:1]
     seen, out = set(), []
     for e in picks:
