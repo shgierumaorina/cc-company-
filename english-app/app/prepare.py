@@ -25,13 +25,14 @@ class Cancelled(Exception):
 
 
 def _check_cancel(ep_id):
-    if store.episode_meta(ep_id).get("cancelled"):
+    meta = store.episode_meta(ep_id)
+    if not meta or meta.get("cancelled") or meta.get("status") == "deleted":
         raise Cancelled(ep_id)
 
 
 def _set(ep_id, **kw):
     meta = store.episode_meta(ep_id)
-    if meta.get("cancelled"):  # 中断済みの回の状態は上書きしない
+    if not meta or meta.get("cancelled") or meta.get("status") == "deleted":  # 中断・削除済みの回は上書きしない
         raise Cancelled(ep_id)
     meta.update(kw, updated=store.now_iso())
     store.save_episode_meta(ep_id, meta)

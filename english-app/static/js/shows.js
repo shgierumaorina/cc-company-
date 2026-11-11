@@ -55,10 +55,11 @@ routes.shows = async () => {
         <section class="card"><label class="lbl" for="feed">ポッドキャストを登録</label>
           <div class="field"><input id="feed" type="text" placeholder="Apple Podcasts のURL または RSSフィードのURL"><button class="btn" id="addFeed" style="border-radius:10px">登録</button></div>
           <p class="note" style="margin-top:8px">URLを貼るだけでRSSを自動で探します。Spotify限定の番組は登録できません</p></section>
-        ${c.feeds.map((f) => { const eps = S.episodes.filter((e) => e.feed_id === f.id).slice(0, 10); return `<section class="card">
+        ${c.feeds.map((f) => { const eps = S.episodes.filter((e) => e.feed_id === f.id && e.status !== "deleted").slice(0, 10); return `<section class="card">
           <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
             <div><div style="font-size:16px;font-weight:700">${esc(f.title)}</div><div class="small">最終チェック ${esc((f.last_check || "").replace("T", " ").slice(0, 16))}${f.last_error ? ` ・ <span style="color:var(--red)">${esc(f.last_error)}</span>` : ""}</div></div>
-            <button class="chip ${f.auto ? "on" : ""}" data-auto="${f.id}">夜間の自動準備 ${f.auto ? "ON" : "OFF"}</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="chip ${f.auto ? "on" : ""}" data-auto="${f.id}">夜間の自動準備 ${f.auto ? "ON" : "OFF"}</button>
+            <button class="chip" data-rmfeed="${f.id}" style="color:var(--red)">番組を削除</button></div>
           </div>
           <div class="list" style="margin-top:8px">${eps.map((e) => { const st = STATUS[e.status] || STATUS.new; const act = ["queued", "downloading", "transcribing", "generating"].includes(e.status); return `<div class="item">
             <div style="flex:1 1 280px;min-width:0"><div style="font-weight:600">${esc(e.title)}</div>
@@ -71,6 +72,7 @@ routes.shows = async () => {
             ${e.status === "ready" && !e.audio_size ? `<button class="btn sm ghost" data-prep="${e.id}" title="広告で音声と文字がずれるため、音声を保存して作り直します">音声を保存して作り直す</button>` : ""}
             ${e.status === "ready" ? `<a class="btn sm" href="#listen/${e.id}/0">聞く</a><button class="btn plain sm" data-regen="${e.id}" title="要旨問題と表現を作り直す">問題を作り直す</button>`
               : act ? `<button class="btn plain sm" data-cancel="${e.id}">中断</button>` : `<button class="btn sm ghost" data-prep="${e.id}">${e.status === "error" ? "再試行" : "準備する"}</button>`}
+            <button class="btn plain sm" data-rmep="${e.id}" title="この回を一覧から消し、保存した音声・文字起こしも削除">削除</button>
           </div>`; }).join("") || '<div class="empty">エピソードがありません</div>'}</div>
           <p class="small" style="margin-top:8px">準備の流れ：「準備する」→ 30分以内にGitHub Actionsが文字起こし（Whisper・無料）→ 区間分割 → 要旨問題・表現の作成（Gemini）</p>
         </section>`; }).join("")}
@@ -108,6 +110,8 @@ routes.shows = async () => {
     document.querySelectorAll("[data-cancel]").forEach((b) => (b.onclick = () => act(b, () => api("/api/episodes/cancel", { id: b.dataset.cancel }), "中断中")));
     document.querySelectorAll("[data-regen]").forEach((b) => (b.onclick = () => act(b, () => api("/api/episodes/regenerate", { id: b.dataset.regen }))));
     document.getElementById("addYt").onclick = (e) => act(e.currentTarget, () => api("/api/youtube", { url: document.getElementById("yt").value, title: document.getElementById("ytt").value }));
+    document.querySelectorAll("[data-rmep]").forEach((b) => (b.onclick = () => act(b, () => api("/api/episodes/delete", { id: b.dataset.rmep }), "削除中")));
+    document.querySelectorAll("[data-rmfeed]").forEach((b) => (b.onclick = () => { if (confirm("この番組と、すべての回（音声・文字起こし・復習の文）を削除しますか？")) act(b, () => api("/api/feeds/delete", { id: b.dataset.rmfeed }), "削除中"); }));
     document.querySelectorAll("[data-rmyt]").forEach((b) => (b.onclick = () => act(b, () => api("/api/youtube/remove", { id: b.dataset.rmyt }))));
     const sk = document.getElementById("saveKey"); if (sk) sk.onclick = (e) => act(e.currentTarget, async () => { const v = document.getElementById("key").value.trim(); if (!v) throw new Error("APIキーを入力してください"); await api("/api/settings", { gemini_api_key: v }); const r = await api("/api/test-key", {}); await refresh(); toast(`接続OK（${r.model}）`); }, "確認中");
     const tk = document.getElementById("testKey"); if (tk) tk.onclick = (e) => act(e.currentTarget, async () => { const r = await api("/api/test-key", {}); await refresh(); toast(`接続OK（${r.model}）`); }, "確認中");
