@@ -69,7 +69,7 @@ routes.shows = async () => {
               ${act ? `<div class="bar" style="height:6px"><div style="width:${e.progress || 0}%;background:${st[1]}"></div></div>` : ""}
             </div>
             ${e.status === "ready" ? `<a class="btn sm" href="#listen/${e.id}/0">聞く</a><button class="btn plain sm" data-regen="${e.id}" title="要旨問題と表現を作り直す">問題を作り直す</button>`
-              : act ? "" : `<button class="btn sm ghost" data-prep="${e.id}">${e.status === "error" ? "再試行" : "準備する"}</button>`}
+              : act ? `<button class="btn plain sm" data-cancel="${e.id}">中断</button>` : `<button class="btn sm ghost" data-prep="${e.id}">${e.status === "error" ? "再試行" : "準備する"}</button>`}
           </div>`; }).join("") || '<div class="empty">エピソードがありません</div>'}</div>
           <p class="small" style="margin-top:8px">準備の流れ：「準備する」→ 30分以内にGitHub Actionsが文字起こし（Whisper・無料）→ 区間分割 → 要旨問題・表現の作成（Gemini）</p>
         </section>`; }).join("")}
@@ -104,6 +104,7 @@ routes.shows = async () => {
     const ck = document.getElementById("check"); if (ck) ck.onclick = (e) => act(e.currentTarget, () => api("/api/feeds/check", {}), "確認中");
     document.querySelectorAll("[data-auto]").forEach((b) => (b.onclick = () => act(b, () => api("/api/feeds/toggle", { id: b.dataset.auto }))));
     document.querySelectorAll("[data-prep]").forEach((b) => (b.onclick = () => act(b, () => api("/api/episodes/prepare", { id: b.dataset.prep }))));
+    document.querySelectorAll("[data-cancel]").forEach((b) => (b.onclick = () => { if (confirm("この回の準備を中断しますか？")) act(b, () => api("/api/episodes/cancel", { id: b.dataset.cancel }), "中断中"); }));
     document.querySelectorAll("[data-regen]").forEach((b) => (b.onclick = () => act(b, () => api("/api/episodes/regenerate", { id: b.dataset.regen }))));
     document.getElementById("addYt").onclick = (e) => act(e.currentTarget, () => api("/api/youtube", { url: document.getElementById("yt").value, title: document.getElementById("ytt").value }));
     document.querySelectorAll("[data-rmyt]").forEach((b) => (b.onclick = () => act(b, () => api("/api/youtube/remove", { id: b.dataset.rmyt }))));

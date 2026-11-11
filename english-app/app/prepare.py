@@ -19,6 +19,15 @@ ACTIVE = ("downloading", "transcribing", "generating")
 MAX_PER_RUN = 3
 
 
+class Cancelled(Exception):
+    """画面で「中断」が押された。"""
+
+
+def _check_cancel(ep_id):
+    if store.episode_meta(ep_id).get("cancelled"):
+        raise Cancelled(ep_id)
+
+
 def _set(ep_id, **kw):
     meta = store.episode_meta(ep_id)
     meta.update(kw, updated=store.now_iso())
@@ -72,8 +81,10 @@ def transcribe(ep_id, path):
             continue
         lines.append({"start": round(s.start, 2), "end": round(s.end, 2), "text": text})
         if time.time() - last > 20 and info.duration:
+            _check_cancel(ep_id)
             _set(ep_id, progress=min(99, int(s.end * 100 / info.duration)))
             last = time.time()
+    _check_cancel(ep_id)
     store.put(f"ep:{ep_id}:transcript", lines)
     _set(ep_id, duration=round(info.duration or 0, 1))
     print("transcribed", len(lines), "lines", flush=True)
@@ -96,6 +107,7 @@ def make_sections(ep_id, lines):
         s.update(topic_ja=q.get("topic_ja", ""), summary_ja=q.get("summary_ja", ""), choices=choices,
                  answer=choices.index(q["correct_ja"]) if q.get("correct_ja") in choices else -1,
                  chunks=q.get("chunks", []))
+    _check_cancel(ep_id)
     store.put(f"ep:{ep_id}:sections", sections)
     _set(ep_id, status="ready", progress=100, sections=len(sections), message=message,
          prepared_at=store.now_iso())
@@ -104,12 +116,17 @@ def make_sections(ep_id, lines):
 def prepare(ep_id):
     """1エピソードを学習できる状態にする。"""
     try:
+        _check_cancel(ep_id)
         lines = store.get(f"ep:{ep_id}:transcript")
         if not lines:
-            lines = transcribe(ep_id, download(ep_id))
+            path = download(ep_id)
+            _check_cancel(ep_id)
+            lines = transcribe(ep_id, path)
         if not lines:
             raise RuntimeError("文字起こし結果が空でした")
         make_sections(ep_id, lines)
+    except Cancelled:
+        print("cancelled:", ep_id, flush=True)  # 状態は画面側で「未準備」に戻してある
     except Exception as e:  # noqa: BLE001
         traceback.print_exc()
         _set(ep_id, status="error", message=str(e)[:300])
