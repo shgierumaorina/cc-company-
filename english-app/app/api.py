@@ -156,6 +156,14 @@ def route(p, b):
     if p == "/api/episodes/prepare":
         # 文字起こしはGitHub Actionsが行う。トークンがあればすぐ起動、なければ30分ごとの定期実行で拾う
         has_token = bool(os.environ.get("GITHUB_DISPATCH_TOKEN"))
+        meta = store.episode_meta(b["id"])
+        if b.get("redo") and meta.get("status") == "ready":  # 文字起こしから取り直す
+            audiostore.delete(b["id"])
+            for part in ("transcript", "sections"):
+                store.delete(f"ep:{b['id']}:{part}")
+            for k in ("audio_size", "timing"):
+                meta.pop(k, None)
+            store.save_episode_meta(b["id"], meta)
         _set_status(b["id"], "queued", "順番待ち（まもなく文字起こしが始まります）" if has_token
                     else "順番待ち（30分以内に自動で文字起こしが始まります）")
         if has_token:

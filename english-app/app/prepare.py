@@ -84,7 +84,9 @@ def transcribe(ep_id, path):
     _set(ep_id, status="transcribing", progress=0, message="文字起こし中")
     print("loading model", name, flush=True)
     model = WhisperModel(name, device="cpu", compute_type="int8")
-    segments, info = model.transcribe(path, language="en", vad_filter=True, beam_size=1)
+    # word_timestamps: 文の始まり・終わりを単語の位置に合わせる（ないと終わりが次の文に食い込みやすい）
+    segments, info = model.transcribe(path, language="en", vad_filter=True, beam_size=1,
+                                      word_timestamps=True)
     lines, last = [], time.time()
     for s in segments:
         text = s.text.strip()
@@ -146,7 +148,8 @@ def prepare(ep_id):
                 audiostore.delete(ep_id)  # 保存中に中断・削除された分を残さない
                 raise
             lines = transcribe(ep_id, path)
-            _set(ep_id, audio_size=size, audio_mime="audio/mp4")  # 文字起こしが済んでから「保存済み」にする
+            # 文字起こしが済んでから「保存済み」にする。timing=word は単語単位で区切った印
+            _set(ep_id, audio_size=size, audio_mime="audio/mp4", timing="word")
         if not lines:
             raise RuntimeError("文字起こし結果が空でした")
         make_sections(ep_id, lines)
