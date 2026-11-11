@@ -32,3 +32,5 @@ def trigger(mode="queue"):
         return False, f"HTTP {e.code}: {e.read().decode('utf-8', 'replace')[:200]}"
     except urllib.error.URLError as e:
         return False, f"接続エラー: {e.reason}"
+    except Exception as e:  # noqa: BLE001  タイムアウト等でも画面の操作は止めない
+        return False, f"{type(e).__name__}: {e}"

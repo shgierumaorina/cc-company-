@@ -51,15 +51,27 @@ def _discover_rss(html, base_url):
     return None
 
 
-def fetch_feed(feed_url, _depth=0):
+def find_feed(url):
+    """URLがRSSならそのまま、番組のWebページならページ内のRSSリンクを返す。"""
+    with http_get(url) as r:
+        body = r.read()
+    try:
+        if ET.fromstring(body).find("channel") is not None:
+            return url
+    except ET.ParseError:
+        pass
+    rss = _discover_rss(body.decode("utf-8", "replace"), url)
+    if not rss:
+        raise ValueError(NOT_RSS)
+    return rss
+
+
+def fetch_feed(feed_url):
     with http_get(feed_url) as r:
         body = r.read()
     try:
         root = ET.fromstring(body)
     except ET.ParseError:
-        rss = _discover_rss(body.decode("utf-8", "replace"), feed_url) if _depth == 0 else None
-        if rss:
-            return fetch_feed(rss, _depth + 1)
         raise ValueError(NOT_RSS) from None
     ch = root.find("channel")
     if ch is None:
@@ -100,7 +112,7 @@ def register_items(fid, show_title, items):
 
 
 def add_feed(url):
-    feed_url = resolve_feed_url(url)
+    feed_url = find_feed(resolve_feed_url(url))
     title, items = fetch_feed(feed_url)
     cfg = store.config()
     fid = hashlib.sha1(feed_url.encode("utf-8")).hexdigest()[:10]

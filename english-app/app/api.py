@@ -1,4 +1,5 @@
 """POST API の処理。"""
+import os
 import re
 import threading
 import traceback
@@ -37,6 +38,12 @@ def _background(fn, *args):
         except Exception:  # noqa: BLE001
             traceback.print_exc()
     threading.Thread(target=run, daemon=True).start()
+
+
+def _dispatch():
+    ok, why = dispatch.trigger("queue")
+    if not ok:
+        print("dispatch failed:", why, flush=True)
 
 
 def _yt_id(url):
@@ -122,11 +129,11 @@ def route(p, b):
                                          for f in cfg["feeds"] if f["id"] == b.get("id")])
     if p == "/api/episodes/prepare":
         # 文字起こしはGitHub Actionsが行う。トークンがあればすぐ起動、なければ30分ごとの定期実行で拾う
-        ok, why = dispatch.trigger("queue")
-        if not ok and why != "no-token":
-            print("dispatch failed:", why, flush=True)
-        _set_status(b["id"], "queued", "順番待ち（まもなく文字起こしが始まります）" if ok
+        has_token = bool(os.environ.get("GITHUB_DISPATCH_TOKEN"))
+        _set_status(b["id"], "queued", "順番待ち（まもなく文字起こしが始まります）" if has_token
                     else "順番待ち（30分以内に自動で文字起こしが始まります）")
+        if has_token:
+            _background(_dispatch)
         return public_state()
     if p == "/api/episodes/regenerate":
         _set_status(b["id"], "generating", "要旨問題と表現を作成中")
