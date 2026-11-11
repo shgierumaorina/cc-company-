@@ -1,6 +1,7 @@
 """Gemini API（無料枠）呼び出し。追加ライブラリ不要（urllibのみ）。"""
 import json
 import os
+import time
 import urllib.error
 import urllib.request
 
@@ -63,6 +64,7 @@ def pick_model(key, force=False):
     names = _candidates(key)
     if not names:
         raise GeminiError("使えるGeminiモデルが見つかりません")
+    last = None
     for n in names[:6]:
         try:
             # 応答が返ればOK（中身は問わない）
@@ -74,8 +76,11 @@ def pick_model(key, force=False):
             cfg["gemini_model"] = n
             store.save_config(cfg)
             return n
-        except GeminiError:
+        except GeminiError as e:
+            last = e
             continue
+    if last and str(last).startswith(BUSY):  # どのモデルも混雑中ならキーの問題ではない
+        raise _friendly(last)
     raise GeminiError("無料枠で使えるモデルが見つかりません（キーの設定を確認してください）")
 
 
@@ -103,20 +108,45 @@ def api_key():
     return os.environ.get("GEMINI_API_KEY", "").strip() or store.config().get("gemini_api_key", "").strip()
 
 
+BUSY = ("HTTP 500", "HTTP 502", "HTTP 503", "HTTP 504")
+WAITS = (2, 5, 10)  # 混雑時の待ち時間（秒）。2回目からは別のモデルに切り替える
+
+
+def _friendly(e):
+    msg = str(e)
+    if msg.startswith(BUSY):
+        return GeminiError("Geminiが混み合っています。少し時間をおいてからもう一度試してください")
+    if msg.startswith("HTTP 429"):
+        return GeminiError("Geminiの無料枠の上限に達しました。上限は毎日（日本時間の夕方ごろ）リセットされます")
+    return e
+
+
 def generate(prompt, system=None, max_tokens=4096, json_mode=False, history=None):
     key = api_key()
     if not key:
         raise GeminiError("GeminiのAPIキーが未設定です（設定画面から入力）")
-    model = pick_model(key)
-    try:
-        text = _generate(key, model, prompt, system, max_tokens, json_mode, history)
-    except GeminiError as e:
-        # モデルが使えなくなった場合は選び直して1回だけ再試行
-        if "HTTP 404" in str(e) or "HTTP 403" in str(e):
-            model = pick_model(key, force=True)
+    model, tried, reselected = pick_model(key), [], False
+    for attempt in range(len(WAITS) + 1):
+        tried.append(model)
+        try:
             text = _generate(key, model, prompt, system, max_tokens, json_mode, history)
-        else:
-            raise
+            break
+        except GeminiError as e:
+            msg = str(e)
+            if ("HTTP 404" in msg or "HTTP 403" in msg) and not reselected:
+                try:
+                    model, reselected = pick_model(key, force=True), True  # モデルが使えなくなったら選び直す
+                except GeminiError as e2:
+                    raise _friendly(e2) from None
+                continue
+            if not msg.startswith(BUSY) or attempt == len(WAITS):
+                raise _friendly(e) from None
+            time.sleep(WAITS[attempt])
+            if attempt >= 1:  # 同じモデルが混んでいたら、別のモデルを試す
+                try:
+                    model = next((n for n in _candidates(key) if n not in tried), model)
+                except GeminiError:
+                    pass  # 一覧も取れないほど混んでいる時は同じモデルで再試行
     if json_mode:
         return parse_json(text)
     return text
