@@ -38,6 +38,7 @@ Render ダッシュボード → New → Web Service → このリポジトリ�
 | `TURSO_AUTH_TOKEN` | 日記アプリと同じ値 |
 | `GEMINI_API_KEY` | Google AI Studio で発行したキー |
 | `APP_PASSWORD` | このアプリを開くときのパスワード（自分で決める） |
+| `GITHUB_DISPATCH_TOKEN`（任意） | GitHubのFine-grainedトークン（対象リポジトリ cc-company-、権限 Actions: Read and write）。設定すると「準備する」を押した直後に文字起こしが始まる。未設定なら30分ごとの定期実行で拾う |
 
 ### 2. GitHub Actions の Secrets を入れる
 

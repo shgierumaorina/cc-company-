@@ -5,7 +5,7 @@ import traceback
 import uuid
 from datetime import datetime, timedelta
 
-from . import feeds, gemini, prepare, questions, store, talk
+from . import dispatch, feeds, gemini, prepare, questions, store, talk
 
 INTERVALS = [1, 3, 7, 14, 30]  # 復習の間隔（日）
 
@@ -121,8 +121,12 @@ def route(p, b):
         return _edit_config(lambda cfg: [f.update(auto=not f.get("auto", True))
                                          for f in cfg["feeds"] if f["id"] == b.get("id")])
     if p == "/api/episodes/prepare":
-        # 文字起こしはGitHub Actionsが30分ごとに拾って実行する
-        _set_status(b["id"], "queued", "順番待ち（30分以内に自動で文字起こしが始まります）")
+        # 文字起こしはGitHub Actionsが行う。トークンがあればすぐ起動、なければ30分ごとの定期実行で拾う
+        ok, why = dispatch.trigger("queue")
+        if not ok and why != "no-token":
+            print("dispatch failed:", why, flush=True)
+        _set_status(b["id"], "queued", "順番待ち（まもなく文字起こしが始まります）" if ok
+                    else "順番待ち（30分以内に自動で文字起こしが始まります）")
         return public_state()
     if p == "/api/episodes/regenerate":
         _set_status(b["id"], "generating", "要旨問題と表現を作成中")
