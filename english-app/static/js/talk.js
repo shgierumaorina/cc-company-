@@ -29,7 +29,7 @@ routes.theme = async (epId, idx) => {
             <button class="pick" data-t="${t.id}"><span style="font-weight:600">${esc(t.name)}</span><span class="small">${t.count ? `${t.count}回 ・ 最終 ${esc(t.last || "")}` : "未実施"}</span></button>
             <button class="star ${t.fav ? "on" : ""}" data-fav="${t.id}" aria-label="お気に入り">${ICON.star.replace("FILL", t.fav ? "#F2B54A" : "none")}</button>
           </div>`).join("")}</div></section>
-        ${talks.length ? `<section class="card"><h2>最近の会話</h2><div class="list">${talks.slice(0, 8).map((t) => `<div class="item"><a href="#talk/${t.id}" style="flex:1">${esc(t.theme)}</a><span class="small">${esc(t.started.slice(0, 16).replace("T", " "))} ・ ${t.turns}往復</span></div>`).join("")}</div></section>` : ""}
+        ${talks.length ? `<section class="card"><h2>最近の会話</h2><div class="list">${talks.slice(0, 8).map((t) => `<div class="item"><a href="#talk/${t.id}" style="flex:1">${esc(t.theme)}</a><span class="small">${esc(t.started.slice(0, 16).replace("T", " "))} ・ ${t.turns}往復</span><button class="btn plain sm" data-rmtalk="${t.id}">削除</button></div>`).join("")}</div></section>` : ""}
       </div>
       <aside class="card side stack">
         <div style="font-size:12px;font-weight:700;color:var(--blue)">選択中のテーマ</div>
@@ -47,6 +47,7 @@ routes.theme = async (epId, idx) => {
     const sb = document.getElementById("seg"); if (sb) sb.onclick = () => { sel = "seg"; draw(); };
     document.getElementById("rand").onclick = () => { const t = themes[Math.floor(Math.random() * themes.length)]; if (t) { sel = t.id; draw(); } };
     document.querySelectorAll("[data-t]").forEach((b) => (b.onclick = () => { sel = b.dataset.t; draw(); }));
+    document.querySelectorAll("[data-rmtalk]").forEach((b) => (b.onclick = async () => { try { talks = (await api("/api/talk/delete", { id: b.dataset.rmtalk })).talks; draw(); } catch (e) { toast(e.message); } }));
     document.querySelectorAll("[data-fav]").forEach((b) => (b.onclick = async () => { await api("/api/themes/fav", { id: b.dataset.fav }); draw(); }));
     const del = document.getElementById("del"); if (del) del.onclick = async () => { if (!confirm("このテーマを削除しますか？")) return; await api("/api/themes/delete", { id: sel }); sel = segTheme ? "seg" : (S.progress.themes[0] || {}).id; draw(); };
     document.getElementById("start").onclick = async (e) => {

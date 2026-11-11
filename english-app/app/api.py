@@ -6,7 +6,7 @@ import traceback
 import uuid
 from datetime import datetime, timedelta
 
-from . import dispatch, feeds, gemini, prepare, questions, store, talk
+from . import audiostore, dispatch, feeds, gemini, prepare, questions, store, talk
 
 INTERVALS = [1, 3, 7, 14, 30]  # 復習の間隔（日）
 
@@ -44,6 +44,32 @@ def _dispatch():
     ok, why = dispatch.trigger("queue")
     if not ok:
         print("dispatch failed:", why, flush=True)
+
+
+def _erase_episode(ep_id, keep_marker):
+    """回のデータ（音声・文字起こし・区間・復習の文）を消す。
+    keep_marker=True なら「削除済み」の印だけ残し、新着確認で同じ回がまた登録されないようにする。"""
+    meta = store.episode_meta(ep_id)
+    if not meta:
+        return
+    audiostore.delete(ep_id)
+    for part in ("transcript", "sections"):
+        store.delete(f"ep:{ep_id}:{part}")
+    if keep_marker:  # 処理中のActionsも、この印を見て止まる
+        store.save_episode_meta(ep_id, {k: meta.get(k) for k in ("id", "feed_id", "title", "published_ts")}
+                                | {"status": "deleted", "cancelled": True, "updated": store.now_iso()})
+    else:
+        store.delete(f"ep:{ep_id}:meta")
+    pr = store.progress()
+    pr["review"] = [r for r in pr["review"] if r.get("ep") != ep_id]
+    store.save_progress(pr)
+
+
+def _delete_feed(fid):
+    for m in store.list_episodes():
+        if m.get("feed_id") == fid:
+            _erase_episode(m["id"], keep_marker=False)
+    return _edit_config(lambda cfg: cfg.update(feeds=[f for f in cfg["feeds"] if f["id"] != fid]))
 
 
 def _yt_id(url):
@@ -140,6 +166,16 @@ def route(p, b):
         if store.episode_meta(b["id"]).get("status") in ("queued",) + prepare.ACTIVE:
             _set_status(b["id"], "new", "中断しました", cancelled=True)
         return public_state()
+    if p == "/api/episodes/delete":
+        _erase_episode(b["id"], keep_marker=True)
+        return public_state()
+    if p == "/api/feeds/delete":
+        return _delete_feed(b.get("id"))
+    if p == "/api/review/delete":
+        return _edit_progress(lambda pr: pr.update(review=[r for r in pr["review"] if r["id"] != b.get("id")]))
+    if p == "/api/talk/delete":
+        store.delete("talk:" + re.sub(r"[^0-9A-Za-z-]", "", str(b.get("id", ""))))
+        return {"talks": talk.summaries()}
     if p == "/api/episodes/regenerate":
         _set_status(b["id"], "generating", "要旨問題と表現を作成中")
         _background(prepare.regenerate_questions, b["id"])

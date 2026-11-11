@@ -125,6 +125,7 @@ routes.review = async () => {
           <button class="btn ghost" id="ng">まだ聞き取れない</button>
           <button class="btn" id="ok">聞き取れた</button>
         </div>
+        <button class="small" id="rmrev" style="background:none;border:none;color:var(--muted);text-decoration:underline;cursor:pointer">この文を復習リストから削除</button>
       </section></div>`;
     const play = (r, silent) => playRange(`/audio/${it.ep}`, Math.max(0, it.start - 0.15), it.end + 0.2, r, silent);
     mediaSession("復習", ep ? ep.title : "", { play: () => play(1), pause: () => player.pause(), previoustrack: () => play(1) });
@@ -134,6 +135,7 @@ routes.review = async () => {
     const ans = async (ok) => { try { await api("/api/review/answer", { id: it.id, ok }); } catch (e) { toast(e.message); } i++; shown = false; draw(); };
     document.getElementById("ok").onclick = () => ans(true);
     document.getElementById("ng").onclick = () => ans(false);
+    document.getElementById("rmrev").onclick = async () => { try { await api("/api/review/delete", { id: it.id }); toast("削除しました"); } catch (e) { toast(e.message); } i++; shown = false; draw(); };
     if (!shown) play(1, true);
   };
   draw();
