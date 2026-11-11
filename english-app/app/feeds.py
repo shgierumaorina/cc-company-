@@ -11,6 +11,9 @@ from . import store
 
 UA = "Mozilla/5.0 (compatible; ListeningLab/1.0)"
 ITUNES = "{http://www.itunes.com/dtds/podcast-1.0.dtd}"
+MEDIA = "{http://search.yahoo.com/mrss/}"
+IMAGE_EXT = (".jpg", ".jpeg", ".png", ".gif", ".webp")
+MEDIA_EXT = (".mp3", ".m4a", ".mp4", ".aac", ".ogg", ".oga", ".opus", ".wav", ".webm", ".mov", ".m4v")
 KEEP = 15  # 1番組あたり一覧に載せる最新回の数
 NOT_RSS = ("このURLは番組のRSSではありませんでした。Apple Podcastsで番組を開き、"
            "そのページのURL（podcasts.apple.com/…）を貼ってください")
@@ -79,10 +82,9 @@ def fetch_feed(feed_url):
     title = (ch.findtext("title") or "").strip()
     items = []
     for it in ch.findall("item"):
-        enc = it.find("enclosure")
-        if enc is None or not enc.get("url"):
+        audio = _media_url(it)
+        if not audio:  # 画像だけの回など、音声・動画のない回は除く
             continue
-        audio = enc.get("url")
         try:
             ts = parsedate_to_datetime(it.findtext("pubDate") or "").timestamp()
         except (TypeError, ValueError):
@@ -98,9 +100,28 @@ def fetch_feed(feed_url):
     return title, items
 
 
+def _media_url(item):
+    """回の中から音声（なければ動画）のURLを選ぶ。画像などは選ばない。"""
+    cands = item.findall("enclosure") + item.findall(f"{MEDIA}content") + item.findall(f"{MEDIA}group/{MEDIA}content")
+    for prefix in ("audio/", "video/"):
+        for c in cands:
+            if c.get("url") and (c.get("type") or "").lower().startswith(prefix):
+                return c.get("url")
+    for c in cands:
+        url = c.get("url") or ""
+        if not c.get("type") and urllib.parse.urlparse(url).path.lower().endswith(MEDIA_EXT):
+            return url
+    return None
+
+
 def register_items(fid, show_title, items):
     """フィードのエピソードを一覧に登録（まだ処理はしない）。新しく増えた回のIDを返す。"""
-    known = {m["id"] for m in store.list_episodes()}
+    eps = store.list_episodes()
+    for m in eps:  # 以前の版で登録された、画像だけの回を片付ける
+        path = urllib.parse.urlparse(m.get("audio_url", "")).path.lower()
+        if m.get("feed_id") == fid and m.get("status") in ("new", "error") and path.endswith(IMAGE_EXT):
+            store.delete(f"ep:{m['id']}:meta")
+    known = {m["id"] for m in eps}
     new = []
     for it in items[:KEEP]:
         if it["id"] in known:
@@ -114,6 +135,8 @@ def register_items(fid, show_title, items):
 def add_feed(url):
     feed_url = find_feed(resolve_feed_url(url))
     title, items = fetch_feed(feed_url)
+    if not items:
+        raise ValueError("この番組には音声・動画ファイルのある回が見つかりませんでした（画像や記事だけの配信は使えません）")
     cfg = store.config()
     fid = hashlib.sha1(feed_url.encode("utf-8")).hexdigest()[:10]
     if not any(f["id"] == fid for f in cfg["feeds"]):
