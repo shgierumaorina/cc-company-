@@ -90,7 +90,7 @@ routes.talk = async (tid) => {
         </div>
         <div class="msgs">${t.messages.map((m, i) => `<div class="msg ${m.role === "me" ? "me" : ""}">
           <div class="small">${m.role === "me" ? "あなた" : "AI"}</div>
-          <div class="bubble"><div class="en">${esc(m.en)}</div>
+          <div class="bubble"><div class="en notranslate" translate="no" lang="en">${esc(m.en)}</div>
             ${m.role === "ai" && showJa && m.ja ? `<div class="ja">${esc(m.ja)}</div>` : ""}
             ${m.correction && m.correction.better ? `<div class="fix"><b>より自然な言い方</b>${esc(m.correction.better)}${m.correction.note_ja ? `<div class="small">${esc(m.correction.note_ja)}</div>` : ""}</div>` : ""}
           </div>

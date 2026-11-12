@@ -43,7 +43,7 @@ routes.check = async (epId, idx) => {
           <div id="lines">${s.lines.map((ln, i) => `<div class="line" data-li="${i}">
             <div class="main">
               <button class="iconbtn" data-play="${i}" aria-label="この文を再生">${ICON.play}</button>
-              <div class="txt"><div class="en">${highlight(ln.text, s.chunks)}</div>${L.showJa && ln.ja ? `<div class="ja">${esc(ln.ja)}</div>` : ""}</div>
+              <div class="txt"><div class="en notranslate" translate="no" lang="en">${highlight(ln.text, s.chunks)}</div>${L.showJa && ln.ja ? `<div class="ja">${esc(ln.ja)}</div>` : ""}</div>
               <button class="miss ${L.missed[i] ? "on" : ""}" data-miss="${i}">${L.missed[i] ? "聞き取れなかった" : "聞けた"}</button>
             </div>
             ${L.missed[i] ? `<div class="tags">${CAUSES.map((c) => `<button class="tag" data-li2="${i}" data-cause="${c.id}" style="color:${L.cause[i] === c.id ? "#fff" : c.color};${L.cause[i] === c.id ? `background:${c.color};border-color:${c.color}` : ""}" title="${esc(c.hint)}">${c.label}</button>`).join("")}</div>` : ""}
