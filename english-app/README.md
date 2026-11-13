@@ -54,7 +54,7 @@ GitHub → このリポジトリ → Settings → Secrets and variables → Acti
 
 ## 注意
 
-- Render無料プランは15分使わないと停止し、次に開くとき30秒〜1分ほど待つ。
+- Render無料プランは15分使わないと停止し、次に開くとき30秒〜1分ほど待つ。これを防ぐため `.github/workflows/english-keepalive.yml` が JST 6:00〜24:00 の間10分ごとに `/api/health` を叩く（リポジトリ変数 `ENGLISH_APP_URL` にRenderのURLを登録しておく）。夜間は無料枠（月750時間）節約のため止めている。
 - Gemini無料枠では、送った内容（文字起こし・会話）がGoogleのサービス改善に使われることがある。
 - このリポジトリは公開設定。Actionsのログにはエピソード名が出る（文字起こし本文は出さない）。
 - PC版（Windowsで動く版）は `C:\Users\shige\AI開発\listening-lab` にあり、こちらとはデータを共有しない。

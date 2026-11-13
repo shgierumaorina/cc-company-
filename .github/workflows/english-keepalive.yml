@@ -1,0 +1,40 @@
+name: 英語アプリ スリープ防止
+
+# Render無料プランは15分アクセスがないと停止し、次に開くと「アプリケーションの読み込み中」画面で
+# 30秒〜1分待たされる。使う時間帯（JST 6:00〜24:00）は10分ごとに /api/health を叩いて起こしておく。
+# 夜間を止めているのは、無料枠（月750時間）を使い切らないため。
+# 事前に Settings → Secrets and variables → Actions → Variables に
+# ENGLISH_APP_URL（例: https://xxxx.onrender.com）を登録しておく。
+
+on:
+  schedule:
+    # UTC表記。21〜23時・0〜14時 = JST 6:00〜23:59。混雑する0分を避けて4分ずらし
+    - cron: '4,14,24,34,44,54 21-23,0-14 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: english-keepalive
+  cancel-in-progress: true
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions: {}
+    steps:
+      - name: /api/health にアクセス
+        env:
+          APP_URL: ${{ vars.ENGLISH_APP_URL }}
+        run: |
+          if [ -z "$APP_URL" ]; then
+            echo "::warning::ENGLISH_APP_URL が未登録のためスキップ"
+            exit 0
+          fi
+          url="${APP_URL%/}/api/health"
+          for i in 1 2 3; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 90 "$url" || true)
+            echo "試行$i: HTTP $code"
+            [ "$code" = "200" ] && exit 0
+            sleep 10
+          done
+          echo "::warning::応答なし（起動中の可能性あり）"
