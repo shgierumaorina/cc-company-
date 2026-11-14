@@ -1,5 +1,6 @@
 """Gemini API（無料枠）呼び出し。追加ライブラリ不要（urllibのみ）。"""
 import json
+import re
 import os
 import time
 import urllib.error
@@ -148,7 +149,15 @@ def generate(prompt, system=None, max_tokens=4096, json_mode=False, history=None
                 except GeminiError:
                     pass  # 一覧も取れないほど混んでいる時は同じモデルで再試行
     if json_mode:
-        return parse_json(text)
+        try:
+            return parse_json(text)
+        except GeminiError:
+            # まれに壊れたJSONが返るので、1回だけ作り直してもらう
+            try:
+                text = _generate(key, model, prompt, system, max_tokens, json_mode, history)
+            except GeminiError as e:
+                raise _friendly(e) from None
+            return parse_json(text)
     return text
 
 
@@ -157,13 +166,18 @@ def parse_json(text):
     if t.startswith("```"):
         t = t.split("\n", 1)[1] if "\n" in t else t
         t = t.rsplit("```", 1)[0]
-    try:
-        return json.loads(t)
-    except json.JSONDecodeError:
-        s, e = t.find("{"), t.rfind("}")
-        if s >= 0 and e > s:
-            return json.loads(t[s:e + 1])
-        raise GeminiError("AIの応答をJSONとして読めませんでした")
+    s, e = t.find("{"), t.rfind("}")
+    tries = [t]
+    if s >= 0 and e > s:
+        tries.append(t[s:e + 1])
+    for cand in list(tries):
+        tries.append(re.sub(r",\s*([\]}])", r"\1", cand))  # 末尾の余分なカンマを取り除く
+    for cand in tries:
+        try:
+            return json.loads(cand)
+        except json.JSONDecodeError:
+            continue
+    raise GeminiError("AIの応答が崩れていました。もう一度試してください")
 
 
 def test_key(key):
