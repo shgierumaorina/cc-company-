@@ -69,7 +69,7 @@ routes.listen = async (epId, idx) => {
   const d = await api(`/api/episode/${epId}`);
   const s = d.sections[idx];
   if (!s) { go("home"); return; }
-  if (!L || L.ep !== epId || L.idx !== idx) L = { ep: epId, idx, choice: null, feel: null, missed: {}, cause: {}, rate: 1, showJa: false };
+  if (!L || L.ep !== epId || L.idx !== idx) L = { ep: epId, idx, choice: null, feel: null, missed: {}, cause: {}, rate: 1, showJa: localGet("checkJa", true) };
   const src = `/audio/${epId}`;
   const choices = [...(s.choices || []), "よくわからなかった"];
   $app.innerHTML = `<div class="stack" style="max-width:880px;margin:0 auto">

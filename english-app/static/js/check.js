@@ -17,7 +17,7 @@ routes.check = async (epId, idx) => {
   idx = +idx;
   const d = await api(`/api/episode/${epId}`);
   const s = d.sections[idx];
-  if (!L || L.ep !== epId || L.idx !== idx) L = { ep: epId, idx, choice: null, feel: null, missed: {}, cause: {}, rate: 1, showJa: false };
+  if (!L || L.ep !== epId || L.idx !== idx) L = { ep: epId, idx, choice: null, feel: null, missed: {}, cause: {}, rate: 1, showJa: localGet("checkJa", true) };
   const src = `/audio/${epId}`;
   const hasQ = s.choices && s.choices.length;
   const unknown = L.choice === (s.choices || []).length;
@@ -83,13 +83,13 @@ routes.check = async (epId, idx) => {
     document.querySelectorAll("[data-miss]").forEach((b) => (b.onclick = () => { const i = +b.dataset.miss; L.missed[i] = !L.missed[i]; draw(); }));
     document.querySelectorAll("[data-cause]").forEach((b) => (b.onclick = () => { L.cause[+b.dataset.li2] = b.dataset.cause; draw(); }));
     document.getElementById("jaBtn").onclick = async (e) => {
-      if (L.showJa) { L.showJa = false; draw(); return; }
+      if (L.showJa) { L.showJa = false; localSet("checkJa", false); draw(); return; }
       if (!s.lines.every((l) => l.ja)) {
         busy(e.currentTarget, true, "翻訳中");
         try { const r = await api("/api/translate", { ep: epId, idx }); s.lines = r.lines; }
         catch (err) { toast(err.message); busy(e.currentTarget, false); return; }
       }
-      L.showJa = true; draw();
+      L.showJa = true; localSet("checkJa", true); draw();
     };
     const save = async (next) => {
       const missed = Object.keys(L.missed).filter((k) => L.missed[k]).map((k) => { const ln = s.lines[+k]; return { line: +k, text: ln.text, ja: ln.ja || "", start: ln.start, end: ln.end, cause: L.cause[k] || null }; });
@@ -103,6 +103,15 @@ routes.check = async (epId, idx) => {
     document.getElementById("saveEnd").onclick = () => save("home");
   };
   draw();
+  // 日本語訳を初期表示：未翻訳の行があれば自動で取得
+  const here = location.hash;
+  if (L.showJa && !s.lines.every((l) => l.ja)) {
+    const b = document.getElementById("jaBtn");
+    if (b) busy(b, true, "翻訳中");
+    try { const r = await api("/api/translate", { ep: epId, idx }); s.lines = r.lines; }
+    catch (err) { toast(err.message); L.showJa = false; }
+    if (location.hash === here) draw();
+  }
 };
 
 // ================= 復習 =================
