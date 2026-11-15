@@ -13,7 +13,7 @@ import urllib.parse
 from datetime import datetime
 
 from . import audiostore, feeds, gemini, store
-from .questions import build_questions, split_sections
+from .questions import build_questions, merge_lines, split_sections
 
 ACTIVE = ("downloading", "transcribing", "generating")
 MAX_PER_RUN = 3
@@ -106,7 +106,7 @@ def transcribe(ep_id, path):
 
 def make_sections(ep_id, lines):
     """文字起こしから区間と問題を作って保存する（Geminiのみ使用・数十秒）。"""
-    sections = split_sections(lines, store.config().get("segment_minutes") or 4)
+    sections = split_sections(merge_lines(lines), store.config().get("segment_minutes") or 4)
     _set(ep_id, status="generating", progress=0, message="要旨問題と表現を作成中")
     message = ""
     try:

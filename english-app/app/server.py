@@ -13,7 +13,7 @@ import traceback
 import urllib.parse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-from . import api, audiostore, gemini, store, talk, turso
+from . import api, audiostore, gemini, questions, store, talk, turso
 
 STATIC = os.path.join(store.BASE, "static")
 OPEN_PATHS = ("/api/health", "/static/")  # パスワードなしで開ける（アイコン等）
@@ -128,7 +128,7 @@ class Handler(BaseHTTPRequestHandler):
             if p.startswith("/api/episode/"):
                 ep_id = re.sub(r"[^0-9a-f]", "", p[len("/api/episode/"):])
                 return self._json({"meta": store.episode_meta(ep_id),
-                                   "sections": store.get(f"ep:{ep_id}:sections", [])})
+                                   "sections": questions.load_sections(ep_id)})
             if p == "/api/talks":
                 return self._json(talk.summaries())
             if p.startswith("/api/talk/"):

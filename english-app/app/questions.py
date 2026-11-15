@@ -2,6 +2,44 @@
 from . import gemini, store
 
 
+LINE_GROUP = 2  # 文字起こしの細切れを何行ずつまとめて1文として表示するか
+MAX_LINE_SEC = 30  # まとめた1文がこれより長くなる場合はまとめない
+
+
+def merge_lines(lines, n=LINE_GROUP):
+    """Whisperの細かい区切りをn行ずつ1行にまとめる（翻訳済みなら訳もつなぐ）。"""
+    out, cur = [], []
+    for ln in lines:
+        if cur and (len(cur) >= n or ln["end"] - cur[0]["start"] > MAX_LINE_SEC):
+            out.append(_join(cur))
+            cur = []
+        cur.append(ln)
+    if cur:
+        out.append(_join(cur))
+    return out
+
+
+def _join(group):
+    if len(group) == 1:
+        return dict(group[0])
+    ln = {"start": group[0]["start"], "end": group[-1]["end"], "text": " ".join(l["text"].strip() for l in group)}
+    if all(l.get("ja") for l in group):
+        ln["ja"] = "".join(l["ja"].strip() for l in group)
+    return ln
+
+
+def load_sections(ep_id):
+    """区間を読み込む。行をまとめる前に作られた区間は、まとめてから保存し直す。"""
+    sections = store.get(f"ep:{ep_id}:sections", [])
+    if sections and not all(s.get("merged") for s in sections):
+        for s in sections:
+            if not s.get("merged"):
+                s["lines"] = merge_lines(s["lines"])
+                s["merged"] = True
+        store.put(f"ep:{ep_id}:sections", sections)
+    return sections
+
+
 def split_sections(lines, minutes):
     target = minutes * 60
     sections, cur = [], []
@@ -17,7 +55,7 @@ def split_sections(lines, minutes):
             sections[-1].extend(cur)  # 短すぎる最後の区間は前に結合
         else:
             sections.append(cur)
-    return [{"index": i, "start": s[0]["start"], "end": s[-1]["end"], "lines": s}
+    return [{"index": i, "start": s[0]["start"], "end": s[-1]["end"], "lines": s, "merged": True}
             for i, s in enumerate(sections)]
 
 
@@ -50,7 +88,7 @@ def build_questions(sections):
 
 
 def translate_section(ep_id, idx):
-    sections = store.get(f"ep:{ep_id}:sections", [])
+    sections = load_sections(ep_id)
     s = sections[idx]
     if all(l.get("ja") for l in s["lines"]):
         return s
