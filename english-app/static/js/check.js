@@ -40,6 +40,7 @@ routes.check = async (epId, idx) => {
             <button class="btn plain sm" id="jaBtn">${L.showJa ? "日本語訳を隠す" : "日本語訳を表示"}</button>
           </div>
           <p class="note">聞き取れなかった文に印を付けて、原因を選びます。▶で1文ずつ再生。</p>
+          <div class="controls" id="speeds" style="margin-bottom:6px">${[0.75, 0.9, 1, 1.25].map((r) => `<button class="chip ${L.rate === r ? "on" : ""}" data-r="${r}">${r}x</button>`).join("")}</div>
           <div id="lines">${s.lines.map((ln, i) => `<div class="line" data-li="${i}">
             <div class="main">
               <button class="iconbtn" data-play="${i}" aria-label="この文を再生">${ICON.play}</button>
@@ -80,6 +81,7 @@ routes.check = async (epId, idx) => {
       const to = next ? Math.max(ln.start + 0.3, Math.min(ln.end + 0.1, next.start)) : ln.end + 0.2;
       playRange(src, from, to, L.rate);
     }));
+    document.querySelectorAll("#speeds [data-r]").forEach((b) => (b.onclick = () => { L.rate = +b.dataset.r; player.playbackRate = L.rate; document.querySelectorAll("#speeds [data-r]").forEach((x) => x.classList.toggle("on", x === b)); }));
     document.querySelectorAll("[data-miss]").forEach((b) => (b.onclick = () => { const i = +b.dataset.miss; L.missed[i] = !L.missed[i]; draw(); }));
     document.querySelectorAll("[data-cause]").forEach((b) => (b.onclick = () => { L.cause[+b.dataset.li2] = b.dataset.cause; draw(); }));
     document.getElementById("jaBtn").onclick = async (e) => {
