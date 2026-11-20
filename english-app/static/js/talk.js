@@ -19,6 +19,8 @@ routes.theme = async (epId, idx) => {
     const cur = sel === "seg" ? segTheme : themes.find((t) => t.id === sel);
     $app.innerHTML = `<div class="row">
       <div class="grow stack">
+        ${(S.progress.phrases || []).length ? `<a class="card rp-card" href="#roleplay"><div style="font-size:12px;font-weight:700;color:var(--purple)">フレーズ練習</div>
+          <div style="font-weight:700;font-size:16px">保存したフレーズでロールプレイ</div><div class="small">${S.progress.phrases.length}個から選んで、AIが作る場面で実際に使ってみる →</div></a>` : ""}
         <section class="card"><label class="lbl" for="nt">テーマを追加</label>
           <div class="field"><input id="nt" type="text" placeholder="例：週末の過ごし方 / my morning routine"><button class="btn" id="add" style="border-radius:10px">追加</button></div>
           <p class="note" style="margin-top:8px">日本語でも英語でもOK。AIが最初の質問と使えそうな表現を用意します</p></section>
@@ -81,7 +83,7 @@ routes.talk = async (tid) => {
   const used = () => new Set(t.messages.flatMap((m) => (m.used || []).map((u) => u.toLowerCase())));
   const draw = () => {
     const u = used(); const mine = t.messages.filter((m) => m.role === "me");
-    $app.innerHTML = `<div class="small" style="margin-bottom:12px"><a href="#theme">← テーマ選択</a> ・ テーマ：${esc(t.theme)}</div>
+    $app.innerHTML = `<div class="small" style="margin-bottom:12px">${t.mode === "roleplay" ? `<a href="#roleplay">← フレーズを選び直す</a> ・ ${esc(t.theme)}` : `<a href="#theme">← テーマ選択</a> ・ テーマ：${esc(t.theme)}`}</div>
     <div class="row">
       <section class="card grow stack">
         <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end">
@@ -106,7 +108,7 @@ routes.talk = async (tid) => {
         </div>
       </section>
       <aside class="side stack">
-        <section class="card"><h2>使ってみたい表現</h2>
+        <section class="card"><h2>${t.mode === "roleplay" ? "この場面で使うフレーズ" : "使ってみたい表現"}</h2>
           ${(t.targets || []).map((x) => { const ok = u.has((x.en || "").toLowerCase()); return `<div style="display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-top:1px solid var(--line2)"><div><div style="font-weight:600;color:var(--purpleInk)">${esc(x.en)}</div><div class="small">${esc(x.ja || "")}</div></div><span style="font-size:13px;font-weight:700;color:${ok ? "var(--green)" : "var(--muted)"};white-space:nowrap">${ok ? "✓ 使えた" : "未使用"}</span></div>`; }).join("")}
         </section>
         <section class="card" style="font-size:14px"><h2>この会話</h2>

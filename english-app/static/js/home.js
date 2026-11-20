@@ -18,7 +18,7 @@ routes.home = async () => {
   }
   const next = nextSection();
   const acc = accuracyByWeek(2);
-  const due = dueReviews().length;
+  const due = dueReviews().length, dueP = duePhrases().length;
   const c7 = causeCounts(7, 0); const maxC = Math.max(1, ...Object.values(c7));
   const ep = next ? next.ep : readyEps()[0];
   let sections = [];
@@ -31,7 +31,7 @@ routes.home = async () => {
       <div class="card stat"><div class="k">連続学習</div><div class="v">${streak()}<small>日</small></div></div>
       <div class="card stat"><div class="k">今週の要旨正答率</div><div class="v">${acc[1].val ?? "–"}<small>%</small></div>
         <div class="up">${acc[0].val !== null && acc[1].val !== null ? `先週 ${acc[0].val}% → ${acc[1].val - acc[0].val >= 0 ? "+" : ""}${acc[1].val - acc[0].val}pt` : `今週 ${acc[1].n}区間`}</div></div>
-      <div class="card stat"><div class="k">復習待ちの文</div><div class="v">${due}<small>文</small></div>${due ? `<a href="#review" class="small">復習する →</a>` : ""}</div>
+      <div class="card stat"><div class="k">復習待ちの文</div><div class="v">${due}<small>文</small></div>${dueP ? `<div class="up" style="color:var(--purple)">＋フレーズ ${dueP}</div>` : ""}${due || dueP ? `<a href="#review${due ? "" : "/phr"}" class="small">復習する →</a>` : ""}</div>
     </section>
     ${next ? `<section class="hero">
       <div style="display:flex;flex-direction:column;gap:6px;min-width:0;flex:1 1 380px">
