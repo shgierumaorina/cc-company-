@@ -39,7 +39,7 @@ routes.check = async (epId, idx) => {
     return highlight(text, s.chunks);
   };
   const savePhrase = async (k) => {
-    try { await api("/api/phrases/save", { ep: epId, idx, i: k }); toast("フレーズ帳に保存しました（明日から復習に出ます）"); } catch (err) { toast(err.message); }
+    try { await api("/api/phrases/save", { ep: epId, idx, i: k, phrase: s.phrases[k] }); toast("フレーズ帳に保存しました（明日から復習に出ます）"); } catch (err) { toast(err.message); }
     draw();
   };
   const openPhrase = (k) => {
@@ -128,7 +128,7 @@ routes.check = async (epId, idx) => {
     const pa = document.getElementById("phrAll");
     if (pa) pa.onclick = async () => {
       busy(pa, true, "保存中"); const ks = (s.phrases || []).map((p, k) => k).filter((k) => !savedPhraseKeys().has(phraseKey(s.phrases[k].en)));
-      try { for (const k of ks) await api("/api/phrases/save", { ep: epId, idx, i: k }); toast(`${ks.length}個のフレーズを保存しました`); } catch (err) { toast(err.message); }
+      try { for (const k of ks) await api("/api/phrases/save", { ep: epId, idx, i: k, phrase: s.phrases[k] }); toast(`${ks.length}個のフレーズを保存しました`); } catch (err) { toast(err.message); }
       draw();
     };
     const prr = document.getElementById("phrRetry"); if (prr) prr.onclick = () => loadPhrases(true);

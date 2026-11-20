@@ -76,20 +76,24 @@ def extract(ep_id, idx, force=False):
         out.append(p)
     if not out:
         raise gemini.GeminiError("フレーズを作れませんでした。もう一度お試しください")
-    s["phrases"], s["phrases_v"] = out, PHRASES_VERSION
-    store.put(f"ep:{ep_id}:sections", sections)
-    return s
+    return questions.update_section(ep_id, idx, lambda sec: sec.update(phrases=out, phrases_v=PHRASES_VERSION))
 
 
 def save(pr, b):
     """区間のフレーズ（b["i"]番目）をフレーズ帳に入れる。同じ英語は1つだけ。"""
     ep, idx = b["ep"], int(b["idx"])
     s = questions.load_sections(ep)[idx]
-    ph = (s.get("phrases") or [])[int(b["i"])]
+    ph = b.get("phrase") if isinstance(b.get("phrase"), dict) and b["phrase"].get("en") else None
+    if not ph:  # 画面が持っているフレーズを優先し、無ければ保存済みの番号から探す
+        lst = s.get("phrases") or []
+        i = int(b.get("i", -1))
+        if not 0 <= i < len(lst):
+            raise ValueError("フレーズが見つかりません。画面を開き直してください")
+        ph = lst[i]
     if any(x["en"].lower().strip() == ph["en"].lower().strip() for x in pr["phrases"]):
         return
     li = ph.get("line")
-    ln = s["lines"][li] if isinstance(li, int) and li < len(s["lines"]) else None
+    ln = s["lines"][li] if isinstance(li, int) and 0 <= li < len(s["lines"]) else None
     pr["phrases"].append({
         "id": uuid.uuid4().hex[:10], "en": ph["en"], "ja": ph.get("ja", ""), "quote": ph.get("quote", ""),
         "scene_ja": ph.get("scene_ja", ""), "nuance_ja": ph.get("nuance_ja", ""),

@@ -1,4 +1,6 @@
 """区間分割と、Geminiによる要旨問題・表現・翻訳の作成。"""
+import threading
+
 from . import gemini, store
 
 
@@ -26,6 +28,18 @@ def _join(group):
     if all(l.get("ja") for l in group):
         ln["ja"] = "".join(l["ja"].strip() for l in group)
     return ln
+
+
+_sec_lock = threading.Lock()
+
+
+def update_section(ep_id, idx, fn):
+    """AIの応答を待つ間に別の処理が区間を書き換えても消さないよう、保存直前に読み直して1区間だけ更新する。"""
+    with _sec_lock:
+        sections = load_sections(ep_id)
+        fn(sections[idx])
+        store.put(f"ep:{ep_id}:sections", sections)
+        return sections[idx]
 
 
 def load_sections(ep_id):
@@ -96,8 +110,9 @@ def translate_section(ep_id, idx):
     prompt = ("Translate each numbered line of this spoken English into natural Japanese. "
               'Return JSON {"ja":["...", ...]} with exactly one string per line, same order.\n\n' + numbered)
     ja = gemini.generate(prompt, None, max_tokens=8192, json_mode=True).get("ja", [])
-    for i, l in enumerate(s["lines"]):
-        if i < len(ja):
-            l["ja"] = ja[i]
-    store.put(f"ep:{ep_id}:sections", sections)
-    return s
+
+    def apply(sec):
+        for i, l in enumerate(sec["lines"]):
+            if i < len(ja):
+                l["ja"] = ja[i]
+    return update_section(ep_id, idx, apply)
