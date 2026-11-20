@@ -2,19 +2,27 @@
 import uuid
 from datetime import datetime
 
-from . import gemini, store
+from . import gemini, phrases, store
 
 TALK_SYSTEM = """You are a friendly English conversation partner for Shigeru, a Japanese adult whose English is lower-intermediate (understands about 30% of natural podcasts).
 Rules:
 - Speak natural, everyday spoken English. Keep each reply SHORT: 1-3 sentences, then ask one follow-up question.
 - Use simple vocabulary but natural chunks (phrasal verbs, "kind of", etc.).
 - Try to naturally create chances for him to use these target expressions: {targets}
-- If his last message has a grammar mistake or sounds unnatural, give a corrected natural version. If it is fine, correction is null. Ignore missing punctuation/capitalization (it comes from speech recognition).
+{extra}- If his last message has a grammar mistake or sounds unnatural, give a corrected natural version. If it is fine, correction is null. Ignore missing punctuation/capitalization (it comes from speech recognition).
 Return ONLY JSON:
 {{"reply":"your reply","reply_ja":"natural Japanese translation of your reply","correction":null or {{"better":"more natural version of HIS sentence","note_ja":"短い日本語の説明"}},"used":["target expressions he used correctly in his last message"]}}"""
 
 
+def _extra(talk):
+    if talk.get("mode") == "roleplay":
+        return phrases.ROLEPLAY_RULES.format(scene=talk.get("scene") or talk.get("theme"))
+    return ""
+
+
 def start(body):
+    if body.get("mode") == "roleplay":
+        return phrases.roleplay_start(body, TALK_SYSTEM)
     theme = (body.get("theme") or "").strip() or "Free talk"
     targets = body.get("targets") or []
     if not targets:
@@ -23,7 +31,7 @@ def start(body):
             'a learner could use when talking about this. Return JSON {"targets":[{"en":"...","ja":"意味"}]}',
             None, 1024, True)
         targets = data.get("targets", [])[:4]
-    system = TALK_SYSTEM.format(targets=", ".join(t.get("en", "") for t in targets))
+    system = TALK_SYSTEM.format(targets=", ".join(t.get("en", "") for t in targets), extra="")
     first = gemini.generate(
         f'Start a casual conversation about this theme: "{theme}". (The theme may be written in Japanese.) '
         'Open with one friendly question. correction must be null and used must be [].',
@@ -53,10 +61,12 @@ def reply(body):
                for m in talk["messages"]]
     if history and history[0]["role"] == "model":
         history.insert(0, {"role": "user", "parts": [{"text": f"(Let's talk about: {talk['theme']})"}]})
-    system = TALK_SYSTEM.format(targets=", ".join(t.get("en", "") for t in talk["targets"]))
+    system = TALK_SYSTEM.format(targets=", ".join(t.get("en", "") for t in talk["targets"]), extra=_extra(talk))
     res = gemini.generate(text, system, 1024, True, history=history)
+    used = phrases.match_targets(res.get("used") or [], talk["targets"])
+    phrases.count_usage(talk, used)
     talk["messages"] += [
-        {"role": "me", "en": text, "correction": res.get("correction") or None, "used": res.get("used") or []},
+        {"role": "me", "en": text, "correction": res.get("correction") or None, "used": used},
         {"role": "ai", "en": res.get("reply", ""), "ja": res.get("reply_ja", "")},
     ]
     store.put(f"talk:{talk['id']}", talk)

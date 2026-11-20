@@ -30,6 +30,7 @@ DEFAULT_CONFIG = {
 DEFAULT_PROGRESS = {
     "sessions": [],
     "review": [],
+    "phrases": [],  # 保存した日常会話フレーズ（間隔反復）
     "themes": [
         {"id": "t1", "name": "週末の過ごし方", "fav": True, "count": 0, "last": None},
         {"id": "t2", "name": "仕事で最近あったこと", "fav": True, "count": 0, "last": None},

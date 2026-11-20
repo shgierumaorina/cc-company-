@@ -6,7 +6,7 @@ import traceback
 import uuid
 from datetime import datetime, timedelta
 
-from . import audiostore, dispatch, feeds, gemini, prepare, questions, store, talk
+from . import audiostore, dispatch, feeds, gemini, phrases, prepare, questions, store, talk
 
 INTERVALS = [1, 3, 7, 14, 30]  # 復習の間隔（日）
 
@@ -190,6 +190,14 @@ def route(p, b):
         return public_state()
     if p == "/api/translate":
         return questions.translate_section(b["ep"], int(b["idx"]))
+    if p == "/api/phrases/section":
+        return phrases.extract(b["ep"], int(b["idx"]), bool(b.get("force")))
+    if p == "/api/phrases/save":
+        return _edit_progress(lambda pr: phrases.save(pr, b))
+    if p == "/api/phrases/answer":
+        return _edit_progress(lambda pr: phrases.answer(pr, b.get("id"), bool(b.get("ok"))))
+    if p == "/api/phrases/remove":
+        return _edit_progress(lambda pr: pr.update(phrases=[x for x in pr["phrases"] if x["id"] != b.get("id")]))
     if p == "/api/session":
         return save_session(b)
     if p == "/api/review/answer":
