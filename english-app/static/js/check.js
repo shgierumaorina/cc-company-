@@ -85,7 +85,7 @@ routes.check = async (epId, idx) => {
         </section>
       </div>
       <aside class="side stack">
-        <section class="card"><h2>日常会話フレーズ${phrs.length ? `<span class="cnt phr">${phrs.length}</span>` : ""}</h2>
+        <section class="card"><h2>日常会話フレーズ${phrs.length ? `<span class="cnt cnt-phr">${phrs.length}</span>` : ""}</h2>
           <p class="note" style="margin-bottom:4px">そのまま使える言い回し。保存すると復習と会話練習に出ます</p>
           ${phrs.map((p, k) => { const sv = saved.has(phraseKey(p.en)); return `<div class="phr-item"><button class="phr-open" data-ph="${k}"><div class="phr-en">${esc(p.en)}</div><div class="chk-ja">${esc(p.ja)}</div>${p.scene_ja ? `<div class="chk-note">${esc(p.scene_ja)}</div>` : ""}</button>
             <button class="btn sm ${sv ? "plain" : "ghost"}" data-save="${k}" ${sv ? "disabled" : ""}>${sv ? "保存済" : "保存"}</button></div>`; }).join("")}

@@ -62,8 +62,9 @@ def extract(ep_id, idx, force=False):
     data = gemini.generate(prompt, questions.PREP_SYSTEM, max_tokens=8192, json_mode=True)
     out, seen = [], set()
     for p in data.get("phrases") or []:
-        if not isinstance(p, dict) or not p.get("en") or p["en"].lower().strip() in seen:
+        if not isinstance(p, dict) or not isinstance(p.get("en"), str) or p["en"].lower().strip() in seen:
             continue
+        p["quote"] = p.get("quote") if isinstance(p.get("quote"), str) else ""
         seen.add(p["en"].lower().strip())
         li = p.get("line")
         ok = isinstance(li, int) and 0 <= li < len(s["lines"])

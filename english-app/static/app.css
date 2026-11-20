@@ -149,7 +149,7 @@ body{-webkit-tap-highlight-color:transparent}
 
 /* ---------- 日常会話フレーズ ---------- */
 #toast{z-index:50}
-.cnt.phr{color:#fff;background:var(--purple)}
+.cnt.cnt-phr{color:#fff;background:var(--purple)}
 .phr{cursor:pointer;text-decoration:underline;text-decoration-color:var(--purple);text-decoration-thickness:2.5px;text-underline-offset:4px}
 .phr:hover{background:var(--purpleSoft)}
 .phr-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
@@ -192,6 +192,6 @@ body.noscroll{overflow:hidden}
   .segtabs a{font-size:13px}
 }
 .cnt{display:inline-block;margin-left:8px;font-size:12px;font-weight:700;color:var(--purpleInk);background:var(--purpleSoft);border-radius:999px;padding:1px 8px;vertical-align:middle}
-.cnt.phr{color:#fff;background:var(--purple)}
+.cnt.cnt-phr{color:#fff;background:var(--purple)}
 .chk-ja{font-size:13px}
 .chk-note{font-size:12px;color:var(--sub);margin-top:2px}

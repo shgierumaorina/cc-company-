@@ -5,7 +5,7 @@ function reviewTabs(cur) {
   const n1 = dueReviews().length, n2 = duePhrases().length;
   return `<div class="segtabs">
     <a href="#review/lines" class="${cur === "lines" ? "on" : ""}">聞き直し<span class="cnt">${n1}</span></a>
-    <a href="#review/phr" class="${cur === "phr" ? "on" : ""}">フレーズ<span class="cnt phr">${n2}</span></a>
+    <a href="#review/phr" class="${cur === "phr" ? "on" : ""}">フレーズ<span class="cnt cnt-phr">${n2}</span></a>
     <a href="#phrases" class="${cur === "book" ? "on" : ""}">フレーズ帳</a></div>`;
 }
 const PHR_MODES = [
@@ -16,7 +16,7 @@ const PHR_MODES = [
 const phrMode = (p) => (p.stage || 0) >= 4 ? 2 : (p.stage || 0) >= 2 ? 1 : 0;
 async function phraseReview() {
   const items = duePhrases().sort((a, b) => (a.due < b.due ? -1 : 1));
-  let i = 0, shown = false, said = "", listening = false;
+  let i = 0, shown = false, said = "", heard = "", listening = false;
   const draw = () => {
     if (i >= items.length) {
       $app.innerHTML = `<div class="stack" style="max-width:760px;margin:0 auto">${reviewTabs("phr")}<div class="card empty">${items.length ? "今日のフレーズ復習は完了です！" : "今日復習するフレーズはありません。"}<br>
@@ -59,9 +59,9 @@ async function phraseReview() {
     if (g("tts")) g("tts").onclick = () => speak(p.en);
     if (g("show")) g("show").onclick = () => { shown = true; draw(); };
     if (g("pmic")) g("pmic").onclick = () => {
-      if (listening) { stopRec(); listening = false; draw(); return; }
-      const ok = listenOnce((t) => { const el = g("said"); if (el) el.textContent = t; }, (t) => { listening = false; said = t || said; if (location.hash.startsWith("#review/phr")) draw(); });
-      if (ok) { listening = true; said = ""; draw(); }
+      if (listening) { stopRec(); listening = false; said = heard || said; draw(); return; }
+      const ok = listenOnce((t) => { heard = t; const el = g("said"); if (el) el.textContent = t; }, (t) => { listening = false; said = t || said; if (location.hash.startsWith("#review/phr")) draw(); });
+      if (ok) { listening = true; said = ""; heard = ""; draw(); }
     };
     bindTts();
     const ans = async (ok) => { stopRec(); try { await api("/api/phrases/answer", { id: p.id, ok }); } catch (e) { toast(e.message); } i++; shown = false; said = ""; listening = false; draw(); };
