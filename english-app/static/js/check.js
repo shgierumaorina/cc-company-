@@ -24,6 +24,12 @@ routes.check = async (epId, idx) => {
   const correct = hasQ && L.choice !== null ? L.choice === s.answer : null;
   // ---- 日常会話フレーズ ----
   let phrState = s.phrases_v >= 1 ? "done" : "loading", phrErr = "";
+  // ---- 連続再生：▶を押した文から最後まで止まらずに進む（■で停止、続きから再開） ----
+  let autoOn = localGet("autoplay", true);
+  const lastEnd = s.lines.length ? s.lines[s.lines.length - 1].end + 0.3 : 0;
+  let autoTo = null, curLi = -1;
+  const isAuto = () => !player.paused && autoTo !== null && stopAt === autoTo && player.src.endsWith(src);
+  const stopAuto = () => { player.pause(); stopAt = null; autoTo = null; };
   const loadPhrases = async (force) => {
     phrState = "loading"; if (force) draw();
     try { const r = await api("/api/phrases/section", { ep: epId, idx, force: !!force }); s.phrases = r.phrases; s.phrases_v = r.phrases_v; phrState = "done"; }
@@ -72,7 +78,11 @@ routes.check = async (epId, idx) => {
             <h2 style="margin:0">文字起こし</h2>
             <button class="btn plain sm" id="jaBtn">${L.showJa ? "日本語訳を隠す" : "日本語訳を表示"}</button>
           </div>
-          <p class="note">聞き取れなかった文に印を付けて、原因を選びます。▶で1文ずつ再生。</p>
+          <div class="autobar">
+            <button class="btn sm" id="autoMain"></button>
+            <label class="autosw"><input type="checkbox" id="autoSw" ${autoOn ? "checked" : ""}> 連続再生</label>
+          </div>
+          <p class="note">聞き取れなかった文に印を付けて、原因を選びます。${autoOn ? "▶を押すとその文から最後まで止まらずに進みます。■で停止。" : "▶で1文ずつ再生。"}</p>
           <div class="controls" id="speeds" style="margin-bottom:6px">${[0.75, 0.9, 1, 1.25].map((r) => `<button class="chip ${L.rate === r ? "on" : ""}" data-r="${r}">${r}x</button>`).join("")}</div>
           <div id="lines">${s.lines.map((ln, i) => `<div class="line" data-li="${i}">
             <div class="main">
@@ -104,24 +114,55 @@ routes.check = async (epId, idx) => {
           <button class="btn ghost" id="saveEnd">記録して終了（復習${missedN}文）</button>
         </div>
       </aside>
-    </div></div>`;
+    </div></div>
+    <button class="autofab" id="autoFab" hidden></button>`;
     bind();
   };
 
+  const playFrom = (i) => {
+    // 前の文に入り込まないよう、前の文の終わりから始める
+    const ln = s.lines[i], prev = s.lines[i - 1], next = s.lines[i + 1]; if (!ln) return;
+    const from = Math.min(ln.start, Math.max(prev ? prev.end : 0, ln.start - 0.15));
+    const to = autoOn ? lastEnd : next ? Math.max(ln.start + 0.3, Math.min(ln.end + 0.1, next.start)) : ln.end + 0.2;
+    autoTo = autoOn ? lastEnd : null; L.resume = i; curLi = -1;
+    playRange(src, from, to, L.rate);
+  };
+  const syncAuto = () => {
+    const on = isAuto(), m = document.getElementById("autoMain"), f = document.getElementById("autoFab");
+    const canResume = Number.isInteger(L.resume) && L.resume > 0 && L.resume < s.lines.length;
+    if (m) {
+      m.className = on ? "btn sm stop" : "btn sm";
+      m.innerHTML = on ? "■ 停止" : canResume ? `${ICON.play}続きから再生（${L.resume + 1}文目）` : `${ICON.play}最初から続けて再生`;
+      m.hidden = !autoOn && !on;
+    }
+    if (f) { f.hidden = !on; f.textContent = "■ 停止"; }
+  };
   const bind = () => {
     onTick = () => {
+      const t = player.currentTime, playing = !player.paused && player.src.endsWith(src);
+      let now = -1;
       document.querySelectorAll(".line").forEach((el) => {
-        const ln = s.lines[+el.dataset.li];
-        el.classList.toggle("playing", !player.paused && player.currentTime >= ln.start && player.currentTime < ln.end);
+        const i = +el.dataset.li, ln = s.lines[i], hit = playing && t >= ln.start && t < ln.end;
+        if (hit) now = i;
+        el.classList.toggle("playing", hit);
       });
+      if (isAuto() && now >= 0 && now !== curLi) {
+        curLi = now; L.resume = now;
+        const el = document.querySelector(`.line[data-li="${now}"]`);
+        if (el) { const r = el.getBoundingClientRect(); if (r.top < 70 || r.bottom > window.innerHeight - 180) el.scrollIntoView({ block: "center", behavior: "smooth" }); }
+      }
+      if (autoTo !== null && stopAt === null && player.paused && t >= lastEnd - 0.5) {
+        L.resume = 0; autoTo = null; // 最後まで聞いたら次は最初から
+      }
+      syncAuto();
     };
-    document.querySelectorAll("[data-play]").forEach((b) => (b.onclick = () => {
-      // 前後の文に入り込まないよう、前の文の終わり〜次の文の始まりの範囲に収める
-      const i = +b.dataset.play, ln = s.lines[i], prev = s.lines[i - 1], next = s.lines[i + 1];
-      const from = Math.min(ln.start, Math.max(prev ? prev.end : 0, ln.start - 0.15));
-      const to = next ? Math.max(ln.start + 0.3, Math.min(ln.end + 0.1, next.start)) : ln.end + 0.2;
-      playRange(src, from, to, L.rate);
-    }));
+    document.querySelectorAll("[data-play]").forEach((b) => (b.onclick = () => playFrom(+b.dataset.play)));
+    const am = document.getElementById("autoMain");
+    if (am) am.onclick = () => { if (isAuto()) { stopAuto(); syncAuto(); } else playFrom(Number.isInteger(L.resume) && L.resume < s.lines.length ? L.resume : 0); };
+    const af = document.getElementById("autoFab"); if (af) af.onclick = () => { stopAuto(); syncAuto(); };
+    const sw = document.getElementById("autoSw");
+    if (sw) sw.onchange = () => { autoOn = sw.checked; localSet("autoplay", autoOn); if (!autoOn && isAuto()) stopAuto(); draw(); };
+    syncAuto();
     document.querySelectorAll("#speeds [data-r]").forEach((b) => (b.onclick = () => { L.rate = +b.dataset.r; player.playbackRate = L.rate; document.querySelectorAll("#speeds [data-r]").forEach((x) => x.classList.toggle("on", x === b)); }));
     document.querySelectorAll("[data-ph]").forEach((b) => (b.onclick = () => openPhrase(+b.dataset.ph)));
     document.querySelectorAll("[data-save]").forEach((b) => (b.onclick = () => savePhrase(+b.dataset.save)));

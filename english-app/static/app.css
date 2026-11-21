@@ -195,3 +195,13 @@ body.noscroll{overflow:hidden}
 .cnt.cnt-phr{color:#fff;background:var(--purple)}
 .chk-ja{font-size:13px}
 .chk-note{font-size:12px;color:var(--sub);margin-top:2px}
+
+/* 答え合わせ：連続再生 */
+.autobar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:4px 0 8px}
+.autobar .btn{display:inline-flex;align-items:center;gap:6px}
+.autobar .btn svg{width:16px;height:16px}
+.autobar .btn.stop{background:#C0392B;border-color:#C0392B;color:#fff}
+.autosw{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#555;cursor:pointer}
+.autofab{position:fixed;right:16px;bottom:24px;z-index:20;padding:12px 20px;border-radius:999px;border:none;background:#C0392B;color:#fff;font-size:15px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.autofab[hidden],.autobar .btn[hidden]{display:none}
+@media (max-width:760px){.autofab{bottom:calc(140px + env(safe-area-inset-bottom))}}
