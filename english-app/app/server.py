@@ -1,6 +1,7 @@
 """英語リスニング・ラボのWebサーバー（標準ライブラリのみ）。
 
 Render: 環境変数 PORT で起動。APP_PASSWORD を設定するとパスワード保護（Basic認証）。
+一度パスワードが通ったら、署名付きクッキーで180日ログインを保つ（スマホでアプリを閉じても切れない）。
 手元: python -m app.server → http://localhost:8765
 """
 import base64
@@ -17,6 +18,13 @@ from . import api, audiostore, gemini, questions, store, talk, turso
 
 STATIC = os.path.join(store.BASE, "static")
 OPEN_PATHS = ("/api/health", "/static/")  # パスワードなしで開ける（アイコン等）
+AUTH_COOKIE = "ll_auth"
+AUTH_DAYS = 180
+
+
+def _auth_token(password):
+    # パスワードから作る署名。パスワードを変えると古いクッキーは使えなくなる
+    return hmac.new(password.encode("utf-8"), b"listening-lab-login-v1", "sha256").hexdigest()
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -25,9 +33,23 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):
         pass
 
+    def end_headers(self):
+        if getattr(self, "_login_cookie", None):
+            secure = "; Secure" if self.headers.get("X-Forwarded-Proto", "") == "https" else ""
+            self.send_header("Set-Cookie", f"{AUTH_COOKIE}={self._login_cookie}; Max-Age={AUTH_DAYS * 86400}; "
+                                           f"Path=/; HttpOnly; SameSite=Lax{secure}")
+            self._login_cookie = None
+        super().end_headers()
+
     def _authorized(self, path):
         password = os.environ.get("APP_PASSWORD", "")
         if not password or path.startswith(OPEN_PATHS):
+            return True
+        token = _auth_token(password)
+        m = re.search(rf"(?:^|;\s*){AUTH_COOKIE}=([0-9a-f]+)", self.headers.get("Cookie", ""))
+        if m and hmac.compare_digest(m.group(1), token):
+            if path == "/" or path == "/index.html":
+                self._login_cookie = token  # 開くたびに期限を180日延ばす
             return True
         auth = self.headers.get("Authorization", "")
         if auth.startswith("Basic "):
@@ -36,6 +58,7 @@ class Handler(BaseHTTPRequestHandler):
             except (ValueError, UnicodeDecodeError):
                 supplied = ""
             if hmac.compare_digest(supplied.encode("utf-8"), password.encode("utf-8")):
+                self._login_cookie = token
                 return True
         self.send_response(401)
         self.send_header("WWW-Authenticate", 'Basic realm="Listening Lab", charset="UTF-8"')
