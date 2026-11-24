@@ -135,7 +135,9 @@ body{-webkit-tap-highlight-color:transparent}
   .miss{padding:0 8px;font-size:12px}
   .acts{position:fixed;left:0;right:0;bottom:calc(60px + env(safe-area-inset-bottom));z-index:12;flex-direction:row;padding:10px 12px;background:rgba(246,246,243,.97);border-top:1px solid var(--line)}
   .acts .btn{flex:1;min-height:46px;padding:0 10px;font-size:13.5px}
-  .has-acts{padding-bottom:170px}
+  .has-acts{padding-bottom:230px}
+  .acts{flex-wrap:wrap}
+  .acts #saveNext{flex-basis:100%;order:3}
   .dock{position:sticky;bottom:calc(64px + env(safe-area-inset-bottom));z-index:5;padding-bottom:8px;margin:0 -16px -16px;padding-left:16px;padding-right:16px;border-radius:0 0 12px 12px}
   .mic{width:64px;height:64px}
   .chart{gap:8px;height:160px}

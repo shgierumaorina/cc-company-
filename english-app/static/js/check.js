@@ -111,6 +111,7 @@ routes.check = async (epId, idx) => {
         </section>
         <div class="acts">
           <button class="btn" id="saveTalk">記録して会話へ</button>
+          ${idx + 1 < d.sections.length ? `<button class="btn ghost" id="saveNext">記録して次の区間へ（${idx + 2}/${d.sections.length}）</button>` : ""}
           <button class="btn ghost" id="saveEnd">記録して終了（復習${missedN}文）</button>
         </div>
       </aside>
@@ -194,6 +195,7 @@ routes.check = async (epId, idx) => {
     };
     document.getElementById("saveTalk").onclick = () => save(`theme/${epId}/${idx}`);
     document.getElementById("saveEnd").onclick = () => save("home");
+    const sn = document.getElementById("saveNext"); if (sn) sn.onclick = () => save(`listen/${epId}/${idx + 1}`);
   };
   draw();
   if (phrState === "loading") loadPhrases(false);
